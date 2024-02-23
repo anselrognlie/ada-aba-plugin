@@ -155,15 +155,19 @@ class Ada_Aba_Learner {
     }
   }
 
-  public static function get_by_verify_code($verify_code) {
+  public static function get_by_verify_code($verify_code, $restrict_verified = true, $verified = 0) {
     global $wpdb;
 
     $table_name = $wpdb->prefix . self::$table_name;
 
-    $row = $wpdb->get_row(
-      "SELECT * FROM $table_name WHERE challenge_nonce = '$verify_code'",
-      'ARRAY_A'
-    );
+    $cmd = "SELECT * FROM $table_name WHERE challenge_nonce = '$verify_code'";
+
+    if ($restrict_verified) {
+      $verified_num = $verified ? 1 : 0;
+      $cmd .= " AND verified = $verified_num";
+    }
+
+    $row = $wpdb->get_row( $cmd, 'ARRAY_A' );
 
     if ($row) {
       return self::fromRow($row);
