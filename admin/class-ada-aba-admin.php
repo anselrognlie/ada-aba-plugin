@@ -158,30 +158,30 @@ class Ada_Aba_Admin
       )
     );
 
-		add_settings_field(
-			'private-key',
-			'Private Key',
-			array( $this, 'sandbox_add_settings_field_input_text' ),
-			$this->plugin_name . '-settings',
-			$this->plugin_name . '-settings-section',
-			array(
-				'label_for' => 'private-key',
-				'default' => '',
-				'description' => 'Key used to encrypt sessions, etc'
-			)
-		);
+    add_settings_field(
+      'private-key',
+      'Private Key',
+      array($this, 'sandbox_add_settings_field_input_text'),
+      $this->plugin_name . '-settings',
+      $this->plugin_name . '-settings-section',
+      array(
+        'label_for' => 'private-key',
+        'default' => '',
+        'description' => 'Key used to encrypt sessions, etc'
+      )
+    );
 
-		add_settings_field(
-			'send-email',
-			'Send registration email',
-			array( $this, 'sandbox_add_settings_field_single_checkbox' ),
-			$this->plugin_name . '-settings',
-			$this->plugin_name . '-settings-section',
-			array(
-				'label_for' => 'send-email',
-				'description' => 'Uncheck to disable sending registration emails (during testing).'
-			)
-		);
+    add_settings_field(
+      'send-email',
+      'Send registration email',
+      array($this, 'sandbox_add_settings_field_single_checkbox'),
+      $this->plugin_name . '-settings',
+      $this->plugin_name . '-settings-section',
+      array(
+        'label_for' => 'send-email',
+        'description' => 'Uncheck to disable sending registration emails (during testing).'
+      )
+    );
   }
 
   public function sandbox_register_setting($input)
@@ -189,7 +189,7 @@ class Ada_Aba_Admin
 
     $new_input = array();
     $valid_options = array(
-      'confirmation-page' => null, 
+      'confirmation-page' => null,
       'registered-page' => null,
       'private-key' => null,
       // 'private-key' => array(
@@ -211,7 +211,8 @@ class Ada_Aba_Admin
               $value,
               $key,
               $sanitizer['label'],
-              $sanitizer['restore']);
+              $sanitizer['restore']
+            );
           }
           $new_input[$key] = $value;
         }
@@ -221,7 +222,8 @@ class Ada_Aba_Admin
     return $new_input;
   }
 
-  private function get_previous_private_key() {
+  private function get_previous_private_key()
+  {
     $options = get_option($this->plugin_name . '-settings');
     $option = '';
 
@@ -232,52 +234,53 @@ class Ada_Aba_Admin
     return $option;
   }
 
-  private function sanitize_hex ($input, $field_id, $label, $get_previous_value) {
+  private function sanitize_hex($input, $field_id, $label, $get_previous_value)
+  {
 
-    if ( !preg_match( '/^[0-9a-fA-F]+$/', $input ) ){
-        $label = esc_html($label);
-        add_settings_error(
-            $field_id,
-            esc_attr( $field_id ), //becomes part of id attribute of error message
-            "$label should be hexadecimal",
-            'error'
-        );
+    if (!preg_match('/^[0-9a-fA-F]+$/', $input)) {
+      $label = esc_html($label);
+      add_settings_error(
+        $field_id,
+        esc_attr($field_id), //becomes part of id attribute of error message
+        "$label should be hexadecimal",
+        'error'
+      );
 
-        $input = call_user_func($get_previous_value);
+      $input = call_user_func($get_previous_value);
     }
 
     return $input;
-}
+  }
 
   public function sandbox_add_settings_section()
   {
     return;
   }
 
-  public function sandbox_add_settings_field_single_checkbox( $args ) {
+  public function sandbox_add_settings_field_single_checkbox($args)
+  {
 
-		$field_id = $args['label_for'];
-		$field_description = $args['description'];
+    $field_id = $args['label_for'];
+    $field_description = $args['description'];
 
-		$options = get_option( $this->plugin_name . '-settings' );
-		$option = 0;
+    $options = get_option($this->plugin_name . '-settings');
+    $option = 0;
 
-		if ( ! empty( $options[ $field_id ] ) ) {
+    if (!empty($options[$field_id])) {
 
-			$option = (int) $options[ $field_id ];
+      $option = (int) $options[$field_id];
+    }
 
-		}
+?>
 
-		?>
+    <label for="<?php echo $this->plugin_name . '-settings[' . $field_id . ']'; ?>">
+      <input type="checkbox" name="<?php echo $this->plugin_name . '-settings[' . $field_id . ']'; ?>" id="<?php echo $this->plugin_name . '-settings[' . $field_id . ']'; ?>" <?php checked($option); ?> value="1" />
+      <span class="description"><?php echo esc_html($field_description); ?></span>
+    </label>
 
-			<label for="<?php echo $this->plugin_name . '-settings[' . $field_id . ']'; ?>">
-				<input type="checkbox" name="<?php echo $this->plugin_name . '-settings[' . $field_id . ']'; ?>" id="<?php echo $this->plugin_name . '-settings[' . $field_id . ']'; ?>" <?php checked( $option ); ?> value="1" />
-				<span class="description"><?php echo esc_html( $field_description ); ?></span>
-			</label>
+  <?php
 
-		<?php
-
-	}
+  }
 
   public function sandbox_add_settings_field_select($args)
   {
@@ -295,7 +298,7 @@ class Ada_Aba_Admin
 
     $pages = call_user_func($args['options']);
 
-?>
+  ?>
     <fieldset>
       <label for="<?php echo $this->plugin_name . '-settings[' . $field_id . ']'; ?>">
         <select id="<?php echo $this->plugin_name . '-settings[' . $field_id . ']'; ?>" name="<?php echo $this->plugin_name . '-settings[' . $field_id . ']'; ?>">
@@ -307,35 +310,35 @@ class Ada_Aba_Admin
       </label>
     </fieldset>
 
-<?php
+  <?php
 
   }
 
-	public function sandbox_add_settings_field_input_text( $args ) {
+  public function sandbox_add_settings_field_input_text($args)
+  {
 
-		$field_id = $args['label_for'];
-		$field_default = $args['default'];
-		$field_description = $args['description'];
+    $field_id = $args['label_for'];
+    $field_default = $args['default'];
+    $field_description = $args['description'];
 
-		$options = get_option( $this->plugin_name . '-settings' );
-		$option = $field_default;
+    $options = get_option($this->plugin_name . '-settings');
+    $option = $field_default;
 
-		if ( ! empty( $options[ $field_id ] ) ) {
+    if (!empty($options[$field_id])) {
 
-			$option = $options[ $field_id ];
+      $option = $options[$field_id];
+    }
 
-		}
+  ?>
 
-		?>
-		
-      <label for="<?php echo $this->plugin_name . '-settings[' . $field_id . ']'; ?>">
-        <input type="text" name="<?php echo $this->plugin_name . '-settings[' . $field_id . ']'; ?>" id="<?php echo $this->plugin_name . '-settings[' . $field_id . ']'; ?>" value="<?php echo esc_attr( $option ); ?>" class="regular-text" />
-				<div><span class="description"><?php echo esc_html( $field_description ); ?></span></div>
-			</label>
+    <label for="<?php echo $this->plugin_name . '-settings[' . $field_id . ']'; ?>">
+      <input type="text" name="<?php echo $this->plugin_name . '-settings[' . $field_id . ']'; ?>" id="<?php echo $this->plugin_name . '-settings[' . $field_id . ']'; ?>" value="<?php echo esc_attr($option); ?>" class="regular-text" />
+      <div><span class="description"><?php echo esc_html($field_description); ?></span></div>
+    </label>
 
-		<?php
+<?php
 
-	}
+  }
 
   private function get_page_options()
   {
