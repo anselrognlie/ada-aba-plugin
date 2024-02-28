@@ -10,6 +10,8 @@
  * @subpackage Ada_Aba/admin
  */
 
+use Models\Ada_Aba_Course;
+
 /**
  * The admin-specific functionality of the plugin.
  *
@@ -83,9 +85,8 @@ class Ada_Aba_Admin
    *
    * @since    1.0.0
    */
-  public function enqueue_scripts()
+  public function enqueue_scripts($hook)
   {
-
     /**
      * This function is provided for demonstration purposes only.
      *
@@ -98,7 +99,17 @@ class Ada_Aba_Admin
      * class.
      */
 
-    wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/ada-aba-admin.js', array('jquery'), $this->version, false);
+    // error_log($hook);
+
+    // general scripts
+    wp_enqueue_script($this->plugin_name . '-admin', plugin_dir_url(__FILE__) . 'js/ada-aba-admin.js', array('jquery'), $this->version, false);
+
+    // page-specific scripts
+    if ($hook === 'ada-build-analytics_page_ada-aba-course') {
+      wp_enqueue_script($this->plugin_name . '-courses', plugin_dir_url(__FILE__) . 'js/ada-aba-courses.js', array('jquery'), $this->version, false);
+    }
+  }
+
   }
 
   public function add_setup_menu()
@@ -113,6 +124,14 @@ class Ada_Aba_Admin
   ) {
     ob_start();
     include 'partials/ada-aba-admin-display.php';
+    return ob_get_clean();
+  }
+
+  private function get_courses_page_content(
+    $courses,
+  ) {
+    ob_start();
+    include 'partials/ada-aba-admin-courses.php';
     return ob_get_clean();
   }
 
@@ -361,6 +380,12 @@ class Ada_Aba_Admin
     $pages = $this->get_page_options();
     // Ada_Aba::log(print_r($pages, true));
     echo $this->get_setup_page_content($pages, -1, -1);
+  }
+
+  public function course_page()
+  {
+    $courses = Ada_Aba_Course::all();
+    echo $this->get_courses_page_content($courses);
   }
 }
 
