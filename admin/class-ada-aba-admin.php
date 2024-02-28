@@ -366,7 +366,7 @@ class Ada_Aba_Admin
   {
     $pages = [new Ada_Aba_Array_Adapter(array(
       'ID' => -1,
-      'post_title' => 'Same Page'
+      'post_title' => 'Not Set'
     ))];
     $pages = array_merge($pages, get_pages());
     // Ada_Aba::log(print_r($pages, true));
