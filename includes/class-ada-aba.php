@@ -197,7 +197,7 @@ class Ada_Aba
     $this->loader->add_shortcode($plugin_name . '-confirm', $plugin_public, 'shortcode_confirm');
 
     $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_styles');
-    $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_styles');
+    $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_scripts');
     $this->loader->add_action('wp_loaded', $plugin_public, 'handle_page_loaded');
   }
 
