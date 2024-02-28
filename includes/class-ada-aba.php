@@ -141,6 +141,9 @@ class Ada_Aba
   {
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/models/db-helpers.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/models/class-ada-aba-learner.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/models/class-ada-aba-course.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/models/class-ada-aba-lesson.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/models/class-ada-aba-syllabus.php';
   }
 
   /**
