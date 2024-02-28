@@ -135,6 +135,8 @@ class Ada_Aba
     $this->require_models();
 
     $this->loader = new Ada_Aba_Loader();
+
+    error_log(Ada_Aba::generate_nonce());
   }
 
   private function require_models()
