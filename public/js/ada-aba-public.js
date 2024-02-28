@@ -12,6 +12,6 @@
       const data = await response.json();
       console.log(data);
     }
-    doIt('/wp-json/ada-aba/v1/products', ada_aba_vars.nonce);
+    doIt(`${ada_aba_vars.root}ada-aba/v1/products`, ada_aba_vars.nonce);
    });
 })( jQuery );

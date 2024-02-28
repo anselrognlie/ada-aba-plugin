@@ -196,7 +196,8 @@ class Ada_Aba_Public
 			$this->plugin_name,
 			'ada_aba_vars',
 			array(
-        'nonce' => wp_create_nonce('wp_rest'),
+        'root' => esc_url_raw(rest_url()),
+        'nonce' => wp_create_nonce('wp_rest'),  // from https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/
 			)
 		);
   }
