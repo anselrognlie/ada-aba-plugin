@@ -191,6 +191,14 @@ class Ada_Aba_Public
      */
 
     wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/ada-aba-public.js', array('jquery'), $this->version, false);
+
+		wp_localize_script(
+			$this->plugin_name,
+			'ada_aba_vars',
+			array(
+        'nonce' => wp_create_nonce('wp_rest'),
+			)
+		);
   }
 
   private function get_current_page()

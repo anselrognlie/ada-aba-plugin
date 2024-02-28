@@ -110,6 +110,39 @@ class Ada_Aba_Admin
     }
   }
 
+  public function register_routes()
+  {
+    // Here we are registering our route for a collection of products.
+    register_rest_route('ada-aba/v1', '/products', array(
+      // By using this constant we ensure that when the WP_REST_Server changes our readable endpoints will work as intended.
+      'methods'  => WP_REST_Server::READABLE,
+      // Here we register our callback. The callback is fired when this endpoint is matched by the WP_REST_Server class.
+      'callback' => array($this, 'get_products'),
+    ));
+
+    // // Here we are registering our route for single products. The (?P<id>[\d]+) is our path variable for the ID, which, in this example, can only be some form of positive number.
+    // register_rest_route( 'ada-aba/v1', '/products/(?P<id>[\d]+)', array(
+    //   // By using this constant we ensure that when the WP_REST_Server changes our readable endpoints will work as intended.
+    //   'methods'  => WP_REST_Server::READABLE,
+    //   // Here we register our callback. The callback is fired when this endpoint is matched by the WP_REST_Server class.
+    //   'callback' => 'prefix_get_product',
+    // ) );
+  }
+
+  public function get_products()
+  {
+    if (!current_user_can('manage_options')) {
+      return new WP_Error('rest_forbidden', esc_html__('You do not have permissions to access this resource.', 'my-text-domain'), array('status' => 401));
+    }
+
+    // In practice this function would fetch the desired data. Here we are just making stuff up.
+    $products = array(
+      '1' => 'I am product 1',
+      '2' => 'I am product 2',
+      '3' => 'I am product 3',
+    );
+
+    return rest_ensure_response($products);
   }
 
   public function add_setup_menu()
