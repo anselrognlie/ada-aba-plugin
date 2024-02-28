@@ -39,12 +39,14 @@ class Ada_Aba_Activator
   private static function create_database_tables()
   {
     global $wpdb;
-
-    $table_name = $wpdb->prefix . Models\Ada_Aba_Learner::$table_name;
-
     $charset_collate = $wpdb->get_charset_collate();
 
-    $sql = "CREATE TABLE $table_name (
+    $learner_table_name = $wpdb->prefix . Models\Ada_Aba_Learner::$table_name;
+    $course_table_name = $wpdb->prefix . Models\Ada_Aba_Course::$table_name;
+    $lesson_table_name = $wpdb->prefix . Models\Ada_Aba_Lesson::$table_name;
+    $syllabus_table_name = $wpdb->prefix . Models\Ada_Aba_Syllabus::$table_name;
+
+    $sql = "CREATE TABLE $learner_table_name (
     id mediumint(9) NOT NULL AUTO_INCREMENT,
     created_at datetime NOT NULL,
     updated_at datetime NOT NULL,
@@ -57,6 +59,43 @@ class Ada_Aba_Activator
     challenge_expires_at datetime NOT NULL,
     verified tinyint(1) DEFAULT 0 NOT NULL,
     PRIMARY KEY  (id)
+   ) $charset_collate;";
+
+    $sql .= "CREATE TABLE $course_table_name (
+    id mediumint(9) NOT NULL AUTO_INCREMENT,
+    created_at datetime NOT NULL,
+    updated_at datetime NOT NULL,
+    deleted_at datetime,
+    name text NOT NULL,
+    slug varchar(255) NOT NULL UNIQUE,
+    active tinyint(1) DEFAULT 0 NOT NULL,
+    PRIMARY KEY  (id)
+   ) $charset_collate;";
+
+    $sql .= "CREATE TABLE $lesson_table_name (
+    id mediumint(9) NOT NULL AUTO_INCREMENT,
+    created_at datetime NOT NULL,
+    updated_at datetime NOT NULL,
+    deleted_at datetime,
+    name text NOT NULL,
+    slug varchar(255) NOT NULL UNIQUE,
+    PRIMARY KEY  (id)
+   ) $charset_collate;";
+
+    $sql .= "CREATE TABLE $syllabus_table_name (
+    id mediumint(9) NOT NULL AUTO_INCREMENT,
+    created_at datetime NOT NULL,
+    updated_at datetime NOT NULL,
+    deleted_at datetime,
+    course_id mediumint(9) NOT NULL,
+    lesson_id mediumint(9) NOT NULL,
+    `order` mediumint(9) NOT NULL,
+    slug varchar(255) NOT NULL UNIQUE,
+    PRIMARY KEY  (id),
+    FOREIGN KEY (course_id)
+      REFERENCES $course_table_name(id),
+    FOREIGN KEY (lesson_id)
+      REFERENCES $lesson_table_name(id)
    ) $charset_collate;";
 
     require_once ABSPATH . 'wp-admin/includes/upgrade.php';

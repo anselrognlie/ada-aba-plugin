@@ -40,9 +40,15 @@ class Ada_Aba_Deactivator
   {
     global $wpdb;
 
-    $table_name = $wpdb->prefix . 'ada_aba_learner';
+    $learner_table_name = $wpdb->prefix . Models\Ada_Aba_Learner::$table_name;
+    $course_table_name = $wpdb->prefix . Models\Ada_Aba_Course::$table_name;
+    $lesson_table_name = $wpdb->prefix . Models\Ada_Aba_Lesson::$table_name;
+    $syllabus_table_name = $wpdb->prefix . Models\Ada_Aba_Syllabus::$table_name;
 
-    $wpdb->query("DROP TABLE IF EXISTS $table_name");
+    $wpdb->query("DROP TABLE IF EXISTS $learner_table_name");
+    $wpdb->query("DROP TABLE IF EXISTS $course_table_name");
+    $wpdb->query("DROP TABLE IF EXISTS $lesson_table_name");
+    $wpdb->query("DROP TABLE IF EXISTS $syllabus_table_name");
   }
 
   private static function clear_options($plugin_name)
