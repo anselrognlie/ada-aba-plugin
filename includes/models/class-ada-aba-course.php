@@ -124,10 +124,60 @@ class Ada_Aba_Course {
     );
   }
 
+  public static function get_by_slug($slug) {
+    global $wpdb;
+
+    $table_name = $wpdb->prefix . self::$table_name;
+
+    $row = $wpdb->get_row(
+      "SELECT * FROM $table_name WHERE slug = '$slug'",
+      'ARRAY_A'
+    );
+
+    if ($row) {
+      return self::fromRow($row);
+    } else {
+      return null;
+    }
+  }
+
+  public static function activate($slug) {
+    global $wpdb;
+
+    $table_name = $wpdb->prefix . self::$table_name;
+    $now = dt_to_sql(new \DateTime());
+
+    $wpdb->query( "START TRANSACTION" );
+    $deactivate = $wpdb->query( 
+      "UPDATE " . $table_name . " SET active = 0, updated_at = '$now' WHERE active = 1" 
+    );
+    $activate = $wpdb->query(
+      "UPDATE " . $table_name . " SET active = 1, updated_at = '$now'  WHERE slug = '$slug'"
+    );
+
+    if ($deactivate === false || $activate === false) {
+      $wpdb->query( "ROLLBACK" );
+      throw new Ada_Aba_Exception('Failed to activate Course');
+    } else {
+      $wpdb->query( "COMMIT" );
+    }
+
+    $row = $wpdb->get_row(
+      "SELECT * FROM $table_name WHERE slug = '$slug'",
+      'ARRAY_A'
+    );
+
+    if ($row) {
+      return self::fromRow($row);
+    } else {
+      return null;
+    }
+  }
+
   // create a new Course from values, excluding those that can be generated
   public static function create(
     $name,
-    $active,
+    $active = false,
   ) {
     $nonce = Ada_Aba::generate_nonce();
     $now = new \DateTime();
@@ -183,4 +233,18 @@ class Ada_Aba_Course {
     }
   }
   
+  public function delete() {
+    global $wpdb;
+
+    $table_name = $wpdb->prefix . self::$table_name;
+
+    $result = $wpdb->delete(
+      $table_name,
+      array('id' => $this->id)
+    );
+
+    if ($result === false) {
+      throw new Ada_Aba_Exception('Failed to delete Course');
+    }
+  }
 }

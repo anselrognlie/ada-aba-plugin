@@ -19,23 +19,13 @@
 
 <div>
 <h2>Courses</h2>
-<?php foreach ($courses as $course): ?>
-	<p class="ada-aba-course" data-ada-aba-course-slug="<?php echo $course->getSlug() ?>">
-		<span><?php echo $course->getName() ?></span>
-		<?php if ($course->isActive()): ?>
-			<span>(Active)</span>
-		<?php else: ?>
-			<span><a href="#">Activate</a></span>
-		<?php endif ?>
-	</p>
-<?php endforeach ?>
+<div id="ada-aba-courses">
+<?php foreach ($courses as $course) {
+	include 'ada-aba-admin-courses-course-fragment.php';
+} ?>
+</div>
 </div>
 
-<form>
-	<h2>Add Course</h2>
-  <label for="course_name">Name</label>
-  <input type="text" id="course_name" name="name" value="" required>
-  <input type="submit" value="Add">
-</form>
+<?php include 'ada-aba-admin-courses-add-form-fragment.php' ?>
 
 </div>

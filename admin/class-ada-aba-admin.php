@@ -11,6 +11,7 @@
  */
 
 use Models\Ada_Aba_Course;
+use Dto\Course\Ada_Aba_Course_Scalar;
 
 /**
  * The admin-specific functionality of the plugin.
@@ -106,7 +107,16 @@ class Ada_Aba_Admin
 
     // page-specific scripts
     if ($hook === 'ada-build-analytics_page_ada-aba-course') {
-      wp_enqueue_script($this->plugin_name . '-courses', plugin_dir_url(__FILE__) . 'js/ada-aba-courses.js', array('jquery'), $this->version, false);
+      $courses_script = $this->plugin_name . '-courses';
+      wp_enqueue_script($courses_script, plugin_dir_url(__FILE__) . 'js/ada-aba-courses.js', array('jquery'), $this->version, false);
+      wp_localize_script(
+        $courses_script,
+        'ada_aba_vars',
+        array(
+          'root' => esc_url_raw(rest_url()),
+          'nonce' => wp_create_nonce('wp_rest'),
+        )
+      );
     }
   }
 
@@ -127,6 +137,110 @@ class Ada_Aba_Admin
     //   // Here we register our callback. The callback is fired when this endpoint is matched by the WP_REST_Server class.
     //   'callback' => 'prefix_get_product',
     // ) );
+
+    $ROUTE_VERSION = 'v1';
+    register_rest_route("{$this->plugin_name}/$ROUTE_VERSION", '/courses', array(
+      array(
+        // By using this constant we ensure that when the WP_REST_Server changes our readable endpoints will work as intended.
+        'methods'  => WP_REST_Server::READABLE,
+        // Here we register our callback. The callback is fired when this endpoint is matched by the WP_REST_Server class.
+        'callback' => array($this, 'get_courses'),
+      ),
+      array(
+        // By using this constant we ensure that when the WP_REST_Server changes our readable endpoints will work as intended.
+        'methods'  => WP_REST_Server::CREATABLE,
+        // Here we register our callback. The callback is fired when this endpoint is matched by the WP_REST_Server class.
+        'callback' => array($this, 'add_course'),
+      ),
+    ));
+
+    register_rest_route("{$this->plugin_name}/$ROUTE_VERSION", '/courses/(?P<slug>[\w\d]+)', array(
+      array(
+        // By using this constant we ensure that when the WP_REST_Server changes our readable endpoints will work as intended.
+        'methods'  => WP_REST_Server::DELETABLE,
+        // Here we register our callback. The callback is fired when this endpoint is matched by the WP_REST_Server class.
+        'callback' => array($this, 'delete_course'),
+      ),
+    ));
+
+    register_rest_route("{$this->plugin_name}/$ROUTE_VERSION", '/courses/(?P<slug>[\w\d]+)/activate', array(
+      array(
+        // By using this constant we ensure that when the WP_REST_Server changes our readable endpoints will work as intended.
+        'methods'  => WP_REST_Server::EDITABLE,
+        // Here we register our callback. The callback is fired when this endpoint is matched by the WP_REST_Server class.
+        'callback' => array($this, 'activate_course'),
+      ),
+    ));
+
+  }
+
+  public function get_courses($request)
+  {
+    // if (!current_user_can('manage_options')) {
+    //   return new WP_Error('rest_forbidden', esc_html__('You do not have permissions to access this resource.', 'my-text-domain'), array('status' => 401));
+    // }
+    
+    $courses = Ada_Aba_Course::all();
+
+    $serialized_courses = array_map(function ($course) {
+      return new Ada_Aba_Course_Scalar($course);
+    }, $courses);
+
+    $response = array(
+      'json' => $serialized_courses,
+    );
+
+    // error_log(print_r($request->get_headers(), true));
+    if ($request->get_header('accept') === 'text/html') {
+      $html_courses = array_map(function ($course) {
+        return $this->get_courses_fragment($course);
+      }, $courses);
+
+      $response['html'] = implode($html_courses);
+    }
+
+    return rest_ensure_response($response);
+  }
+
+  public function add_course($request)
+  {
+    if (!current_user_can('manage_options')) {
+      return new WP_Error('rest_forbidden', esc_html__('You do not have permissions to access this resource.', 'my-text-domain'), array('status' => 401));
+    }
+
+    $course = Ada_Aba_Course::create($request->get_param('name'));
+    $course->insert();
+    return rest_ensure_response(new Ada_Aba_Course_Scalar($course));
+  }
+
+  public function delete_course($request)
+  {
+    if (!current_user_can('manage_options')) {
+      return new WP_Error('rest_forbidden', esc_html__('You do not have permissions to access this resource.', 'my-text-domain'), array('status' => 401));
+    }
+
+    $slug = $request['slug'];
+    Ada_Aba::log(sprintf('%1$s: slug: %2$s', __FUNCTION__, $slug));
+
+    $course = Ada_Aba_Course::get_by_slug($slug);
+    if ($course) {
+      $course->delete();
+    }
+    return rest_ensure_response(new Ada_Aba_Course_Scalar($course));
+  }
+
+  public function activate_course($request)
+  {
+    if (!current_user_can('manage_options')) {
+      return new WP_Error('rest_forbidden', esc_html__('You do not have permissions to access this resource.', 'my-text-domain'), array('status' => 401));
+    }
+
+    $slug = $request['slug'];
+    Ada_Aba::log(sprintf('%1$s: slug: %2$s', __FUNCTION__, $slug));
+
+    $course = Ada_Aba_Course::activate($slug);
+
+    return rest_ensure_response(new Ada_Aba_Course_Scalar($course));
   }
 
   public function get_products()
@@ -168,6 +282,14 @@ class Ada_Aba_Admin
   ) {
     ob_start();
     include 'partials/ada-aba-admin-courses.php';
+    return ob_get_clean();
+  }
+
+  private function get_courses_fragment(
+    $course,
+  ) {
+    ob_start();
+    include 'partials/ada-aba-admin-courses-fragment.php';
     return ob_get_clean();
   }
 
