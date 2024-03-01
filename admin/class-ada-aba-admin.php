@@ -108,9 +108,12 @@ class Ada_Aba_Admin
     // page-specific scripts
     if ($hook === 'ada-build-analytics_page_ada-aba-course') {
       $courses_script = $this->plugin_name . '-courses';
-      wp_enqueue_script($courses_script, plugin_dir_url(__FILE__) . 'js/ada-aba-courses.js', array('jquery'), $this->version, false);
+      wp_enqueue_script($courses_script, plugin_dir_url(__FILE__) . "js/$courses_script.js", array('jquery'), $this->version, false);
+
+      $api_courses_script = $this->plugin_name . '-api-courses';
+      wp_enqueue_script($api_courses_script, plugin_dir_url(__FILE__) . "js/api/$api_courses_script.js", array('jquery'), $this->version, false);
       wp_localize_script(
-        $courses_script,
+        $api_courses_script,
         'ada_aba_vars',
         array(
           'root' => esc_url_raw(rest_url()),
