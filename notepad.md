@@ -42,6 +42,11 @@ Unfortunately, this precludes using a PHPUnint extension
 
 Used this solution: [MySQL Host '::1' or '127.0.0.1' is not allowed to connect to this MySQL server](https://stackoverflow.com/questions/44871109/mysql-host-1-or-127-0-0-1-is-not-allowed-to-connect-to-this-mysql-server#answer-67574175)
 
+### Alternative set up instructions
+
+A few other approaches to consider:
+- [Setting up PHPUnit for WordPress Plugin Development](https://www.smashingmagazine.com/2017/12/automated-testing-wordpress-plugins-phpunit/)
+- [Plugin Unit Test](https://www.codetab.org/tutorial/wordpress-plugin-development/unit-test/plugin-unit-testing/)
 
 ## VS Code will complain about WP_UnitTestCase
 
