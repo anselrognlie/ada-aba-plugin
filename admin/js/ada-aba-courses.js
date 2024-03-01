@@ -3,6 +3,7 @@
 
   let coursesDiv;
   let addCourseForm;
+  let editCourseForm;
   let coursesData;
 
   const loadCourses = async function () {
@@ -10,6 +11,16 @@
       headers: {
         'X-WP-Nonce': ada_aba_vars.nonce,
         'Accept': 'text/html',
+      },
+    });
+    return await response.json();
+    // console.log(data);
+  };
+
+  const getCourse = async function (slug) {
+    const response = await fetch(`${ada_aba_vars.root}ada-aba/v1/courses/${slug}`, {
+      headers: {
+        'X-WP-Nonce': ada_aba_vars.nonce,
       },
     });
     return await response.json();
@@ -30,6 +41,21 @@
     return await response.json();
     // console.log(data);
   };
+
+  const updateCourse = async function (slug, name) {
+    const response = await fetch(`${ada_aba_vars.root}ada-aba/v1/courses/${slug}`, {
+      headers: {
+        'X-WP-Nonce': ada_aba_vars.nonce,
+        'Content-Type': 'application/json',
+      },
+      method: 'PATCH',
+      body: JSON.stringify({
+        name: name,
+      }),
+    });
+    return await response.json();
+    // console.log(data);
+  }
 
   const deleteCourse = async function (slug) {
     const response = await fetch(`${ada_aba_vars.root}ada-aba/v1/courses/${slug}`, {
@@ -73,6 +99,18 @@
       await activateCourse(slug);
       await updateCourses();
     });
+
+    // add edit button click event
+    $('.ada-aba-courses-edit').on('click', async function (e) {
+      e.preventDefault();
+
+      const dataSource = $(this).closest('.ada-aba-course');
+      const slug = dataSource.data('ada-aba-course-slug');
+
+      // copy values into edit form
+      const course = await getCourse(slug);
+      editCourse(course);
+    });
   };
 
   const updateCourses = async function () {
@@ -82,18 +120,47 @@
     wireCourseActions();
   };
 
-  const resetForm = function () {
+  const resetAddForm = function () {
     $('#ada-aba-courses-add-course-name').val('');
+  };
+
+  const resetEditForm = function () {
+    $('#ada-aba-courses-edit-course-name').val('');
+    $('#ada-aba-courses-edit-course-slug').val('');
+};
+
+  const editCourse = function (course) {
+    $('#ada-aba-courses-edit-course-name').val(course.name);
+    $('#ada-aba-courses-edit-course-slug').val(course.slug);
   };
 
   const setupAddCourseForm = function () {
     addCourseForm.on('submit', async function (e) {
       e.preventDefault();
       const name = $('#ada-aba-courses-add-course-name').val();
-      resetForm();
+      resetAddForm();
 
       const response = await addCourse(name);
-      updateCourses();
+      await updateCourses();
+    });
+  };
+
+  const setupEditCourseForm = function () {
+    const form = $('#ada-aba-courses-edit-course');
+    form.on('submit', async function (e) {
+      e.preventDefault();
+
+      const name = $('#ada-aba-courses-edit-course-name').val();
+      const slug = $('#ada-aba-courses-edit-course-slug').val();
+      resetEditForm();
+
+      const response = await updateCourse(slug, name);
+      await updateCourses();
+    });
+
+    form.on('reset', async function (e) {
+      e.preventDefault();
+      resetEditForm();
     });
   };
 
@@ -101,7 +168,7 @@
     coursesDiv = $('#ada-aba-courses');
     addCourseForm = $('#ada-aba-courses-add-course');
     setupAddCourseForm();
-    // updateCourses();
+    setupEditCourseForm();
     wireCourseActions();
   });
 

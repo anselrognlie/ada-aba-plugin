@@ -28,4 +28,6 @@
 
 <?php include 'ada-aba-admin-courses-add-form-fragment.php' ?>
 
+<?php include 'ada-aba-admin-courses-edit-form-fragment.php' ?>
+
 </div>

@@ -161,6 +161,18 @@ class Ada_Aba_Admin
         // Here we register our callback. The callback is fired when this endpoint is matched by the WP_REST_Server class.
         'callback' => array($this, 'delete_course'),
       ),
+      array(
+        // By using this constant we ensure that when the WP_REST_Server changes our readable endpoints will work as intended.
+        'methods'  => WP_REST_Server::READABLE,
+        // Here we register our callback. The callback is fired when this endpoint is matched by the WP_REST_Server class.
+        'callback' => array($this, 'get_course'),
+      ),
+      array(
+        // By using this constant we ensure that when the WP_REST_Server changes our readable endpoints will work as intended.
+        'methods'  => WP_REST_Server::EDITABLE,
+        // Here we register our callback. The callback is fired when this endpoint is matched by the WP_REST_Server class.
+        'callback' => array($this, 'update_course'),
+      ),
     ));
 
     register_rest_route("{$this->plugin_name}/$ROUTE_VERSION", '/courses/(?P<slug>[\w\d]+)/activate', array(
@@ -176,9 +188,9 @@ class Ada_Aba_Admin
 
   public function get_courses($request)
   {
-    // if (!current_user_can('manage_options')) {
-    //   return new WP_Error('rest_forbidden', esc_html__('You do not have permissions to access this resource.', 'my-text-domain'), array('status' => 401));
-    // }
+    if (!current_user_can('manage_options')) {
+      return new WP_Error('rest_forbidden', esc_html__('You do not have permissions to access this resource.', 'my-text-domain'), array('status' => 401));
+    }
     
     $courses = Ada_Aba_Course::all();
 
@@ -200,6 +212,19 @@ class Ada_Aba_Admin
     }
 
     return rest_ensure_response($response);
+  }
+
+  public function get_course($request)
+  {
+    if (!current_user_can('manage_options')) {
+      return new WP_Error('rest_forbidden', esc_html__('You do not have permissions to access this resource.', 'my-text-domain'), array('status' => 401));
+    }
+
+    $slug = $request['slug'];
+    Ada_Aba::log(sprintf('%1$s: slug: %2$s', __FUNCTION__, $slug));
+
+    $course = Ada_Aba_Course::get_by_slug($slug);
+    return rest_ensure_response(new Ada_Aba_Course_Scalar($course));
   }
 
   public function add_course($request)
@@ -239,6 +264,26 @@ class Ada_Aba_Admin
     Ada_Aba::log(sprintf('%1$s: slug: %2$s', __FUNCTION__, $slug));
 
     $course = Ada_Aba_Course::activate($slug);
+
+    return rest_ensure_response(new Ada_Aba_Course_Scalar($course));
+  }
+
+  public function update_course($request)
+  {
+    if (!current_user_can('manage_options')) {
+      return new WP_Error('rest_forbidden', esc_html__('You do not have permissions to access this resource.', 'my-text-domain'), array('status' => 401));
+    }
+
+    $slug = $request['slug'];
+    $name = $request->get_param('name');
+    Ada_Aba::log(sprintf('%1$s: slug: %2$s, name: %3$s', __FUNCTION__, $slug, $name));
+    error_log(print_r($request->get_params(), true));
+
+    $course = Ada_Aba_Course::get_by_slug($slug);
+    if ($course) {
+      $course->setName($name);
+      $course->update();
+    }
 
     return rest_ensure_response(new Ada_Aba_Course_Scalar($course));
   }
@@ -289,7 +334,7 @@ class Ada_Aba_Admin
     $course,
   ) {
     ob_start();
-    include 'partials/ada-aba-admin-courses-fragment.php';
+    include 'partials/ada-aba-admin-courses-course-fragment.php';
     return ob_get_clean();
   }
 

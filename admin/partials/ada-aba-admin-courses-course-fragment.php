@@ -20,5 +20,6 @@
 	<?php else: ?>
 		<span><a href="#" class="ada-aba-courses-activate">Activate</a></span>
 		<?php endif ?>
+		<span><a href="#" class="ada-aba-courses-edit">Edit</a></span>
 		<span><a href="#" class="ada-aba-courses-delete">Delete</a></span>
 </p>

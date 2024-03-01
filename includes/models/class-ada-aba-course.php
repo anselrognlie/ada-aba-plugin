@@ -232,6 +232,29 @@ class Ada_Aba_Course {
       throw new Ada_Aba_Exception('Failed to insert Course');
     }
   }
+
+  public function update() {
+    global $wpdb;
+
+    $table_name = $wpdb->prefix . self::$table_name;
+
+    $data = array(
+      'updated_at' => dt_to_sql(new \DateTime()),
+      'name' => $this->name,
+      'slug' => $this->slug,
+      'active' => $this->active,
+    );
+
+    $result = $wpdb->update(
+      $table_name,
+      $data,
+      array('id' => $this->id)
+    );
+
+    if ($result === false) {
+      throw new Ada_Aba_Exception('Failed to update Course');
+    }
+  }
   
   public function delete() {
     global $wpdb;
