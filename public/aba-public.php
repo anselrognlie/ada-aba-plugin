@@ -2,11 +2,11 @@
 
 namespace Ada_Aba\Public;
 
-use Ada_Aba\Includes\Ada_Aba_Options;
-use Ada_Aba\Includes\Ada_Aba;
-use Ada_Aba\Includes\Ada_Aba_Exception;
-use Ada_Aba\Includes\Ada_Aba_Session;
-use Ada_Aba\Includes\Models\Ada_Aba_Learner;
+use Ada_Aba\Includes\Options;
+use Ada_Aba\Includes\Core;
+use Ada_Aba\Includes\Aba_Exception;
+use Ada_Aba\Includes\Session;
+use Ada_Aba\Includes\Models\Learner;
 
 /**
  * The public-facing functionality of the plugin.
@@ -28,7 +28,7 @@ use Ada_Aba\Includes\Models\Ada_Aba_Learner;
  * @subpackage Ada_Aba/public
  * @author     Ada Developers Academy <contact@adadevelopersacademy.org>
  */
-class Ada_Aba_Public
+class Aba_Public
 {
 
   /**
@@ -76,7 +76,7 @@ class Ada_Aba_Public
 
   private function get_confirm_page()
   {
-    $options = Ada_Aba_Options::get_options($this->plugin_name);
+    $options = Options::get_options($this->plugin_name);
     $post_id = $options->get_confirmation_page();
     $post = get_post($post_id);
     $slug = $post?->post_name;
@@ -85,7 +85,7 @@ class Ada_Aba_Public
 
   private function get_progress_page($user)
   {
-    $options = Ada_Aba_Options::get_options($this->plugin_name);
+    $options = Options::get_options($this->plugin_name);
     $post_id = $options->get_registered_page();
     $post = get_post($post_id);
 
@@ -143,7 +143,7 @@ class Ada_Aba_Public
 
     // return whether what's left matches the value
     $matches = ($url === $value);
-    Ada_Aba::log(sprintf(
+    Core::log(sprintf(
       '%1$s: url: [%2$s], value: [%3$s], matches: %4$d',
       __FUNCTION__,
       $url,
@@ -165,10 +165,10 @@ class Ada_Aba_Public
      * This function is provided for demonstration purposes only.
      *
      * An instance of this class should be passed to the run() function
-     * defined in Ada_Aba_Loader as all of the hooks are defined
+     * defined in Loader as all of the hooks are defined
      * in that particular class.
      *
-     * The Ada_Aba_Loader will then create the relationship
+     * The Loader will then create the relationship
      * between the defined hooks and the functions defined in this
      * class.
      */
@@ -188,10 +188,10 @@ class Ada_Aba_Public
      * This function is provided for demonstration purposes only.
      *
      * An instance of this class should be passed to the run() function
-     * defined in Ada_Aba_Loader as all of the hooks are defined
+     * defined in Loader as all of the hooks are defined
      * in that particular class.
      *
-     * The Ada_Aba_Loader will then create the relationship
+     * The Loader will then create the relationship
      * between the defined hooks and the functions defined in this
      * class.
      */
@@ -234,7 +234,7 @@ class Ada_Aba_Public
     $error_message,
   ) {
     ob_start();
-    include 'partials/ada-aba-public-registration-form.php';
+    include 'partials/registration-form.php';
     return ob_get_clean();
   }
 
@@ -273,7 +273,7 @@ class Ada_Aba_Public
     $this->clean_expired_registrations();
 
     $verify_code = $this->get_verify_code();
-    Ada_Aba::log(sprintf(
+    Core::log(sprintf(
       '%1$s: verify_code: %2$s',
       __FUNCTION__,
       $verify_code
@@ -291,13 +291,13 @@ class Ada_Aba_Public
     }
 
     // error_log('attempt to verify');
-    $learner = Ada_Aba_Learner::get_by_verify_code($verify_code);
+    $learner = Learner::get_by_verify_code($verify_code);
     $failed = false;
 
     if ($learner) {
       try {
         $learner->verify();
-      } catch (Ada_Aba_Exception $e) {
+      } catch (Aba_Exception $e) {
         $failed = true;
       }
     }
@@ -321,14 +321,14 @@ class Ada_Aba_Public
     $progress_link,
   ) {
     ob_start();
-    include 'partials/ada-aba-public-registered-page.php';
+    include 'partials/registered-page.php';
     return ob_get_clean();
   }
 
   private function get_registered_error_content()
   {
     ob_start();
-    include 'partials/ada-aba-public-registered-error.php';
+    include 'partials/registered-error.php';
     return ob_get_clean();
   }
 
@@ -344,13 +344,13 @@ class Ada_Aba_Public
     $email_raw = $_GET['resend'];
     $email = urldecode($email_raw);
     $resend_link = home_url($this->get_current_page()) . "?resend=$email";
-    Ada_Aba::log(sprintf(
+    Core::log(sprintf(
       '%1$s: email: %2$s',
       __FUNCTION__,
       $email_raw
     ));
 
-    $learner = Ada_Aba_Learner::get_by_email($email_raw);
+    $learner = Learner::get_by_email($email_raw);
     if ($learner) {
       $this->send_registration_email($learner);
     }
@@ -405,8 +405,8 @@ class Ada_Aba_Public
 
   private function plugin_will_handle()
   {
-    $options = Ada_Aba_Options::get_options($this->plugin_name);
-    Ada_Aba_Session::start($this->plugin_name, $options->get_private_key());
+    $options = Options::get_options($this->plugin_name);
+    Session::start($this->plugin_name, $options->get_private_key());
     // if (null === $session->get('handled')) {
     //   $session->set('handled', true);
     // }
@@ -414,7 +414,7 @@ class Ada_Aba_Public
     // $handled = ! $session->get('handled');
     // $session->set('handled', $handled);
 
-    // Ada_Aba::log(sprintf('%1$s: %2$d', __FUNCTION__, $session->get('handled')));
+    // Core::log(sprintf('%1$s: %2$d', __FUNCTION__, $session->get('handled')));
     // $session->save();
   }
 
@@ -426,7 +426,7 @@ class Ada_Aba_Public
     // $current_url = $_SERVER['REQUEST_URI'];
     // $request_method = $_SERVER['REQUEST_METHOD'];
 
-    // Ada_Aba::log(sprintf('%1$s: url: %2$s verb: %5$s _POST: %3$s _GET: %4$s',
+    // Core::log(sprintf('%1$s: url: %2$s verb: %5$s _POST: %3$s _GET: %4$s',
     //   __FUNCTION__, $current_url,
     //   print_r($_POST, true), print_r($_GET, true), $request_method));
 
@@ -444,14 +444,14 @@ class Ada_Aba_Public
       }
     }
 
-    Ada_Aba_Session::close();
+    Session::close();
   }
 
   private function get_registration_posted_content(
     $resend_link,
   ) {
     ob_start();
-    include 'partials/ada-aba-public-registration-posted.php';
+    include 'partials/registration-posted.php';
     return ob_get_clean();
   }
 
@@ -459,7 +459,7 @@ class Ada_Aba_Public
     $resend_link,
   ) {
     ob_start();
-    include 'partials/ada-aba-public-registration-resend.php';
+    include 'partials/registration-resend.php';
     return ob_get_clean();
   }
 
@@ -471,7 +471,7 @@ class Ada_Aba_Public
     $verify_link,
   ) {
     ob_start();
-    include 'partials/ada-aba-public-registration-email.php';
+    include 'partials/registration-email.php';
     return ob_get_clean();
   }
 
@@ -483,13 +483,13 @@ class Ada_Aba_Public
     $progress_link,
   ) {
     ob_start();
-    include 'partials/ada-aba-public-registered-email.php';
+    include 'partials/registered-email.php';
     return ob_get_clean();
   }
 
   private function lookup_verify_link()
   {
-    $options = Ada_Aba_Options::get_options($this->plugin_name);
+    $options = Options::get_options($this->plugin_name);
 
     $page_id = (int) $options->get_confirmation_page();
     if ($page_id <= 0) {
@@ -501,7 +501,7 @@ class Ada_Aba_Public
 
   private function clean_expired_registrations()
   {
-    Ada_Aba_Learner::clean_expired_registrations();
+    Learner::clean_expired_registrations();
   }
 
   private function handle_registration_form()
@@ -517,7 +517,7 @@ class Ada_Aba_Public
       return;
     }
 
-    Ada_Aba::log(sprintf(
+    Core::log(sprintf(
       '%1$s: first: %2$s, last: %3$s, email: %4$s',
       __FUNCTION__,
       $first_name,
@@ -525,7 +525,7 @@ class Ada_Aba_Public
       $email
     ));
 
-    $learner = Ada_Aba_Learner::create(
+    $learner = Learner::create(
       $first_name,
       $last_name,
       $email,
@@ -533,7 +533,7 @@ class Ada_Aba_Public
 
     try {
       $learner->insert();
-    } catch (Ada_Aba_Exception $e) {
+    } catch (Aba_Exception $e) {
       // potentially add code to let user update or resend email
     }
 
@@ -543,13 +543,13 @@ class Ada_Aba_Public
 
   private function send_registration_email($learner)
   {
-    $options = Ada_Aba_Options::get_options($this->plugin_name);
+    $options = Options::get_options($this->plugin_name);
 
     $first_name = $learner->getFirstName();
     $last_name = $learner->getLastName();
     $email = $learner->getEmail();
     $verify_link = $this->lookup_verify_link();
-    Ada_Aba::log(sprintf(
+    Core::log(sprintf(
       '%1$s: first: %2$s, last: %3$s, email: %4$s, verify_link: %5$s',
       __FUNCTION__,
       $first_name,
@@ -575,13 +575,13 @@ class Ada_Aba_Public
 
   private function send_registered_email($learner)
   {
-    $options = Ada_Aba_Options::get_options($this->plugin_name);
+    $options = Options::get_options($this->plugin_name);
 
     $first_name = $learner->getFirstName();
     $last_name = $learner->getLastName();
     $email = $learner->getEmail();
     $verify_link = $this->lookup_verify_link();
-    Ada_Aba::log(sprintf(
+    Core::log(sprintf(
       '%1$s: first: %2$s, last: %3$s, email: %4$s, verify_link: %5$s',
       __FUNCTION__,
       $first_name,

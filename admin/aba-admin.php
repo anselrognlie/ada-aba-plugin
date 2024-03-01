@@ -12,10 +12,10 @@
 
 namespace Ada_Aba\Admin;
 
-use Ada_Aba\Includes\Ada_Aba;
-use Ada_Aba\Includes\Ada_Aba_Array_Adapter;
-use Ada_Aba\Includes\Models\Ada_Aba_Course;
-use Ada_Aba\Admin\Controllers\Ada_Aba_Admin_Courses_Controller;
+use Ada_Aba\Includes\Core;
+use Ada_Aba\Includes\Array_Adapter;
+use Ada_Aba\Includes\Models\Course;
+use Ada_Aba\Admin\Controllers\Courses_Controller;
 
 
 /**
@@ -28,7 +28,7 @@ use Ada_Aba\Admin\Controllers\Ada_Aba_Admin_Courses_Controller;
  * @subpackage Ada_Aba/admin
  * @author     Ada Developers Academy <contact@adadevelopersacademy.org>
  */
-class Ada_Aba_Admin
+class Aba_Admin
 {
 
   /**
@@ -77,10 +77,10 @@ class Ada_Aba_Admin
      * This function is provided for demonstration purposes only.
      *
      * An instance of this class should be passed to the run() function
-     * defined in Ada_Aba_Loader as all of the hooks are defined
+     * defined in Loader as all of the hooks are defined
      * in that particular class.
      *
-     * The Ada_Aba_Loader will then create the relationship
+     * The Loader will then create the relationship
      * between the defined hooks and the functions defined in this
      * class.
      */
@@ -99,10 +99,10 @@ class Ada_Aba_Admin
      * This function is provided for demonstration purposes only.
      *
      * An instance of this class should be passed to the run() function
-     * defined in Ada_Aba_Loader as all of the hooks are defined
+     * defined in Loader as all of the hooks are defined
      * in that particular class.
      *
-     * The Ada_Aba_Loader will then create the relationship
+     * The Loader will then create the relationship
      * between the defined hooks and the functions defined in this
      * class.
      */
@@ -133,7 +133,7 @@ class Ada_Aba_Admin
   public function register_routes()
   {
     // register course routes
-    $this->course_routes = new Ada_Aba_Admin_Courses_Controller($this->plugin_name);
+    $this->course_routes = new Courses_Controller($this->plugin_name);
     $this->course_routes->register_routes();
   }
 
@@ -151,7 +151,7 @@ class Ada_Aba_Admin
     $registered_page_id,
   ) {
     ob_start();
-    include 'partials/ada-aba-admin-display.php';
+    include 'partials/display.php';
     return ob_get_clean();
   }
 
@@ -159,7 +159,7 @@ class Ada_Aba_Admin
     $courses,
   ) {
     ob_start();
-    include 'partials/ada-aba-admin-courses.php';
+    include 'partials/courses.php';
     return ob_get_clean();
   }
 
@@ -341,7 +341,7 @@ class Ada_Aba_Admin
     if (!empty($options[$field_id])) {
       $option = (int) $options[$field_id];
     }
-    Ada_Aba::log(sprintf('%1$s: %2$s', $field_id, $option));
+    Core::log(sprintf('%1$s: %2$s', $field_id, $option));
 
     $pages = call_user_func($args['options']);
 
@@ -389,12 +389,12 @@ class Ada_Aba_Admin
 
   private function get_page_options()
   {
-    $pages = [new Ada_Aba_Array_Adapter(array(
+    $pages = [new Array_Adapter(array(
       'ID' => -1,
       'post_title' => 'Not Set'
     ))];
     $pages = array_merge($pages, get_pages());
-    // Ada_Aba::log(print_r($pages, true));
+    // Core::log(print_r($pages, true));
     return $pages;
   }
 
@@ -406,13 +406,13 @@ class Ada_Aba_Admin
   public function setup_page()
   {
     $pages = $this->get_page_options();
-    // Ada_Aba::log(print_r($pages, true));
+    // Core::log(print_r($pages, true));
     echo $this->get_setup_page_content($pages, -1, -1);
   }
 
   public function course_page()
   {
-    $courses = Ada_Aba_Course::all();
+    $courses = Course::all();
     echo $this->get_courses_page_content($courses);
   }
 }

@@ -2,12 +2,12 @@
 
 namespace Ada_Aba\Includes\Models;
 
-use Ada_Aba\Includes\Ada_Aba;
-use Ada_Aba\Includes\Ada_Aba_Exception;
+use Ada_Aba\Includes\Core;
+use Ada_Aba\Includes\Aba_Exception;
 
 use function Ada_Aba\Includes\Models\Db_Helpers\dt_to_sql;
 
-class Ada_Aba_Course
+class Course
 {
   private $id;
   private $created_at;
@@ -128,8 +128,8 @@ class Ada_Aba_Course
 
   public static function fromRow($row)
   {
-    // Ada_Aba::log(print_r($row, true));
-    return new Ada_Aba_Course(
+    // Core::log(print_r($row, true));
+    return new Course(
       $row['id'],
       $row['created_at'],
       $row['updated_at'],
@@ -175,7 +175,7 @@ class Ada_Aba_Course
 
     if ($deactivate === false || $activate === false) {
       $wpdb->query("ROLLBACK");
-      throw new Ada_Aba_Exception('Failed to activate Course');
+      throw new Aba_Exception('Failed to activate Course');
     } else {
       $wpdb->query("COMMIT");
     }
@@ -197,10 +197,10 @@ class Ada_Aba_Course
     $name,
     $active = false,
   ) {
-    $nonce = Ada_Aba::generate_nonce();
+    $nonce = Core::generate_nonce();
     $now = new \DateTime();
 
-    return new Ada_Aba_Course(
+    return new Course(
       null,
       dt_to_sql($now),
       dt_to_sql($now),
@@ -248,7 +248,7 @@ class Ada_Aba_Course
 
     $result = $wpdb->insert($table_name, $data);
     if ($result === false) {
-      throw new Ada_Aba_Exception('Failed to insert Course');
+      throw new Aba_Exception('Failed to insert Course');
     }
   }
 
@@ -272,7 +272,7 @@ class Ada_Aba_Course
     );
 
     if ($result === false) {
-      throw new Ada_Aba_Exception('Failed to update Course');
+      throw new Aba_Exception('Failed to update Course');
     }
   }
 
@@ -288,7 +288,7 @@ class Ada_Aba_Course
     );
 
     if ($result === false) {
-      throw new Ada_Aba_Exception('Failed to delete Course');
+      throw new Aba_Exception('Failed to delete Course');
     }
   }
 }

@@ -5,7 +5,7 @@ namespace Ada_Aba\Includes;
 use Exception;
 use Throwable;
 
-class Ada_Aba_Exception extends Exception
+class Aba_Exception extends Exception
 {
   // Redefine the exception so message isn't optional
   public function __construct($message, $code = 0, Throwable $previous = null)

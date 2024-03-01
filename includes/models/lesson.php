@@ -2,12 +2,12 @@
 
 namespace Ada_Aba\Includes\Models;
 
-use Ada_Aba\Includes\Ada_Aba;
-use Ada_Aba\Includes\Ada_Aba_Exception;
+use Ada_Aba\Includes\Core;
+use Ada_Aba\Includes\Aba_Exception;
 
 use function Ada_Aba\Includes\Models\Db_Helpers\dt_to_sql;
 
-class Ada_Aba_Lesson
+class Lesson
 {
   private $id;
   private $created_at;
@@ -98,7 +98,7 @@ class Ada_Aba_Lesson
 
   public static function fromRow($row)
   {
-    return new Ada_Aba_Lesson(
+    return new Lesson(
       $row['id'],
       $row['created_at'],
       $row['updated_at'],
@@ -111,10 +111,10 @@ class Ada_Aba_Lesson
   public static function create(
     $name
   ) {
-    $nonce = Ada_Aba::generate_nonce();
+    $nonce = Core::generate_nonce();
     $now = new \DateTime();
 
-    return new Ada_Aba_Lesson(
+    return new Lesson(
       null,
       dt_to_sql($now),
       dt_to_sql($now),
@@ -140,7 +140,7 @@ class Ada_Aba_Lesson
 
     $result = $wpdb->insert($table_name, $data);
     if ($result === false) {
-      throw new Ada_Aba_Exception('Failed to insert Lesson');
+      throw new Aba_Exception('Failed to insert Lesson');
     }
   }
 }

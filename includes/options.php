@@ -29,7 +29,7 @@ namespace Ada_Aba\Includes;
  * @subpackage Ada_Aba/includes
  * @author     Ada Developers Academy <contact@adadevelopersacademy.org>
  */
-class Ada_Aba_Options
+class Options
 {
   /**
    * The unique identifier of this plugin.
@@ -70,12 +70,12 @@ class Ada_Aba_Options
     if ($options === false) {
       return self::get_default($plugin_name);
     }
-    return new Ada_Aba_Options($plugin_name, $options);
+    return new Options($plugin_name, $options);
   }
 
   public static function get_default($plugin_name)
   {
-    return new Ada_Aba_Options($plugin_name, self::DEFAULT_OPTIONS);
+    return new Options($plugin_name, self::DEFAULT_OPTIONS);
   }
 
   public function get_confirmation_page()

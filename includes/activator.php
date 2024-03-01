@@ -22,7 +22,7 @@ namespace Ada_Aba\Includes;
  * @subpackage Ada_Aba/includes
  * @author     Ada Developers Academy <contact@adadevelopersacademy.org>
  */
-class Ada_Aba_Activator
+class Activator
 {
 
   /**
@@ -43,10 +43,10 @@ class Ada_Aba_Activator
     global $wpdb;
     $charset_collate = $wpdb->get_charset_collate();
 
-    $learner_table_name = $wpdb->prefix . Models\Ada_Aba_Learner::$table_name;
-    $course_table_name = $wpdb->prefix . Models\Ada_Aba_Course::$table_name;
-    $lesson_table_name = $wpdb->prefix . Models\Ada_Aba_Lesson::$table_name;
-    $syllabus_table_name = $wpdb->prefix . Models\Ada_Aba_Syllabus::$table_name;
+    $learner_table_name = $wpdb->prefix . Models\Learner::$table_name;
+    $course_table_name = $wpdb->prefix . Models\Course::$table_name;
+    $lesson_table_name = $wpdb->prefix . Models\Lesson::$table_name;
+    $syllabus_table_name = $wpdb->prefix . Models\Syllabus::$table_name;
 
     $sql = "CREATE TABLE $learner_table_name (
     id mediumint(9) NOT NULL AUTO_INCREMENT,
@@ -106,7 +106,7 @@ class Ada_Aba_Activator
 
   private static function set_default_options($plugin_name)
   {
-    $options = Ada_Aba_Options::get_default($plugin_name);
+    $options = Options::get_default($plugin_name);
     $options->save();
   }
 }

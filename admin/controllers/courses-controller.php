@@ -2,15 +2,15 @@
 
 namespace Ada_Aba\Admin\Controllers;
 
-use Ada_Aba\Includes\Ada_Aba;
-use Ada_Aba\Includes\Models\Ada_Aba_Course;
-use Ada_Aba\Includes\Dto\Course\Ada_Aba_Course_Scalar;
+use Ada_Aba\Includes\Core;
+use Ada_Aba\Includes\Models\Course;
+use Ada_Aba\Includes\Dto\Course\Course_Scalar;
 use function Ada_Aba\Admin\Fragments\Courses\get_courses_fragment;
 
 use \WP_REST_Server;
 use \WP_Error;
 
-class Ada_Aba_Admin_Courses_Controller {
+class Courses_Controller {
 
   private $plugin_name;
   private $namespace;
@@ -78,10 +78,10 @@ class Ada_Aba_Admin_Courses_Controller {
 
   public function index($request)
   {
-    $courses = Ada_Aba_Course::all();
+    $courses = Course::all();
 
     $serialized_courses = array_map(function ($course) {
-      return new Ada_Aba_Course_Scalar($course);
+      return new Course_Scalar($course);
     }, $courses);
 
     $response = array(
@@ -103,54 +103,54 @@ class Ada_Aba_Admin_Courses_Controller {
   public function get($request)
   {
     $slug = $request['slug'];
-    Ada_Aba::log(sprintf('%1$s: slug: %2$s', __FUNCTION__, $slug));
+    Core::log(sprintf('%1$s: slug: %2$s', __FUNCTION__, $slug));
 
-    $course = Ada_Aba_Course::get_by_slug($slug);
-    return rest_ensure_response(new Ada_Aba_Course_Scalar($course));
+    $course = Course::get_by_slug($slug);
+    return rest_ensure_response(new Course_Scalar($course));
   }
 
   public function add($request)
   {
-    $course = Ada_Aba_Course::create($request->get_param('name'));
+    $course = Course::create($request->get_param('name'));
     $course->insert();
-    return rest_ensure_response(new Ada_Aba_Course_Scalar($course));
+    return rest_ensure_response(new Course_Scalar($course));
   }
 
   public function delete($request)
   {
     $slug = $request['slug'];
-    Ada_Aba::log(sprintf('%1$s: slug: %2$s', __FUNCTION__, $slug));
+    Core::log(sprintf('%1$s: slug: %2$s', __FUNCTION__, $slug));
 
-    $course = Ada_Aba_Course::get_by_slug($slug);
+    $course = Course::get_by_slug($slug);
     if ($course) {
       $course->delete();
     }
-    return rest_ensure_response(new Ada_Aba_Course_Scalar($course));
+    return rest_ensure_response(new Course_Scalar($course));
   }
 
   public function activate($request)
   {
     $slug = $request['slug'];
-    Ada_Aba::log(sprintf('%1$s: slug: %2$s', __FUNCTION__, $slug));
+    Core::log(sprintf('%1$s: slug: %2$s', __FUNCTION__, $slug));
 
-    $course = Ada_Aba_Course::activate($slug);
+    $course = Course::activate($slug);
 
-    return rest_ensure_response(new Ada_Aba_Course_Scalar($course));
+    return rest_ensure_response(new Course_Scalar($course));
   }
 
   public function update($request)
   {
     $slug = $request['slug'];
     $name = $request->get_param('name');
-    Ada_Aba::log(sprintf('%1$s: slug: %2$s, name: %3$s', __FUNCTION__, $slug, $name));
+    Core::log(sprintf('%1$s: slug: %2$s, name: %3$s', __FUNCTION__, $slug, $name));
     error_log(print_r($request->get_params(), true));
 
-    $course = Ada_Aba_Course::get_by_slug($slug);
+    $course = Course::get_by_slug($slug);
     if ($course) {
       $course->setName($name);
       $course->update();
     }
 
-    return rest_ensure_response(new Ada_Aba_Course_Scalar($course));
+    return rest_ensure_response(new Course_Scalar($course));
   }
 }

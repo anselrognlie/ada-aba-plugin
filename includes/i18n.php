@@ -26,7 +26,7 @@ namespace Ada_Aba\Includes;
  * @subpackage Ada_Aba/includes
  * @author     Ada Developers Academy <contact@adadevelopersacademy.org>
  */
-class Ada_Aba_i18n
+class I18n
 {
 
 

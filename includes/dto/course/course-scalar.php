@@ -2,7 +2,7 @@
 
 namespace Ada_Aba\Includes\Dto\Course;
 
-class Ada_Aba_Course_Scalar implements \JsonSerializable
+class Course_Scalar implements \JsonSerializable
 {
   private $course;
 

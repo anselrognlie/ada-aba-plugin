@@ -21,13 +21,13 @@
 		<h2>Courses</h2>
 		<div id="ada-aba-courses">
 			<?php foreach ($courses as $course) {
-				include 'ada-aba-admin-courses-course-fragment.php';
+				include 'courses-course-fragment.php';
 			} ?>
 		</div>
 	</div>
 
-	<?php include 'ada-aba-admin-courses-add-form-fragment.php' ?>
+	<?php include 'courses-add-form-fragment.php' ?>
 
-	<?php include 'ada-aba-admin-courses-edit-form-fragment.php' ?>
+	<?php include 'courses-edit-form-fragment.php' ?>
 
 </div>

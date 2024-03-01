@@ -2,12 +2,12 @@
 
 namespace Ada_Aba\Includes\Models;
 
-use Ada_Aba\Includes\Ada_Aba;
-use Ada_Aba\Includes\Ada_Aba_Exception;
+use Ada_Aba\Includes\Core;
+use Ada_Aba\Includes\Aba_Exception;
 
 use function Ada_Aba\Includes\Models\Db_Helpers\dt_to_sql;
 
-class Ada_Aba_Learner
+class Learner
 {
   private $id;
   private $created_at;
@@ -203,8 +203,8 @@ class Ada_Aba_Learner
 
   public static function fromRow($row)
   {
-    // Ada_Aba::log(print_r($row, true));
-    return new Ada_Aba_Learner(
+    // Core::log(print_r($row, true));
+    return new Learner(
       $row['id'],
       $row['created_at'],
       $row['updated_at'],
@@ -221,12 +221,12 @@ class Ada_Aba_Learner
 
   public static function generateSlug()
   {
-    return Ada_Aba::generate_nonce();
+    return Core::generate_nonce();
   }
 
   public static function generateNonce()
   {
-    $nonce = Ada_Aba::generate_nonce();
+    $nonce = Core::generate_nonce();
     $expires_at = new \DateTime();
     $expires_at->add(new \DateInterval('PT30M'));
     return [$nonce, $expires_at];
@@ -242,7 +242,7 @@ class Ada_Aba_Learner
     [$challenge_nonce, $challenge_expires_at] = self::generateNonce();
     $now = new \DateTime();
 
-    return new Ada_Aba_Learner(
+    return new Learner(
       null,
       dt_to_sql($now),
       dt_to_sql($now),
@@ -278,7 +278,7 @@ class Ada_Aba_Learner
 
     $result = $wpdb->insert($table_name, $data);
     if ($result === false) {
-      throw new Ada_Aba_Exception('Failed to insert learner');
+      throw new Aba_Exception('Failed to insert learner');
     }
   }
 
@@ -327,7 +327,7 @@ class Ada_Aba_Learner
 
     $result = $wpdb->update($table_name, $data, $where);
     if ($result === false) {
-      throw new Ada_Aba_Exception('Failed to update learner');
+      throw new Aba_Exception('Failed to update learner');
     }
   }
 }

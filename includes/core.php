@@ -2,8 +2,8 @@
 
 namespace Ada_Aba\Includes;
 
-use Ada_Aba\Admin\Ada_Aba_Admin;
-use Ada_Aba\Public\Ada_Aba_Public;
+use Ada_Aba\Admin\Aba_Admin;
+use Ada_Aba\Public\Aba_Public;
 
 /**
  * The file that defines the core plugin class
@@ -32,7 +32,7 @@ use Ada_Aba\Public\Ada_Aba_Public;
  * @subpackage Ada_Aba/includes
  * @author     Ada Developers Academy <contact@adadevelopersacademy.org>
  */
-class Ada_Aba
+class Core
 {
 
   /**
@@ -41,7 +41,7 @@ class Ada_Aba
    *
    * @since    1.0.0
    * @access   protected
-   * @var      Ada_Aba_Loader    $loader    Maintains and registers all hooks for the plugin.
+   * @var      Loader    $loader    Maintains and registers all hooks for the plugin.
    */
   protected $loader;
 
@@ -95,10 +95,10 @@ class Ada_Aba
    *
    * Include the following files that make up the plugin:
    *
-   * - Ada_Aba_Loader. Orchestrates the hooks of the plugin.
-   * - Ada_Aba_i18n. Defines internationalization functionality.
-   * - Ada_Aba_Admin. Defines all hooks for the admin area.
-   * - Ada_Aba_Public. Defines all hooks for the public side of the site.
+   * - Loader. Orchestrates the hooks of the plugin.
+   * - i18n. Defines internationalization functionality.
+   * - Admin. Defines all hooks for the admin area.
+   * - Public. Defines all hooks for the public side of the site.
    *
    * Create an instance of the loader which will be used to register the hooks
    * with WordPress.
@@ -113,57 +113,57 @@ class Ada_Aba
      * The class responsible for orchestrating the actions and filters of the
      * core plugin.
      */
-    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-ada-aba-loader.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/loader.php';
 
     /**
      * The class responsible for defining internationalization functionality
      * of the plugin.
      */
-    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-ada-aba-i18n.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/i18n.php';
 
-    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-ada-aba-options.php';
-    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-ada-aba-exception.php';
-    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-ada-aba-session.php';
-    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-ada-aba-array-adapter.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/options.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/aba-exception.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/session.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/array-adapter.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/security/crypto.php';
 
     // admin dependencies
-    require_once plugin_dir_path(dirname(__FILE__)) . 'admin/fragments/ada-aba-admin-courses-fragments.php';
-    require_once plugin_dir_path(dirname(__FILE__)) . 'admin/controllers/ada-aba-admin-courses-controller.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'admin/fragments/courses-fragments.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'admin/controllers/courses-controller.php';
 
     /**
      * The class responsible for defining all actions that occur in the admin area.
      */
-    require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-ada-aba-admin.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'admin/aba-admin.php';
 
     /**
      * The class responsible for defining all actions that occur in the public-facing
      * side of the site.
      */
-    require_once plugin_dir_path(dirname(__FILE__)) . 'public/class-ada-aba-public.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'public/aba-public.php';
 
     $this->require_models();
 
-    $this->loader = new Ada_Aba_Loader();
+    $this->loader = new Loader();
 
-    error_log(Ada_Aba::generate_nonce());
+    error_log(self::generate_nonce());
   }
 
   private function require_models()
   {
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/models/db-helpers.php';
-    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/models/class-ada-aba-learner.php';
-    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/models/class-ada-aba-course.php';
-    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/models/class-ada-aba-lesson.php';
-    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/models/class-ada-aba-syllabus.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/models/learner.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/models/course.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/models/lesson.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/models/syllabus.php';
 
-    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/dto/course/class-ada-aba-course-scalar.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/dto/course/course-scalar.php';
   }
 
   /**
    * Define the locale for this plugin for internationalization.
    *
-   * Uses the Ada_Aba_i18n class in order to set the domain and to register the hook
+   * Uses the i18n class in order to set the domain and to register the hook
    * with WordPress.
    *
    * @since    1.0.0
@@ -172,7 +172,7 @@ class Ada_Aba
   private function set_locale()
   {
 
-    $plugin_i18n = new Ada_Aba_i18n();
+    $plugin_i18n = new I18n();
 
     $this->loader->add_action('plugins_loaded', $plugin_i18n, 'load_plugin_textdomain');
   }
@@ -187,7 +187,7 @@ class Ada_Aba
   private function define_admin_hooks()
   {
 
-    $plugin_admin = new Ada_Aba_Admin($this->get_plugin_name(), $this->get_version());
+    $plugin_admin = new Aba_Admin($this->get_plugin_name(), $this->get_version());
 
     $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
     $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');
@@ -206,7 +206,7 @@ class Ada_Aba
   private function define_public_hooks()
   {
     $plugin_name = $this->get_plugin_name();
-    $plugin_public = new Ada_Aba_Public($plugin_name, $this->get_version());
+    $plugin_public = new Aba_Public($plugin_name, $this->get_version());
 
     $this->loader->add_shortcode($plugin_name . '-registration-form', $plugin_public, 'shortcode_register_form');
     $this->loader->add_shortcode($plugin_name . '-confirm', $plugin_public, 'shortcode_confirm');
@@ -242,7 +242,7 @@ class Ada_Aba
    * The reference to the class that orchestrates the hooks with the plugin.
    *
    * @since     1.0.0
-   * @return    Ada_Aba_Loader    Orchestrates the hooks of the plugin.
+   * @return    Loader    Orchestrates the hooks of the plugin.
    */
   public function get_loader()
   {

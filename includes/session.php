@@ -4,7 +4,7 @@ namespace Ada_Aba\Includes;
 
 use Ada_Aba\Includes\Security\Crypto;
 
-class Ada_Aba_Session
+class Session
 {
   private $plugin_name;
 
@@ -20,7 +20,7 @@ class Ada_Aba_Session
       return self::$current;
     }
 
-    $session = new Ada_Aba_Session($plugin_name, $private_key);
+    $session = new Session($plugin_name, $private_key);
     $session->load();
 
     self::$current = $session;

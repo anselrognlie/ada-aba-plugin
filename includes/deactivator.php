@@ -22,7 +22,7 @@ namespace Ada_Aba\Includes;
  * @subpackage Ada_Aba/includes
  * @author     Ada Developers Academy <contact@adadevelopersacademy.org>
  */
-class Ada_Aba_Deactivator
+class Deactivator
 {
 
   /**
@@ -42,10 +42,10 @@ class Ada_Aba_Deactivator
   {
     global $wpdb;
 
-    $learner_table_name = $wpdb->prefix . Models\Ada_Aba_Learner::$table_name;
-    $course_table_name = $wpdb->prefix . Models\Ada_Aba_Course::$table_name;
-    $lesson_table_name = $wpdb->prefix . Models\Ada_Aba_Lesson::$table_name;
-    $syllabus_table_name = $wpdb->prefix . Models\Ada_Aba_Syllabus::$table_name;
+    $learner_table_name = $wpdb->prefix . Models\Learner::$table_name;
+    $course_table_name = $wpdb->prefix . Models\Course::$table_name;
+    $lesson_table_name = $wpdb->prefix . Models\Lesson::$table_name;
+    $syllabus_table_name = $wpdb->prefix . Models\Syllabus::$table_name;
 
     $wpdb->query("DROP TABLE IF EXISTS $learner_table_name");
     $wpdb->query("DROP TABLE IF EXISTS $course_table_name");
@@ -61,7 +61,7 @@ class Ada_Aba_Deactivator
 
     $setting_name = $plugin_name . '-settings';
     $cmd = "DELETE FROM $table_name WHERE option_name = '$setting_name'";
-    Ada_Aba::log($cmd);
+    Core::log($cmd);
     $wpdb->query($cmd);
   }
 }
