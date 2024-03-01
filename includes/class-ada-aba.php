@@ -122,6 +122,10 @@ class Ada_Aba
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-ada-aba-array-adapter.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/security/crypto.php';
 
+    // admin dependencies
+    require_once plugin_dir_path(dirname(__FILE__)) . 'admin/fragments/ada-aba-admin-courses-fragments.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'admin/controllers/ada-aba-admin-courses-controller.php';
+
     /**
      * The class responsible for defining all actions that occur in the admin area.
      */

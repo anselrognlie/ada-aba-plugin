@@ -11,7 +11,6 @@
  */
 
 use Models\Ada_Aba_Course;
-use Dto\Course\Ada_Aba_Course_Scalar;
 
 /**
  * The admin-specific functionality of the plugin.
@@ -43,6 +42,8 @@ class Ada_Aba_Admin
    * @var      string    $version    The current version of this plugin.
    */
   private $version;
+
+  private $course_routes;
 
   /**
    * Initialize the class and set its properties.
@@ -125,185 +126,9 @@ class Ada_Aba_Admin
 
   public function register_routes()
   {
-    // Here we are registering our route for a collection of products.
-    register_rest_route('ada-aba/v1', '/products', array(
-      // By using this constant we ensure that when the WP_REST_Server changes our readable endpoints will work as intended.
-      'methods'  => WP_REST_Server::READABLE,
-      // Here we register our callback. The callback is fired when this endpoint is matched by the WP_REST_Server class.
-      'callback' => array($this, 'get_products'),
-    ));
-
-    // // Here we are registering our route for single products. The (?P<id>[\d]+) is our path variable for the ID, which, in this example, can only be some form of positive number.
-    // register_rest_route( 'ada-aba/v1', '/products/(?P<id>[\d]+)', array(
-    //   // By using this constant we ensure that when the WP_REST_Server changes our readable endpoints will work as intended.
-    //   'methods'  => WP_REST_Server::READABLE,
-    //   // Here we register our callback. The callback is fired when this endpoint is matched by the WP_REST_Server class.
-    //   'callback' => 'prefix_get_product',
-    // ) );
-
-    $ROUTE_VERSION = 'v1';
-    register_rest_route("{$this->plugin_name}/$ROUTE_VERSION", '/courses', array(
-      array(
-        // By using this constant we ensure that when the WP_REST_Server changes our readable endpoints will work as intended.
-        'methods'  => WP_REST_Server::READABLE,
-        // Here we register our callback. The callback is fired when this endpoint is matched by the WP_REST_Server class.
-        'callback' => array($this, 'get_courses'),
-      ),
-      array(
-        // By using this constant we ensure that when the WP_REST_Server changes our readable endpoints will work as intended.
-        'methods'  => WP_REST_Server::CREATABLE,
-        // Here we register our callback. The callback is fired when this endpoint is matched by the WP_REST_Server class.
-        'callback' => array($this, 'add_course'),
-      ),
-    ));
-
-    register_rest_route("{$this->plugin_name}/$ROUTE_VERSION", '/courses/(?P<slug>[\w\d]+)', array(
-      array(
-        // By using this constant we ensure that when the WP_REST_Server changes our readable endpoints will work as intended.
-        'methods'  => WP_REST_Server::DELETABLE,
-        // Here we register our callback. The callback is fired when this endpoint is matched by the WP_REST_Server class.
-        'callback' => array($this, 'delete_course'),
-      ),
-      array(
-        // By using this constant we ensure that when the WP_REST_Server changes our readable endpoints will work as intended.
-        'methods'  => WP_REST_Server::READABLE,
-        // Here we register our callback. The callback is fired when this endpoint is matched by the WP_REST_Server class.
-        'callback' => array($this, 'get_course'),
-      ),
-      array(
-        // By using this constant we ensure that when the WP_REST_Server changes our readable endpoints will work as intended.
-        'methods'  => WP_REST_Server::EDITABLE,
-        // Here we register our callback. The callback is fired when this endpoint is matched by the WP_REST_Server class.
-        'callback' => array($this, 'update_course'),
-      ),
-    ));
-
-    register_rest_route("{$this->plugin_name}/$ROUTE_VERSION", '/courses/(?P<slug>[\w\d]+)/activate', array(
-      array(
-        // By using this constant we ensure that when the WP_REST_Server changes our readable endpoints will work as intended.
-        'methods'  => WP_REST_Server::EDITABLE,
-        // Here we register our callback. The callback is fired when this endpoint is matched by the WP_REST_Server class.
-        'callback' => array($this, 'activate_course'),
-      ),
-    ));
-  }
-
-  public function get_courses($request)
-  {
-    if (!current_user_can('manage_options')) {
-      return new WP_Error('rest_forbidden', esc_html__('You do not have permissions to access this resource.', 'my-text-domain'), array('status' => 401));
-    }
-
-    $courses = Ada_Aba_Course::all();
-
-    $serialized_courses = array_map(function ($course) {
-      return new Ada_Aba_Course_Scalar($course);
-    }, $courses);
-
-    $response = array(
-      'json' => $serialized_courses,
-    );
-
-    // error_log(print_r($request->get_headers(), true));
-    if ($request->get_header('accept') === 'text/html') {
-      $html_courses = array_map(function ($course) {
-        return $this->get_courses_fragment($course);
-      }, $courses);
-
-      $response['html'] = implode($html_courses);
-    }
-
-    return rest_ensure_response($response);
-  }
-
-  public function get_course($request)
-  {
-    if (!current_user_can('manage_options')) {
-      return new WP_Error('rest_forbidden', esc_html__('You do not have permissions to access this resource.', 'my-text-domain'), array('status' => 401));
-    }
-
-    $slug = $request['slug'];
-    Ada_Aba::log(sprintf('%1$s: slug: %2$s', __FUNCTION__, $slug));
-
-    $course = Ada_Aba_Course::get_by_slug($slug);
-    return rest_ensure_response(new Ada_Aba_Course_Scalar($course));
-  }
-
-  public function add_course($request)
-  {
-    if (!current_user_can('manage_options')) {
-      return new WP_Error('rest_forbidden', esc_html__('You do not have permissions to access this resource.', 'my-text-domain'), array('status' => 401));
-    }
-
-    $course = Ada_Aba_Course::create($request->get_param('name'));
-    $course->insert();
-    return rest_ensure_response(new Ada_Aba_Course_Scalar($course));
-  }
-
-  public function delete_course($request)
-  {
-    if (!current_user_can('manage_options')) {
-      return new WP_Error('rest_forbidden', esc_html__('You do not have permissions to access this resource.', 'my-text-domain'), array('status' => 401));
-    }
-
-    $slug = $request['slug'];
-    Ada_Aba::log(sprintf('%1$s: slug: %2$s', __FUNCTION__, $slug));
-
-    $course = Ada_Aba_Course::get_by_slug($slug);
-    if ($course) {
-      $course->delete();
-    }
-    return rest_ensure_response(new Ada_Aba_Course_Scalar($course));
-  }
-
-  public function activate_course($request)
-  {
-    if (!current_user_can('manage_options')) {
-      return new WP_Error('rest_forbidden', esc_html__('You do not have permissions to access this resource.', 'my-text-domain'), array('status' => 401));
-    }
-
-    $slug = $request['slug'];
-    Ada_Aba::log(sprintf('%1$s: slug: %2$s', __FUNCTION__, $slug));
-
-    $course = Ada_Aba_Course::activate($slug);
-
-    return rest_ensure_response(new Ada_Aba_Course_Scalar($course));
-  }
-
-  public function update_course($request)
-  {
-    if (!current_user_can('manage_options')) {
-      return new WP_Error('rest_forbidden', esc_html__('You do not have permissions to access this resource.', 'my-text-domain'), array('status' => 401));
-    }
-
-    $slug = $request['slug'];
-    $name = $request->get_param('name');
-    Ada_Aba::log(sprintf('%1$s: slug: %2$s, name: %3$s', __FUNCTION__, $slug, $name));
-    error_log(print_r($request->get_params(), true));
-
-    $course = Ada_Aba_Course::get_by_slug($slug);
-    if ($course) {
-      $course->setName($name);
-      $course->update();
-    }
-
-    return rest_ensure_response(new Ada_Aba_Course_Scalar($course));
-  }
-
-  public function get_products()
-  {
-    if (!current_user_can('manage_options')) {
-      return new WP_Error('rest_forbidden', esc_html__('You do not have permissions to access this resource.', 'my-text-domain'), array('status' => 401));
-    }
-
-    // In practice this function would fetch the desired data. Here we are just making stuff up.
-    $products = array(
-      '1' => 'I am product 1',
-      '2' => 'I am product 2',
-      '3' => 'I am product 3',
-    );
-
-    return rest_ensure_response($products);
+    // register course routes
+    $this->course_routes = new Ada_Aba_Admin_Courses_Controller($this->plugin_name);
+    $this->course_routes->register_routes();
   }
 
   public function add_setup_menu()
@@ -329,14 +154,6 @@ class Ada_Aba_Admin
   ) {
     ob_start();
     include 'partials/ada-aba-admin-courses.php';
-    return ob_get_clean();
-  }
-
-  private function get_courses_fragment(
-    $course,
-  ) {
-    ob_start();
-    include 'partials/ada-aba-admin-courses-course-fragment.php';
     return ob_get_clean();
   }
 
