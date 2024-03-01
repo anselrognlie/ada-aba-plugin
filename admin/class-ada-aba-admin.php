@@ -191,7 +191,7 @@ class Ada_Aba_Admin
     if (!current_user_can('manage_options')) {
       return new WP_Error('rest_forbidden', esc_html__('You do not have permissions to access this resource.', 'my-text-domain'), array('status' => 401));
     }
-    
+
     $courses = Ada_Aba_Course::all();
 
     $serialized_courses = array_map(function ($course) {
@@ -592,17 +592,3 @@ class Ada_Aba_Admin
   }
 }
 
-class Ada_Aba_Array_Adapter
-{
-  private $data;
-
-  public function __construct($data)
-  {
-    $this->data = $data;
-  }
-
-  public function __get($name)
-  {
-    return $this->data[$name];
-  }
-}

@@ -119,6 +119,7 @@ class Ada_Aba
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-ada-aba-options.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-ada-aba-exception.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-ada-aba-session.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-ada-aba-array-adapter.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/security/crypto.php';
 
     /**
