@@ -7,7 +7,8 @@ use Ada_Aba_Exception;
 
 use function Db_Helpers\dt_to_sql;
 
-class Ada_Aba_Syllabus {
+class Ada_Aba_Syllabus
+{
   private $id;
   private $created_at;
   private $updated_at;
@@ -40,72 +41,89 @@ class Ada_Aba_Syllabus {
   }
 
   // Getters
-  public function getId() {
+  public function getId()
+  {
     return $this->id;
   }
 
-  public function getCreatedAt() {
+  public function getCreatedAt()
+  {
     return $this->created_at;
   }
 
-  public function getUpdatedAt() {
+  public function getUpdatedAt()
+  {
     return $this->updated_at;
   }
 
-  public function getDeletedAt() {
+  public function getDeletedAt()
+  {
     return $this->deleted_at;
   }
 
-  public function getCourseId() {
+  public function getCourseId()
+  {
     return $this->course_id;
   }
 
-  public function getLessonId() {
+  public function getLessonId()
+  {
     return $this->lesson_id;
   }
 
-  public function getOrder() {
+  public function getOrder()
+  {
     return $this->order;
   }
 
-  public function getSlug() {
+  public function getSlug()
+  {
     return $this->slug;
   }
 
   // Setters
-  public function setId($id) {
+  public function setId($id)
+  {
     $this->id = $id;
   }
 
-  public function setCreatedAt($created_at) {
+  public function setCreatedAt($created_at)
+  {
     $this->created_at = $created_at;
   }
 
-  public function setUpdatedAt($updated_at) {
+  public function setUpdatedAt($updated_at)
+  {
     $this->updated_at = $updated_at;
   }
 
-  public function setDeletedAt($deleted_at) {
+  public function setDeletedAt($deleted_at)
+  {
     $this->deleted_at = $deleted_at;
   }
 
-  public function setCourseId($course_id) {
+  public function setCourseId($course_id)
+  {
     $this->course_id = $course_id;
   }
 
-  public function setLessonId($lesson_id) {
+  public function setLessonId($lesson_id)
+  {
     $this->lesson_id = $lesson_id;
   }
 
-  public function setOrder($order) {
+  public function setOrder($order)
+  {
     $this->order = $order;
   }
 
-  public function setSlug($slug) {
+  public function setSlug($slug)
+  {
     $this->slug = $slug;
   }
 
-  public static function fromRow($row) {
+  public static function fromRow($row)
+  {
     // Ada_Aba::log(print_r($row, true));
     return new Ada_Aba_Syllabus(
       $row['id'],
@@ -140,7 +158,8 @@ class Ada_Aba_Syllabus {
     );
   }
 
-  public function insert() {
+  public function insert()
+  {
     global $wpdb;
 
     $table_name = $wpdb->prefix . self::$table_name;
@@ -160,5 +179,4 @@ class Ada_Aba_Syllabus {
       throw new Ada_Aba_Exception('Failed to insert Syllabus');
     }
   }
-  
 }

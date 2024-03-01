@@ -27,9 +27,9 @@
   <input type="hidden" name="verify_link" value="<?php echo $verify_link ?>">
 
   <input type="submit" value="Submit">
-<?php 
+  <?php
   if (isset($error_message)) {
     echo "<p>$error_message</p>";
   }
-?>
+  ?>
 </form>

@@ -1,7 +1,7 @@
-(function( $ ) {
+(function ($) {
   'use strict';
 
-   $(function() {
+  $(function () {
     //  console.log(window.location.pathname);
     const doIt = async (url, nonce) => {
       const response = await fetch(url, {
@@ -13,5 +13,5 @@
       console.log(data);
     }
     doIt(`${ada_aba_vars.root}ada-aba/v1/products`, ada_aba_vars.nonce);
-   });
-})( jQuery );
+  });
+})(jQuery);

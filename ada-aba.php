@@ -26,7 +26,7 @@
  */
 
 // If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
+if (!defined('WPINC')) {
   die;
 }
 
@@ -37,14 +37,15 @@ const ADA_ABA_PLUGIN_NAME = 'ada-aba';
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'ADA_ABA_VERSION', '1.0.0' );
+define('ADA_ABA_VERSION', '1.0.0');
 
 /**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-ada-aba-activator.php
  */
-function activate_ada_aba() {
-  require_once plugin_dir_path( __FILE__ ) . 'includes/class-ada-aba-activator.php';
+function activate_ada_aba()
+{
+  require_once plugin_dir_path(__FILE__) . 'includes/class-ada-aba-activator.php';
   Ada_Aba_Activator::activate(ADA_ABA_PLUGIN_NAME);
 }
 
@@ -52,19 +53,20 @@ function activate_ada_aba() {
  * The code that runs during plugin deactivation.
  * This action is documented in includes/class-ada-aba-deactivator.php
  */
-function deactivate_ada_aba() {
-  require_once plugin_dir_path( __FILE__ ) . 'includes/class-ada-aba-deactivator.php';
+function deactivate_ada_aba()
+{
+  require_once plugin_dir_path(__FILE__) . 'includes/class-ada-aba-deactivator.php';
   Ada_Aba_Deactivator::deactivate(ADA_ABA_PLUGIN_NAME);
 }
 
-register_activation_hook( __FILE__, 'activate_ada_aba' );
-register_deactivation_hook( __FILE__, 'deactivate_ada_aba' );
+register_activation_hook(__FILE__, 'activate_ada_aba');
+register_deactivation_hook(__FILE__, 'deactivate_ada_aba');
 
 /**
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
-require plugin_dir_path( __FILE__ ) . 'includes/class-ada-aba.php';
+require plugin_dir_path(__FILE__) . 'includes/class-ada-aba.php';
 
 /**
  * Begins execution of the plugin.
@@ -75,10 +77,10 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-ada-aba.php';
  *
  * @since    1.0.0
  */
-function run_ada_aba() {
+function run_ada_aba()
+{
 
   $plugin = new Ada_Aba(ADA_ABA_PLUGIN_NAME);
   $plugin->run();
-
 }
 run_ada_aba();

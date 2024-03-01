@@ -7,7 +7,8 @@ use Ada_Aba_Exception;
 
 use function Db_Helpers\dt_to_sql;
 
-class Ada_Aba_Lesson {
+class Ada_Aba_Lesson
+{
   private $id;
   private $created_at;
   private $updated_at;
@@ -34,56 +35,69 @@ class Ada_Aba_Lesson {
   }
 
   // Getters
-  public function getId() {
+  public function getId()
+  {
     return $this->id;
   }
 
-  public function getCreatedAt() {
+  public function getCreatedAt()
+  {
     return $this->created_at;
   }
 
-  public function getUpdatedAt() {
+  public function getUpdatedAt()
+  {
     return $this->updated_at;
   }
 
-  public function getDeletedAt() {
+  public function getDeletedAt()
+  {
     return $this->deleted_at;
   }
 
-  public function getName() {
+  public function getName()
+  {
     return $this->name;
   }
 
-  public function getSlug() {
+  public function getSlug()
+  {
     return $this->slug;
   }
 
   // Setters
-  public function setId($id) {
+  public function setId($id)
+  {
     $this->id = $id;
   }
 
-  public function setCreatedAt($created_at) {
+  public function setCreatedAt($created_at)
+  {
     $this->created_at = $created_at;
   }
 
-  public function setUpdatedAt($updated_at) {
+  public function setUpdatedAt($updated_at)
+  {
     $this->updated_at = $updated_at;
   }
 
-  public function setDeletedAt($deleted_at) {
+  public function setDeletedAt($deleted_at)
+  {
     $this->deleted_at = $deleted_at;
   }
 
-  public function setName($name) {
+  public function setName($name)
+  {
     $this->name = $name;
   }
 
-  public function setSlug($slug) {
+  public function setSlug($slug)
+  {
     $this->slug = $slug;
   }
 
-  public static function fromRow($row) {
+  public static function fromRow($row)
+  {
     return new Ada_Aba_Lesson(
       $row['id'],
       $row['created_at'],
@@ -110,7 +124,8 @@ class Ada_Aba_Lesson {
     );
   }
 
-  public function insert() {
+  public function insert()
+  {
     global $wpdb;
 
     $table_name = $wpdb->prefix . self::$table_name;
@@ -128,5 +143,4 @@ class Ada_Aba_Lesson {
       throw new Ada_Aba_Exception('Failed to insert Lesson');
     }
   }
-  
 }

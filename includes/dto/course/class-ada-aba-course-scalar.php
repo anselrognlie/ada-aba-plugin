@@ -2,15 +2,17 @@
 
 namespace Dto\Course;
 
-class Ada_Aba_Course_Scalar implements \JsonSerializable {
-
+class Ada_Aba_Course_Scalar implements \JsonSerializable
+{
   private $course;
 
-  public function __construct($course) {
+  public function __construct($course)
+  {
     $this->course = $course;
   }
 
-  public function jsonSerialize() {
+  public function jsonSerialize()
+  {
     return array(
       'id' => $this->course->getId(),
       'name' => $this->course->getName(),

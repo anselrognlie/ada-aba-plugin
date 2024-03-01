@@ -108,4 +108,3 @@ class Ada_Aba_Activator
     $options->save();
   }
 }
-

@@ -72,7 +72,7 @@ class Ada_Aba_Public
   {
     $options = Ada_Aba_Options::get_options($this->plugin_name);
     $post_id = $options->get_confirmation_page();
-    $post = get_post($post_id); 
+    $post = get_post($post_id);
     $slug = $post?->post_name;
     return $slug;
   }
@@ -81,7 +81,7 @@ class Ada_Aba_Public
   {
     $options = Ada_Aba_Options::get_options($this->plugin_name);
     $post_id = $options->get_registered_page();
-    $post = get_post($post_id); 
+    $post = get_post($post_id);
 
     if ($post) {
       $slug = $post->post_name;
@@ -102,13 +102,13 @@ class Ada_Aba_Public
 
     $this->load_handlers = array(
       array(
-        'method' => array($this, 'is_in_post'), 
-        'value' => $registration, 
+        'method' => array($this, 'is_in_post'),
+        'value' => $registration,
         'handler' => array($this, 'handle_registration_form'),
       ),
       array(
-        'method' => array($this, 'is_page_name'), 
-        'value' => $confirm_page, 
+        'method' => array($this, 'is_page_name'),
+        'value' => $confirm_page,
         'handler' => array($this, 'handle_confirm'),
       ),
     );
@@ -136,7 +136,7 @@ class Ada_Aba_Public
     $url = self::extract_page_name($url);
 
     // return whether what's left matches the value
-    $matches = ( $url === $value );
+    $matches = ($url === $value);
     Ada_Aba::log(sprintf(
       '%1$s: url: [%2$s], value: [%3$s], matches: %4$d',
       __FUNCTION__,
@@ -192,14 +192,14 @@ class Ada_Aba_Public
 
     wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/ada-aba-public.js', array('jquery'), $this->version, false);
 
-		wp_localize_script(
-			$this->plugin_name,
-			'ada_aba_vars',
-			array(
+    wp_localize_script(
+      $this->plugin_name,
+      'ada_aba_vars',
+      array(
         'root' => esc_url_raw(rest_url()),
         'nonce' => wp_create_nonce('wp_rest'),  // from https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/
-			)
-		);
+      )
+    );
   }
 
   private function get_current_page()
@@ -257,8 +257,7 @@ class Ada_Aba_Public
   {
     if ($this->is_user_confirmed()) {
       return $this->handle_confirm_success();
-    }
-    else {
+    } else {
       return $this->handle_confirm_failed();
     }
   }
@@ -296,7 +295,7 @@ class Ada_Aba_Public
         $failed = true;
       }
     }
-    
+
     if ($failed || empty($learner)) {
       // return a failure to confirm page
       wp_redirect(home_url($confirm_page));
@@ -320,13 +319,15 @@ class Ada_Aba_Public
     return ob_get_clean();
   }
 
-  private function get_registered_error_content() {
+  private function get_registered_error_content()
+  {
     ob_start();
     include 'partials/ada-aba-public-registered-error.php';
     return ob_get_clean();
   }
 
-  private function get_verify_code() {
+  private function get_verify_code()
+  {
     return isset($_GET['verify']) ? $_GET['verify'] : '';
   }
 
@@ -348,7 +349,7 @@ class Ada_Aba_Public
       $this->send_registration_email($learner);
     }
 
-    return $this->get_registration_resend_content( $resend_link );
+    return $this->get_registration_resend_content($resend_link);
   }
 
   private function handle_registration_post()
@@ -356,10 +357,11 @@ class Ada_Aba_Public
     $email = urlencode(self::get_post_value('email'));
     $resend_link = home_url($this->get_current_page()) . "?resend=$email";
 
-    return $this->get_registration_posted_content( $resend_link );
+    return $this->get_registration_posted_content($resend_link);
   }
 
-  private function handle_confirm_success() {
+  private function handle_confirm_success()
+  {
     $user = $this->get_confirmed_user();
     $progress_link = home_url($this->get_progress_page($user)) ?? '';
     return $this->get_registered_content($progress_link);
@@ -395,7 +397,8 @@ class Ada_Aba_Public
     return isset($_GET['resend']);
   }
 
-  private function plugin_will_handle() {
+  private function plugin_will_handle()
+  {
     $options = Ada_Aba_Options::get_options($this->plugin_name);
     Ada_Aba_Session::start($this->plugin_name, $options->get_private_key());
     // if (null === $session->get('handled')) {
@@ -428,10 +431,10 @@ class Ada_Aba_Public
 
       if (call_user_func($method, $value)) {
         $this->plugin_will_handle();
-        error_log("$idx succeeded"); 
+        error_log("$idx succeeded");
         call_user_func($handler);
       } else {
-        error_log("$idx failed"); 
+        error_log("$idx failed");
       }
     }
 
@@ -490,8 +493,9 @@ class Ada_Aba_Public
     return get_page_link($page_id);
   }
 
-  private function clean_expired_registrations() {
-      Models\Ada_Aba_Learner::clean_expired_registrations();
+  private function clean_expired_registrations()
+  {
+    Models\Ada_Aba_Learner::clean_expired_registrations();
   }
 
   private function handle_registration_form()
@@ -531,7 +535,8 @@ class Ada_Aba_Public
     $this->send_registration_email($learner);
   }
 
-  private function send_registration_email($learner) {
+  private function send_registration_email($learner)
+  {
     $options = Ada_Aba_Options::get_options($this->plugin_name);
 
     $first_name = $learner->getFirstName();
@@ -546,7 +551,7 @@ class Ada_Aba_Public
       $email,
       $verify_link
     ));
-    
+
     $challenge = $learner->getChallengeNonce();
 
     $message = $this->get_registration_email_content(
@@ -562,7 +567,8 @@ class Ada_Aba_Public
     }
   }
 
-  private function send_registered_email($learner) {
+  private function send_registered_email($learner)
+  {
     $options = Ada_Aba_Options::get_options($this->plugin_name);
 
     $first_name = $learner->getFirstName();
@@ -577,7 +583,7 @@ class Ada_Aba_Public
       $email,
       $verify_link
     ));
-    
+
     $progress_link = home_url($this->get_progress_page($learner->getSlug()));
 
     $message = $this->get_registered_email_content(

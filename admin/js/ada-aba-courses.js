@@ -127,7 +127,7 @@
   const resetEditForm = function () {
     $('#ada-aba-courses-edit-course-name').val('');
     $('#ada-aba-courses-edit-course-slug').val('');
-};
+  };
 
   const editCourse = function (course) {
     $('#ada-aba-courses-edit-course-name').val(course.name);

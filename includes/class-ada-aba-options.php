@@ -37,7 +37,7 @@ class Ada_Aba_Options
    * @var      string    $plugin_name    The string used to uniquely identify this plugin.
    */
   protected $plugin_name;
-  
+
   private $options;
 
   private const DEFAULT_OPTIONS = [
@@ -62,7 +62,8 @@ class Ada_Aba_Options
     $this->options = $options;  // php uses value semantics for arrays
   }
 
-  public static function get_options($plugin_name) {
+  public static function get_options($plugin_name)
+  {
     $options = get_option($plugin_name . '-settings');
     if ($options === false) {
       return self::get_default($plugin_name);
@@ -70,27 +71,33 @@ class Ada_Aba_Options
     return new Ada_Aba_Options($plugin_name, $options);
   }
 
-  public static function get_default($plugin_name) {
+  public static function get_default($plugin_name)
+  {
     return new Ada_Aba_Options($plugin_name, self::DEFAULT_OPTIONS);
   }
 
-  public function get_confirmation_page() {
+  public function get_confirmation_page()
+  {
     return $this->options['confirmation-page'];
   }
 
-  public function get_registered_page() {
+  public function get_registered_page()
+  {
     return $this->options['registered-page'];
   }
 
-  public function get_send_email() {
+  public function get_send_email()
+  {
     return isset($this->options['send-email']);
   }
 
-  public function get_private_key() {
+  public function get_private_key()
+  {
     return isset($this->options['private-key']);
   }
 
-  public function save() {
+  public function save()
+  {
     update_option($this->plugin_name . '-settings', $this->options);
   }
 }

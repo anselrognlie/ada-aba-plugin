@@ -1,6 +1,7 @@
 <?php
 
-class Ada_Aba_Session {
+class Ada_Aba_Session
+{
   private $plugin_name;
 
   private $private_key;
@@ -9,7 +10,8 @@ class Ada_Aba_Session {
 
   public static $current = null;
 
-  public static function start($plugin_name, $private_key) {
+  public static function start($plugin_name, $private_key)
+  {
     if (self::$current !== null) {
       return self::$current;
     }
@@ -21,19 +23,22 @@ class Ada_Aba_Session {
     return $session;
   }
 
-  public static function close() {
+  public static function close()
+  {
     if (self::$current !== null) {
       self::$current->save();
     }
   }
 
-  public function __construct($plugin_name, $private_key) {
+  public function __construct($plugin_name, $private_key)
+  {
     $this->plugin_name = $plugin_name;
     $this->private_key = $private_key;
     $this->values = [];
   }
 
-  public function load() {
+  public function load()
+  {
     $encrypted_session = $_COOKIE[$this->plugin_name . '-session'] ?? '';
     if (empty($encrypted_session)) {
       return;
@@ -48,15 +53,18 @@ class Ada_Aba_Session {
     $this->values = $session;
   }
 
-  public function get($key) {
+  public function get($key)
+  {
     return $this->values[$key] ?? null;
   }
 
-  public function set($key, $value) {
+  public function set($key, $value)
+  {
     $this->values[$key] = $value;
   }
 
-  public function save() {
+  public function save()
+  {
     $raw_session = serialize($this->values);
     $encrypted_session = Crypto\encrypt($raw_session, $this->private_key);
     setcookie($this->plugin_name . '-session', $encrypted_session, time() + MONTH_IN_SECONDS, '/');

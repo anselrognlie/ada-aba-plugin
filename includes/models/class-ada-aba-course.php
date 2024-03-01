@@ -7,7 +7,8 @@ use Ada_Aba_Exception;
 
 use function Db_Helpers\dt_to_sql;
 
-class Ada_Aba_Course {
+class Ada_Aba_Course
+{
   private $id;
   private $created_at;
   private $updated_at;
@@ -37,60 +38,74 @@ class Ada_Aba_Course {
   }
 
   // Getters
-  public function getId() {
+  public function getId()
+  {
     return $this->id;
   }
 
-  public function getCreatedAt() {
+  public function getCreatedAt()
+  {
     return $this->created_at;
   }
 
-  public function getUpdatedAt() {
+  public function getUpdatedAt()
+  {
     return $this->updated_at;
   }
 
-  public function getDeletedAt() {
+  public function getDeletedAt()
+  {
     return $this->deleted_at;
   }
 
-  public function getName() {
+  public function getName()
+  {
     return $this->name;
   }
 
-  public function getSlug() {
+  public function getSlug()
+  {
     return $this->slug;
   }
 
-  public function isActive() {
+  public function isActive()
+  {
     return $this->active;
   }
 
   // Setters
-  public function setId($id) {
+  public function setId($id)
+  {
     $this->id = $id;
   }
 
-  public function setCreatedAt($created_at) {
+  public function setCreatedAt($created_at)
+  {
     $this->created_at = $created_at;
   }
 
-  public function setUpdatedAt($updated_at) {
+  public function setUpdatedAt($updated_at)
+  {
     $this->updated_at = $updated_at;
   }
 
-  public function setDeletedAt($deleted_at) {
+  public function setDeletedAt($deleted_at)
+  {
     $this->deleted_at = $deleted_at;
   }
 
-  public function setName($name) {
+  public function setName($name)
+  {
     $this->name = $name;
   }
 
-  public function setSlug($slug) {
+  public function setSlug($slug)
+  {
     $this->slug = $slug;
   }
 
-  public function setActive($active) {
+  public function setActive($active)
+  {
     $this->active = $active;
   }
 
@@ -111,7 +126,8 @@ class Ada_Aba_Course {
   //   }
   // }
 
-  public static function fromRow($row) {
+  public static function fromRow($row)
+  {
     // Ada_Aba::log(print_r($row, true));
     return new Ada_Aba_Course(
       $row['id'],
@@ -124,7 +140,8 @@ class Ada_Aba_Course {
     );
   }
 
-  public static function get_by_slug($slug) {
+  public static function get_by_slug($slug)
+  {
     global $wpdb;
 
     $table_name = $wpdb->prefix . self::$table_name;
@@ -141,25 +158,26 @@ class Ada_Aba_Course {
     }
   }
 
-  public static function activate($slug) {
+  public static function activate($slug)
+  {
     global $wpdb;
 
     $table_name = $wpdb->prefix . self::$table_name;
     $now = dt_to_sql(new \DateTime());
 
-    $wpdb->query( "START TRANSACTION" );
-    $deactivate = $wpdb->query( 
-      "UPDATE " . $table_name . " SET active = 0, updated_at = '$now' WHERE active = 1" 
+    $wpdb->query("START TRANSACTION");
+    $deactivate = $wpdb->query(
+      "UPDATE " . $table_name . " SET active = 0, updated_at = '$now' WHERE active = 1"
     );
     $activate = $wpdb->query(
       "UPDATE " . $table_name . " SET active = 1, updated_at = '$now'  WHERE slug = '$slug'"
     );
 
     if ($deactivate === false || $activate === false) {
-      $wpdb->query( "ROLLBACK" );
+      $wpdb->query("ROLLBACK");
       throw new Ada_Aba_Exception('Failed to activate Course');
     } else {
-      $wpdb->query( "COMMIT" );
+      $wpdb->query("COMMIT");
     }
 
     $row = $wpdb->get_row(
@@ -213,7 +231,8 @@ class Ada_Aba_Course {
     }
   }
 
-  public function insert() {
+  public function insert()
+  {
     global $wpdb;
 
     $table_name = $wpdb->prefix . self::$table_name;
@@ -233,7 +252,8 @@ class Ada_Aba_Course {
     }
   }
 
-  public function update() {
+  public function update()
+  {
     global $wpdb;
 
     $table_name = $wpdb->prefix . self::$table_name;
@@ -255,8 +275,9 @@ class Ada_Aba_Course {
       throw new Ada_Aba_Exception('Failed to update Course');
     }
   }
-  
-  public function delete() {
+
+  public function delete()
+  {
     global $wpdb;
 
     $table_name = $wpdb->prefix . self::$table_name;

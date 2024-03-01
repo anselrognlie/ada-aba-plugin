@@ -18,13 +18,13 @@
 <h1>Thank you for registering for Ada Build</h1>
 
 <p>
-Please click the verification link in the email sent to the address you provided to complete the registration process.
+  Please click the verification link in the email sent to the address you provided to complete the registration process.
 </p>
 
 <p>
-If you do not see the email, please check your spam folder.
+  If you do not see the email, please check your spam folder.
 </p>
 
 <p>
-To resend the email, click <a href="<?php echo $resend_link ?>">here</a>.
+  To resend the email, click <a href="<?php echo $resend_link ?>">here</a>.
 </p>

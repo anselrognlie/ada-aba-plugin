@@ -18,15 +18,15 @@
 <h1>Your email address has been confirmed!</h1>
 
 <p>
-You can start tracking your progress by
-clicking <a href="<?php echo $progress_link ?>">here</a>.
+  You can start tracking your progress by
+  clicking <a href="<?php echo $progress_link ?>">here</a>.
 </p>
 
 <p>
-You may wish to bookmark that link for future reference.
-Otherwise, you will also receive an email with the same link.
+  You may wish to bookmark that link for future reference.
+  Otherwise, you will also receive an email with the same link.
 </p>
 
 <p>
-We hope you enjoy the course!
+  We hope you enjoy the course!
 </p>

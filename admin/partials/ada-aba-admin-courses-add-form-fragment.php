@@ -14,7 +14,7 @@
 ?>
 
 <form id="ada-aba-courses-add-course">
-	<h2>Add Course</h2>
+  <h2>Add Course</h2>
   <label for="course_name">Name</label>
   <input type="text" id="ada-aba-courses-add-course-name" name="name" value="" required>
   <input type="submit" value="Add">

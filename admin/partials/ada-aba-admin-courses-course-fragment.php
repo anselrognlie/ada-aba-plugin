@@ -15,11 +15,11 @@
 
 <p class="ada-aba-course" data-ada-aba-course-slug="<?php echo $course->getSlug() ?>">
 	<span><?php echo $course->getName() ?></span>
-	<?php if ($course->isActive()): ?>
+	<?php if ($course->isActive()) : ?>
 		<span>(Active)</span>
-	<?php else: ?>
+	<?php else : ?>
 		<span><a href="#" class="ada-aba-courses-activate">Activate</a></span>
-		<?php endif ?>
-		<span><a href="#" class="ada-aba-courses-edit">Edit</a></span>
-		<span><a href="#" class="ada-aba-courses-delete">Delete</a></span>
+	<?php endif ?>
+	<span><a href="#" class="ada-aba-courses-edit">Edit</a></span>
+	<span><a href="#" class="ada-aba-courses-delete">Delete</a></span>
 </p>

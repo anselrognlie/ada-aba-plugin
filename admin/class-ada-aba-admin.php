@@ -183,7 +183,6 @@ class Ada_Aba_Admin
         'callback' => array($this, 'activate_course'),
       ),
     ));
-
   }
 
   public function get_courses($request)
@@ -591,4 +590,3 @@ class Ada_Aba_Admin
     echo $this->get_courses_page_content($courses);
   }
 }
-

@@ -7,7 +7,8 @@ use Ada_Aba_Exception;
 
 use function Db_Helpers\dt_to_sql;
 
-class Ada_Aba_Learner {
+class Ada_Aba_Learner
+{
   private $id;
   private $created_at;
   private $updated_at;
@@ -49,96 +50,119 @@ class Ada_Aba_Learner {
   }
 
   // Getters
-  public function getId() {
+  public function getId()
+  {
     return $this->id;
   }
 
-  public function getCreatedAt() {
+  public function getCreatedAt()
+  {
     return $this->created_at;
   }
 
-  public function getUpdatedAt() {
+  public function getUpdatedAt()
+  {
     return $this->updated_at;
   }
 
-  public function getDeletedAt() {
+  public function getDeletedAt()
+  {
     return $this->deleted_at;
   }
 
-  public function getFirstName() {
+  public function getFirstName()
+  {
     return $this->first_name;
   }
 
-  public function getLastName() {
+  public function getLastName()
+  {
     return $this->last_name;
   }
 
-  public function getEmail() {
+  public function getEmail()
+  {
     return $this->email;
   }
 
-  public function getSlug() {
+  public function getSlug()
+  {
     return $this->slug;
   }
 
-  public function getChallengeNonce() {
+  public function getChallengeNonce()
+  {
     return $this->challenge_nonce;
   }
 
-  public function getChallengeExpiresAt() {
+  public function getChallengeExpiresAt()
+  {
     return $this->challenge_expires_at;
   }
 
-  public function getVerified() {
+  public function getVerified()
+  {
     return $this->verified;
   }
 
   // Setters
-  public function setId($id) {
+  public function setId($id)
+  {
     $this->id = $id;
   }
 
-  public function setCreatedAt($created_at) {
+  public function setCreatedAt($created_at)
+  {
     $this->created_at = $created_at;
   }
 
-  public function setUpdatedAt($updated_at) {
+  public function setUpdatedAt($updated_at)
+  {
     $this->updated_at = $updated_at;
   }
 
-  public function setDeletedAt($deleted_at) {
+  public function setDeletedAt($deleted_at)
+  {
     $this->deleted_at = $deleted_at;
   }
 
-  public function setFirstName($first_name) {
+  public function setFirstName($first_name)
+  {
     $this->first_name = $first_name;
   }
 
-  public function setLastName($last_name) {
+  public function setLastName($last_name)
+  {
     $this->last_name = $last_name;
   }
 
-  public function setEmail($email) {
+  public function setEmail($email)
+  {
     $this->email = $email;
   }
 
-  public function setSlug($slug) {
+  public function setSlug($slug)
+  {
     $this->slug = $slug;
   }
 
-  public function setChallengeNonce($challenge_nonce) {
+  public function setChallengeNonce($challenge_nonce)
+  {
     $this->challenge_nonce = $challenge_nonce;
   }
 
-  public function setChallengeExpiresAt($challenge_expires_at) {
+  public function setChallengeExpiresAt($challenge_expires_at)
+  {
     $this->challenge_expires_at = $challenge_expires_at;
   }
 
-  public function setVerified($verified) {
+  public function setVerified($verified)
+  {
     $this->verified = $verified;
   }
 
-  public static function get_by_email($email) {
+  public static function get_by_email($email)
+  {
     global $wpdb;
 
     $table_name = $wpdb->prefix . self::$table_name;
@@ -155,7 +179,8 @@ class Ada_Aba_Learner {
     }
   }
 
-  public static function get_by_verify_code($verify_code, $restrict_verified = true, $verified = 0) {
+  public static function get_by_verify_code($verify_code, $restrict_verified = true, $verified = 0)
+  {
     global $wpdb;
 
     $table_name = $wpdb->prefix . self::$table_name;
@@ -167,7 +192,7 @@ class Ada_Aba_Learner {
       $cmd .= " AND verified = $verified_num";
     }
 
-    $row = $wpdb->get_row( $cmd, 'ARRAY_A' );
+    $row = $wpdb->get_row($cmd, 'ARRAY_A');
 
     if ($row) {
       return self::fromRow($row);
@@ -176,7 +201,8 @@ class Ada_Aba_Learner {
     }
   }
 
-  public static function fromRow($row) {
+  public static function fromRow($row)
+  {
     // Ada_Aba::log(print_r($row, true));
     return new Ada_Aba_Learner(
       $row['id'],
@@ -193,11 +219,13 @@ class Ada_Aba_Learner {
     );
   }
 
-  public static function generateSlug() {
+  public static function generateSlug()
+  {
     return Ada_Aba::generate_nonce();
   }
 
-  public static function generateNonce() {
+  public static function generateNonce()
+  {
     $nonce = Ada_Aba::generate_nonce();
     $expires_at = new \DateTime();
     $expires_at->add(new \DateInterval('PT30M'));
@@ -229,7 +257,8 @@ class Ada_Aba_Learner {
     );
   }
 
-  public function insert() {
+  public function insert()
+  {
     global $wpdb;
 
     $table_name = $wpdb->prefix . self::$table_name;
@@ -252,8 +281,9 @@ class Ada_Aba_Learner {
       throw new Ada_Aba_Exception('Failed to insert learner');
     }
   }
-  
-  public static function clean_expired_registrations() {
+
+  public static function clean_expired_registrations()
+  {
     global $wpdb;
 
     $table_name = $wpdb->prefix . self::$table_name;
@@ -266,13 +296,15 @@ class Ada_Aba_Learner {
     );
   }
 
-  public function verify() {
+  public function verify()
+  {
     $this->verified = 1;
     $this->update();
   }
 
   // function to update the managed fields of a learner
-  public function update() {
+  public function update()
+  {
     global $wpdb;
 
     $table_name = $wpdb->prefix . self::$table_name;
@@ -297,5 +329,5 @@ class Ada_Aba_Learner {
     if ($result === false) {
       throw new Ada_Aba_Exception('Failed to update learner');
     }
- }
+  }
 }

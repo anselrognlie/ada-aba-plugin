@@ -18,20 +18,20 @@
 <div id="wrap">
 	<form method="post" action="options.php">
 		<?php
-			settings_errors();
-			settings_fields( 'ada-aba-settings' );
-			do_settings_sections( 'ada-aba-settings' );
-			submit_button();
+		settings_errors();
+		settings_fields('ada-aba-settings');
+		do_settings_sections('ada-aba-settings');
+		submit_button();
 		?>
 	</form>
 </div>
 
 <div>
 	<p>A useful snippet to generate a good private key is
-		<p>
+	<p>
 		<code>
-		python -c 'import secrets; print(secrets.token_hex())'
+			python -c 'import secrets; print(secrets.token_hex())'
 		</code>
-</p>
+	</p>
 	</p>
 </div>
