@@ -1,6 +1,6 @@
 <?php
 
-namespace Fragments\Courses;
+namespace Ada_Aba\Admin\Fragments\Courses;
 
 function get_courses_fragment(
   $course,

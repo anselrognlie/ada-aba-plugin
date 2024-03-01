@@ -1,5 +1,13 @@
 <?php
 
+namespace Ada_Aba\Public;
+
+use Ada_Aba\Includes\Ada_Aba_Options;
+use Ada_Aba\Includes\Ada_Aba;
+use Ada_Aba\Includes\Ada_Aba_Exception;
+use Ada_Aba\Includes\Ada_Aba_Session;
+use Ada_Aba\Includes\Models\Ada_Aba_Learner;
+
 /**
  * The public-facing functionality of the plugin.
  *
@@ -9,8 +17,6 @@
  * @package    Ada_Aba
  * @subpackage Ada_Aba/public
  */
-
-use Models\Ada_Aba_Learner;
 
 /**
  * The public-facing functionality of the plugin.
@@ -285,7 +291,7 @@ class Ada_Aba_Public
     }
 
     // error_log('attempt to verify');
-    $learner = Models\Ada_Aba_Learner::get_by_verify_code($verify_code);
+    $learner = Ada_Aba_Learner::get_by_verify_code($verify_code);
     $failed = false;
 
     if ($learner) {
@@ -344,7 +350,7 @@ class Ada_Aba_Public
       $email_raw
     ));
 
-    $learner = Models\Ada_Aba_Learner::get_by_email($email_raw);
+    $learner = Ada_Aba_Learner::get_by_email($email_raw);
     if ($learner) {
       $this->send_registration_email($learner);
     }
@@ -495,7 +501,7 @@ class Ada_Aba_Public
 
   private function clean_expired_registrations()
   {
-    Models\Ada_Aba_Learner::clean_expired_registrations();
+    Ada_Aba_Learner::clean_expired_registrations();
   }
 
   private function handle_registration_form()
@@ -519,7 +525,7 @@ class Ada_Aba_Public
       $email
     ));
 
-    $learner = Models\Ada_Aba_Learner::create(
+    $learner = Ada_Aba_Learner::create(
       $first_name,
       $last_name,
       $email,

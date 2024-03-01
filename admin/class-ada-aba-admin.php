@@ -10,7 +10,13 @@
  * @subpackage Ada_Aba/admin
  */
 
-use Models\Ada_Aba_Course;
+namespace Ada_Aba\Admin;
+
+use Ada_Aba\Includes\Ada_Aba;
+use Ada_Aba\Includes\Ada_Aba_Array_Adapter;
+use Ada_Aba\Includes\Models\Ada_Aba_Course;
+use Ada_Aba\Admin\Controllers\Ada_Aba_Admin_Courses_Controller;
+
 
 /**
  * The admin-specific functionality of the plugin.

@@ -1,5 +1,7 @@
 <?php
 
+namespace Ada_Aba\Includes;
+
 /**
  * Fired during plugin deactivation
  *

@@ -1,5 +1,7 @@
 <?php
 
+namespace Ada_Aba\Includes;
+
 class Ada_Aba_Array_Adapter
 {
   private $data;

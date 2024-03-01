@@ -1,11 +1,11 @@
 <?php
 
-namespace Models;
+namespace Ada_Aba\Includes\Models;
 
-use Ada_Aba;
-use Ada_Aba_Exception;
+use Ada_Aba\Includes\Ada_Aba;
+use Ada_Aba\Includes\Ada_Aba_Exception;
 
-use function Db_Helpers\dt_to_sql;
+use function Ada_Aba\Includes\Models\Db_Helpers\dt_to_sql;
 
 class Ada_Aba_Course
 {

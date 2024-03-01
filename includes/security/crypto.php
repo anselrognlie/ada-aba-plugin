@@ -1,6 +1,6 @@
 <?php
 
-namespace Crypto;
+namespace Ada_Aba\Includes\Security\Crypto;
 
 // from https://stackoverflow.com/questions/48017856/correct-way-to-use-php-openssl-encrypt#answer-69072517
 

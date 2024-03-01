@@ -1,5 +1,9 @@
 <?php
 
+namespace Ada_Aba\Includes;
+
+use Ada_Aba\Includes\Security\Crypto;
+
 class Ada_Aba_Session
 {
   private $plugin_name;

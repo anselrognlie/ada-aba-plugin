@@ -1,5 +1,7 @@
 <?php
 
+namespace Ada_Aba;
+
 /**
  * The plugin bootstrap file
  *
@@ -46,7 +48,7 @@ define('ADA_ABA_VERSION', '1.0.0');
 function activate_ada_aba()
 {
   require_once plugin_dir_path(__FILE__) . 'includes/class-ada-aba-activator.php';
-  Ada_Aba_Activator::activate(ADA_ABA_PLUGIN_NAME);
+  Includes\Ada_Aba_Activator::activate(ADA_ABA_PLUGIN_NAME);
 }
 
 /**
@@ -56,7 +58,7 @@ function activate_ada_aba()
 function deactivate_ada_aba()
 {
   require_once plugin_dir_path(__FILE__) . 'includes/class-ada-aba-deactivator.php';
-  Ada_Aba_Deactivator::deactivate(ADA_ABA_PLUGIN_NAME);
+  Includes\Ada_Aba_Deactivator::deactivate(ADA_ABA_PLUGIN_NAME);
 }
 
 register_activation_hook(__FILE__, 'activate_ada_aba');
@@ -80,7 +82,7 @@ require plugin_dir_path(__FILE__) . 'includes/class-ada-aba.php';
 function run_ada_aba()
 {
 
-  $plugin = new Ada_Aba(ADA_ABA_PLUGIN_NAME);
+  $plugin = new Includes\Ada_Aba(ADA_ABA_PLUGIN_NAME);
   $plugin->run();
 }
 run_ada_aba();

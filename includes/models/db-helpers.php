@@ -1,6 +1,6 @@
 <?php
 
-namespace Db_Helpers;
+namespace Ada_Aba\Includes\Models\Db_Helpers;
 
 function dt_to_sql($dt)
 {

@@ -1,5 +1,7 @@
 <?php
 
+namespace Ada_Aba\Includes;
+
 /**
  * Define the internationalization functionality
  *

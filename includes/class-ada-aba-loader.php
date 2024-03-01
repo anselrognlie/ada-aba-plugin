@@ -1,5 +1,7 @@
 <?php
 
+namespace Ada_Aba\Includes;
+
 /**
  * Register all actions and filters for the plugin
  *

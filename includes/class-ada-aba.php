@@ -1,5 +1,10 @@
 <?php
 
+namespace Ada_Aba\Includes;
+
+use Ada_Aba\Admin\Ada_Aba_Admin;
+use Ada_Aba\Public\Ada_Aba_Public;
+
 /**
  * The file that defines the core plugin class
  *

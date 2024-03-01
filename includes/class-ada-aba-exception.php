@@ -1,5 +1,10 @@
 <?php
 
+namespace Ada_Aba\Includes;
+
+use Exception;
+use Throwable;
+
 class Ada_Aba_Exception extends Exception
 {
   // Redefine the exception so message isn't optional

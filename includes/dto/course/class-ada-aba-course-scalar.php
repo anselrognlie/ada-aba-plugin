@@ -1,6 +1,6 @@
 <?php
 
-namespace Dto\Course;
+namespace Ada_Aba\Includes\Dto\Course;
 
 class Ada_Aba_Course_Scalar implements \JsonSerializable
 {

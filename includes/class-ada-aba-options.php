@@ -1,5 +1,7 @@
 <?php
 
+namespace Ada_Aba\Includes;
+
 /**
  * The file that defines the core plugin class
  *

@@ -1,8 +1,14 @@
 <?php
 
-use Models\Ada_Aba_Course;
-use Dto\Course\Ada_Aba_Course_Scalar;
-use function Fragments\Courses\get_courses_fragment;
+namespace Ada_Aba\Admin\Controllers;
+
+use Ada_Aba\Includes\Ada_Aba;
+use Ada_Aba\Includes\Models\Ada_Aba_Course;
+use Ada_Aba\Includes\Dto\Course\Ada_Aba_Course_Scalar;
+use function Ada_Aba\Admin\Fragments\Courses\get_courses_fragment;
+
+use \WP_REST_Server;
+use \WP_Error;
 
 class Ada_Aba_Admin_Courses_Controller {
 
