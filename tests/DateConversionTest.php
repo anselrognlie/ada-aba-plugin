@@ -6,7 +6,7 @@
  * @package Ada_Aba
  */
 
-use function Db_Helpers\dt_to_sql;
+use function Ada_Aba\Includes\Models\Db_Helpers\dt_to_sql;
 
 /**
  * Sample test case.
