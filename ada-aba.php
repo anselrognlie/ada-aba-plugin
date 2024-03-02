@@ -61,8 +61,8 @@ function deactivate_ada_aba()
   Includes\Deactivator::deactivate(ADA_ABA_PLUGIN_NAME);
 }
 
-register_activation_hook(__FILE__, 'activate_ada_aba');
-register_deactivation_hook(__FILE__, 'deactivate_ada_aba');
+register_activation_hook(__FILE__, '\Ada_Aba\activate_ada_aba');
+register_deactivation_hook(__FILE__, '\Ada_Aba\deactivate_ada_aba');
 
 /**
  * The core plugin class that is used to define internationalization,
