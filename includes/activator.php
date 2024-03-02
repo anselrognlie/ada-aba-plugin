@@ -93,6 +93,7 @@ class Activator
     lesson_id mediumint(9) NOT NULL,
     `order` mediumint(9) NOT NULL,
     slug varchar(255) NOT NULL UNIQUE,
+    optional tinyint(1) DEFAULT 0 NOT NULL,
     PRIMARY KEY  (id),
     FOREIGN KEY (course_id)
       REFERENCES $course_table_name(id),

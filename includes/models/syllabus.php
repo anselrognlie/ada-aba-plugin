@@ -17,6 +17,7 @@ class Syllabus
   private $lesson_id;
   private $order;
   private $slug;
+  private $optional;
 
   public static $table_name = 'ada_aba_syllabus';
 
@@ -28,7 +29,8 @@ class Syllabus
     $course_id,
     $lesson_id,
     $order,
-    $slug
+    $slug,
+    $optional,
   ) {
     $this->id = $id;
     $this->created_at = $created_at;
@@ -38,6 +40,7 @@ class Syllabus
     $this->lesson_id = $lesson_id;
     $this->order = $order;
     $this->slug = $slug;
+    $this->optional = $optional;
   }
 
   // Getters
@@ -81,6 +84,11 @@ class Syllabus
     return $this->slug;
   }
 
+  public function isOptional()
+  {
+    return $this->optional;
+  }
+
   // Setters
   public function setId($id)
   {
@@ -121,6 +129,11 @@ class Syllabus
   {
     $this->slug = $slug;
   }
+  
+  public function setOptional($optional)
+  {
+    $this->optional = $optional;
+  }
 
   public static function fromRow($row)
   {
@@ -133,7 +146,8 @@ class Syllabus
       $row['course_id'],
       $row['lesson_id'],
       $row['order'],
-      $row['slug']
+      $row['slug'],
+      $row['optional'],
     );
   }
 
@@ -142,6 +156,7 @@ class Syllabus
     $course_id,
     $lesson_id,
     $order,
+    $optional = false,
   ) {
     $nonce = Core::generate_nonce();
     $now = new \DateTime();
@@ -154,7 +169,8 @@ class Syllabus
       $course_id,
       $lesson_id,
       $order,
-      $nonce
+      $nonce,
+      $optional,
     );
   }
 
@@ -171,7 +187,8 @@ class Syllabus
       'course_id' => $this->course_id,
       'lesson_id' => $this->lesson_id,
       'order' => $this->order,
-      'slug' => $this->slug
+      'slug' => $this->slug,
+      'optional' => $this->optional,
     );
 
     $result = $wpdb->insert($table_name, $data);
