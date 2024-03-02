@@ -15,7 +15,9 @@ namespace Ada_Aba\Admin;
 use Ada_Aba\Includes\Core;
 use Ada_Aba\Includes\Array_Adapter;
 use Ada_Aba\Includes\Models\Course;
+use Ada_Aba\Includes\Models\Lesson;
 use Ada_Aba\Admin\Controllers\Courses_Controller;
+use Ada_Aba\Admin\Controllers\Lessons_Controller;
 
 
 /**
@@ -50,6 +52,7 @@ class Aba_Admin
   private $version;
 
   private $course_routes;
+  private $lesson_routes;
 
   /**
    * Initialize the class and set its properties.
@@ -128,6 +131,22 @@ class Aba_Admin
         )
       );
     }
+
+    if ($hook === 'ada-build-analytics_page_ada-aba-lesson') {
+      $lessons_script = $this->plugin_name . '-lessons';
+      wp_enqueue_script($lessons_script, plugin_dir_url(__FILE__) . "js/$lessons_script.js", array('jquery'), $this->version, false);
+
+      $api_lessons_script = $this->plugin_name . '-api-lessons';
+      wp_enqueue_script($api_lessons_script, plugin_dir_url(__FILE__) . "js/api/$api_lessons_script.js", array('jquery'), $this->version, false);
+      wp_localize_script(
+        $api_lessons_script,
+        'ada_aba_vars',
+        array(
+          'root' => esc_url_raw(rest_url()),
+          'nonce' => wp_create_nonce('wp_rest'),
+        )
+      );
+    }
   }
 
   public function register_routes()
@@ -135,13 +154,17 @@ class Aba_Admin
     // register course routes
     $this->course_routes = new Courses_Controller($this->plugin_name);
     $this->course_routes->register_routes();
+
+    // register lesson routes
+    $this->lesson_routes = new Lessons_Controller($this->plugin_name);
+    $this->lesson_routes->register_routes();
   }
 
   public function add_setup_menu()
   {
     add_menu_page('Ada Build Analytics', 'Ada Build Analytics', 'manage_options', 'ada-aba-setup', array($this, 'setup_page'));
     add_submenu_page('ada-aba-setup', 'Courses', 'Courses', 'manage_options', 'ada-aba-course', array($this, 'course_page'));
-    add_submenu_page('ada-aba-setup', 'Lessons', 'Lessons', 'manage_options', 'ada-aba-lesson', array($this, 'course_page'));
+    add_submenu_page('ada-aba-setup', 'Lessons', 'Lessons', 'manage_options', 'ada-aba-lesson', array($this, 'lesson_page'));
     add_submenu_page('ada-aba-setup', 'Syllabus', 'Syllabus', 'manage_options', 'ada-aba-syllabus', array($this, 'course_page'));
   }
 
@@ -160,6 +183,14 @@ class Aba_Admin
   ) {
     ob_start();
     include 'partials/courses.php';
+    return ob_get_clean();
+  }
+
+  private function get_lessons_page_content(
+    $lessons,
+  ) {
+    ob_start();
+    include 'partials/lessons.php';
     return ob_get_clean();
   }
 
@@ -414,5 +445,11 @@ class Aba_Admin
   {
     $courses = Course::all();
     echo $this->get_courses_page_content($courses);
+  }
+
+  public function lesson_page()
+  {
+    $lessons = Lesson::all();
+    echo $this->get_lessons_page_content($lessons);
   }
 }

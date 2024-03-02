@@ -130,6 +130,8 @@ class Core
     // admin dependencies
     require_once plugin_dir_path(dirname(__FILE__)) . 'admin/fragments/courses-fragments.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'admin/controllers/courses-controller.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'admin/fragments/lessons-fragments.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'admin/controllers/lessons-controller.php';
 
     /**
      * The class responsible for defining all actions that occur in the admin area.
@@ -158,6 +160,7 @@ class Core
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/models/syllabus.php';
 
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/dto/course/course-scalar.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/dto/lesson/lesson-scalar.php';
   }
 
   /**

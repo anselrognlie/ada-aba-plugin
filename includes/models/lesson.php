@@ -98,18 +98,39 @@ class Lesson
 
   public static function fromRow($row)
   {
+    // Core::log(print_r($row, true));
     return new Lesson(
       $row['id'],
       $row['created_at'],
       $row['updated_at'],
       $row['deleted_at'],
       $row['name'],
-      $row['slug']
+      $row['slug'],
     );
   }
 
+  public static function get_by_slug($slug)
+  {
+    global $wpdb;
+
+    $table_name = $wpdb->prefix . self::$table_name;
+
+    $row = $wpdb->get_row(
+      "SELECT * FROM $table_name WHERE slug = '$slug'",
+      'ARRAY_A'
+    );
+
+    if ($row) {
+      return self::fromRow($row);
+    } else {
+      return null;
+    }
+  }
+
+  // create a new Lesson from values, excluding those that can be generated
   public static function create(
-    $name
+    $name,
+    $active = false,
   ) {
     $nonce = Core::generate_nonce();
     $now = new \DateTime();
@@ -120,8 +141,29 @@ class Lesson
       dt_to_sql($now),
       null,
       $name,
-      $nonce
+      $nonce,
+      $active,
     );
+  }
+
+  public static function all()
+  {
+    global $wpdb;
+
+    $table_name = $wpdb->prefix . self::$table_name;
+
+    $result = $wpdb->get_results(
+      "SELECT * FROM $table_name",
+      'ARRAY_A'
+    );
+
+    if ($result) {
+      return array_map(function ($row) {
+        return self::fromRow($row);
+      }, $result);
+    } else {
+      return [];
+    }
   }
 
   public function insert()
@@ -135,12 +177,51 @@ class Lesson
       'updated_at' => $this->updated_at,
       'deleted_at' => $this->deleted_at,
       'name' => $this->name,
-      'slug' => $this->slug
+      'slug' => $this->slug,
     );
 
     $result = $wpdb->insert($table_name, $data);
     if ($result === false) {
       throw new Aba_Exception('Failed to insert Lesson');
+    }
+  }
+
+  public function update()
+  {
+    global $wpdb;
+
+    $table_name = $wpdb->prefix . self::$table_name;
+
+    $data = array(
+      'updated_at' => dt_to_sql(new \DateTime()),
+      'name' => $this->name,
+      'slug' => $this->slug,
+    );
+
+    $result = $wpdb->update(
+      $table_name,
+      $data,
+      array('id' => $this->id)
+    );
+
+    if ($result === false) {
+      throw new Aba_Exception('Failed to update Lesson');
+    }
+  }
+
+  public function delete()
+  {
+    global $wpdb;
+
+    $table_name = $wpdb->prefix . self::$table_name;
+
+    $result = $wpdb->delete(
+      $table_name,
+      array('id' => $this->id)
+    );
+
+    if ($result === false) {
+      throw new Aba_Exception('Failed to delete Lesson');
     }
   }
 }
