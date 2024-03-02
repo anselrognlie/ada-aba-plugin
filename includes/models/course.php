@@ -227,7 +227,7 @@ class Course
         return self::fromRow($row);
       }, $result);
     } else {
-      return null;
+      return [];
     }
   }
 
