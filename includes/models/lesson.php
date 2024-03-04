@@ -183,6 +183,8 @@ class Lesson
     $result = $wpdb->insert($table_name, $data);
     if ($result === false) {
       throw new Aba_Exception('Failed to insert Lesson');
+    } else {
+      $this->id = $wpdb->insert_id;
     }
   }
 
