@@ -147,7 +147,10 @@ class Course
     $table_name = $wpdb->prefix . self::$table_name;
 
     $row = $wpdb->get_row(
-      "SELECT * FROM $table_name WHERE slug = '$slug'",
+      $wpdb->prepare(
+        "SELECT * FROM $table_name WHERE slug = %s",
+        $slug
+      ),
       'ARRAY_A'
     );
 
@@ -167,10 +170,13 @@ class Course
 
     $wpdb->query("START TRANSACTION");
     $deactivate = $wpdb->query(
-      "UPDATE " . $table_name . " SET active = 0, updated_at = '$now' WHERE active = 1"
+      "UPDATE $table_name SET active = 0, updated_at = '$now' WHERE active = 1"
     );
     $activate = $wpdb->query(
-      "UPDATE " . $table_name . " SET active = 1, updated_at = '$now'  WHERE slug = '$slug'"
+      $wpdb->prepare(
+        "UPDATE $table_name SET active = 1, updated_at = '$now' WHERE slug = %s",
+        $slug
+      )
     );
 
     if ($deactivate === false || $activate === false) {
@@ -181,7 +187,10 @@ class Course
     }
 
     $row = $wpdb->get_row(
-      "SELECT * FROM $table_name WHERE slug = '$slug'",
+      $wpdb->prepare(
+        "SELECT * FROM $table_name WHERE slug = %s",
+        $slug
+      ),
       'ARRAY_A'
     );
 
