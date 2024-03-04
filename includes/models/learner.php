@@ -168,7 +168,10 @@ class Learner
     $table_name = $wpdb->prefix . self::$table_name;
 
     $row = $wpdb->get_row(
-      "SELECT * FROM $table_name WHERE email = '$email'",
+      $wpdb->prepare(
+        "SELECT * FROM $table_name WHERE email = %s",
+        $email
+      ),
       'ARRAY_A'
     );
 
@@ -185,7 +188,7 @@ class Learner
 
     $table_name = $wpdb->prefix . self::$table_name;
 
-    $cmd = "SELECT * FROM $table_name WHERE challenge_nonce = '$verify_code'";
+    $cmd = $wpdb->prepare("SELECT * FROM $table_name WHERE challenge_nonce = %s", $verify_code);
 
     if ($restrict_verified) {
       $verified_num = $verified ? 1 : 0;

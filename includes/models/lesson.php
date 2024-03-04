@@ -116,7 +116,10 @@ class Lesson
     $table_name = $wpdb->prefix . self::$table_name;
 
     $row = $wpdb->get_row(
-      "SELECT * FROM $table_name WHERE slug = '$slug'",
+      $wpdb->prepare(
+        "SELECT * FROM $table_name WHERE slug = %s",
+        $slug
+      ),
       'ARRAY_A'
     );
 
