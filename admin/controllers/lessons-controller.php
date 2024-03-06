@@ -2,6 +2,7 @@
 
 namespace Ada_Aba\Admin\Controllers;
 
+use Ada_Aba\Admin\Services\Syllabus_Edit_Service;
 use Ada_Aba\Includes\Core;
 use Ada_Aba\Includes\Models\Lesson;
 use Ada_Aba\Includes\Dto\Lesson\Lesson_Scalar;
@@ -71,6 +72,14 @@ class Lessons_Controller {
   public function index($request)
   {
     $lessons = Lesson::all();
+
+    // error_log(print_r($request->get_query_params(), true));
+
+    if (isset($request['excludeCourseSlug'])) {
+      $course_slug = $request['excludeCourseSlug'];
+      $service = new Syllabus_Edit_Service($course_slug);
+      $lessons = $service->getAvailableLessons();
+    }
 
     $serialized_lessons = array_map(function ($lesson) {
       return new Lesson_Scalar($lesson);

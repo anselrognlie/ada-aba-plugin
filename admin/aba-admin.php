@@ -16,8 +16,11 @@ use Ada_Aba\Includes\Core;
 use Ada_Aba\Includes\Array_Adapter;
 use Ada_Aba\Includes\Models\Course;
 use Ada_Aba\Includes\Models\Lesson;
+use Ada_Aba\Admin\Services\Syllabus_Edit_Service;
 use Ada_Aba\Admin\Controllers\Courses_Controller;
 use Ada_Aba\Admin\Controllers\Lessons_Controller;
+use Ada_Aba\Admin\Controllers\Course_Lessons_Controller;
+use Ada_Aba\Admin\Controllers\UI\Syllabus_Controller;
 
 
 /**
@@ -53,6 +56,8 @@ class Aba_Admin
 
   private $course_routes;
   private $lesson_routes;
+  private $course_lesson_routes;
+  private $syllabus_routes;
 
   /**
    * Initialize the class and set its properties.
@@ -91,6 +96,19 @@ class Aba_Admin
     wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/ada-aba-admin.css', array(), $this->version, 'all');
   }
 
+  private function enqueue_api_script($script_id, $script_path, $dependencies, $version, $args)
+  {
+    wp_enqueue_script($script_id, $script_path, $dependencies, $version, $args);
+    wp_localize_script(
+      $script_id,
+      'ada_aba_vars',
+      array(
+        'root' => esc_url_raw(rest_url()),
+        'nonce' => wp_create_nonce('wp_rest'),
+      )
+    );
+  }
+
   /**
    * Register the JavaScript for the admin area.
    *
@@ -121,15 +139,7 @@ class Aba_Admin
       wp_enqueue_script($courses_script, plugin_dir_url(__FILE__) . "js/$courses_script.js", array('jquery'), $this->version, false);
 
       $api_courses_script = $this->plugin_name . '-api-courses';
-      wp_enqueue_script($api_courses_script, plugin_dir_url(__FILE__) . "js/api/$api_courses_script.js", array('jquery'), $this->version, false);
-      wp_localize_script(
-        $api_courses_script,
-        'ada_aba_vars',
-        array(
-          'root' => esc_url_raw(rest_url()),
-          'nonce' => wp_create_nonce('wp_rest'),
-        )
-      );
+      $this->enqueue_api_script($api_courses_script, plugin_dir_url(__FILE__) . "js/api/$api_courses_script.js", array('jquery'), $this->version, false);
     }
 
     if ($hook === 'ada-build-analytics_page_ada-aba-lesson') {
@@ -137,15 +147,21 @@ class Aba_Admin
       wp_enqueue_script($lessons_script, plugin_dir_url(__FILE__) . "js/$lessons_script.js", array('jquery'), $this->version, false);
 
       $api_lessons_script = $this->plugin_name . '-api-lessons';
-      wp_enqueue_script($api_lessons_script, plugin_dir_url(__FILE__) . "js/api/$api_lessons_script.js", array('jquery'), $this->version, false);
-      wp_localize_script(
-        $api_lessons_script,
-        'ada_aba_vars',
-        array(
-          'root' => esc_url_raw(rest_url()),
-          'nonce' => wp_create_nonce('wp_rest'),
-        )
-      );
+      $this->enqueue_api_script($api_lessons_script, plugin_dir_url(__FILE__) . "js/api/$api_lessons_script.js", array('jquery'), $this->version, false);
+    }
+
+    if ($hook === 'ada-build-analytics_page_ada-aba-syllabus') {
+      $course_lessons_script = $this->plugin_name . '-course-lessons';
+      wp_enqueue_script($course_lessons_script, plugin_dir_url(__FILE__) . "js/$course_lessons_script.js", array('jquery'), $this->version, false);
+
+      $api_courses_script = $this->plugin_name . '-api-courses';
+      $this->enqueue_api_script($api_courses_script, plugin_dir_url(__FILE__) . "js/api/$api_courses_script.js", array('jquery'), $this->version, false);
+      $api_lessons_script = $this->plugin_name . '-api-lessons';
+      $this->enqueue_api_script($api_lessons_script, plugin_dir_url(__FILE__) . "js/api/$api_lessons_script.js", array('jquery'), $this->version, false);
+      $api_course_lessons_script = $this->plugin_name . '-api-course-lessons';
+      $this->enqueue_api_script($api_course_lessons_script, plugin_dir_url(__FILE__) . "js/api/$api_course_lessons_script.js", array('jquery'), $this->version, false);
+      $api_course_lessons_script = $this->plugin_name . '-api-syllabus';
+      $this->enqueue_api_script($api_course_lessons_script, plugin_dir_url(__FILE__) . "js/api/$api_course_lessons_script.js", array('jquery'), $this->version, false);
     }
   }
 
@@ -158,6 +174,14 @@ class Aba_Admin
     // register lesson routes
     $this->lesson_routes = new Lessons_Controller($this->plugin_name);
     $this->lesson_routes->register_routes();
+
+    // register course-lesson routes
+    $this->course_lesson_routes = new Course_Lessons_Controller($this->plugin_name);
+    $this->course_lesson_routes->register_routes();
+
+    // register syllabus ui routes
+    $this->syllabus_routes = new Syllabus_Controller($this->plugin_name);
+    $this->syllabus_routes->register_routes();
   }
 
   public function add_setup_menu()
@@ -165,7 +189,7 @@ class Aba_Admin
     add_menu_page('Ada Build Analytics', 'Ada Build Analytics', 'manage_options', 'ada-aba-setup', array($this, 'setup_page'));
     add_submenu_page('ada-aba-setup', 'Courses', 'Courses', 'manage_options', 'ada-aba-course', array($this, 'course_page'));
     add_submenu_page('ada-aba-setup', 'Lessons', 'Lessons', 'manage_options', 'ada-aba-lesson', array($this, 'lesson_page'));
-    add_submenu_page('ada-aba-setup', 'Syllabus', 'Syllabus', 'manage_options', 'ada-aba-syllabus', array($this, 'course_page'));
+    add_submenu_page('ada-aba-setup', 'Syllabus', 'Syllabus', 'manage_options', 'ada-aba-syllabus', array($this, 'syllabus_page'));
   }
 
   private function get_setup_page_content(
@@ -191,6 +215,13 @@ class Aba_Admin
   ) {
     ob_start();
     include 'partials/lessons.php';
+    return ob_get_clean();
+  }
+
+  private function get_syllabuses_page_content($courses, $selected_course, $course_lessons, $available_lessons)
+  {
+    ob_start();
+    include 'partials/syllabuses.php';
     return ob_get_clean();
   }
 
@@ -451,5 +482,31 @@ class Aba_Admin
   {
     $lessons = Lesson::all();
     echo $this->get_lessons_page_content($lessons);
+  }
+
+  private static function get_selected_course($courses)
+  {
+    $selected_course_arr = array_filter($courses, function ($course) {
+      return $course->isActive();
+    });
+    // error_log(print_r($selected_course_arr, true));
+    if (count($selected_course_arr) === 1) {
+      $selected_course = $selected_course_arr[0];
+    } else {
+      $selected_course = null;
+    }
+
+    return $selected_course;
+  }
+
+  public function syllabus_page()
+  {
+    $courses = Course::all();
+    $selected_course = self::get_selected_course($courses);
+    $syllabus_edit_service = new Syllabus_Edit_Service($selected_course->getSlug());
+
+    $course_lessons = $syllabus_edit_service->getCourseLessons();
+    $available_lessons = $syllabus_edit_service->getAvailableLessons();
+    echo $this->get_syllabuses_page_content($courses, $selected_course, $course_lessons, $available_lessons);
   }
 }

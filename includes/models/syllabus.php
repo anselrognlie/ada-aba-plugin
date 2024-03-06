@@ -129,7 +129,7 @@ class Syllabus
   {
     $this->slug = $slug;
   }
-  
+
   public function setOptional($optional)
   {
     $this->optional = $optional;
@@ -151,15 +151,41 @@ class Syllabus
     );
   }
 
+  public static function get_by_slug($slug)
+  {
+    global $wpdb;
+
+    $table_name = $wpdb->prefix . self::$table_name;
+
+    $row = $wpdb->get_row(
+      $wpdb->prepare(
+        "SELECT * FROM $table_name WHERE slug = %s",
+        $slug
+      ),
+      'ARRAY_A'
+    );
+
+    if ($row) {
+      return self::fromRow($row);
+    } else {
+      return null;
+    }
+  }
+
   // create a new Syllabus from values, excluding those that can be generated
   public static function create(
     $course_id,
     $lesson_id,
-    $order,
+    $order = -1,
     $optional = false,
   ) {
     $nonce = Core::generate_nonce();
     $now = new \DateTime();
+
+    if ($order === -1) {
+      $syllabuses = self::get_by_course_id($course_id);
+      $order = count($syllabuses) + 1;
+    }
 
     return new Syllabus(
       null,
@@ -170,6 +196,31 @@ class Syllabus
       $lesson_id,
       $order,
       $nonce,
+      $optional,
+    );
+  }
+
+  public static function create_by_slug(
+    $course_slug,
+    $lesson_slug,
+    $order = -1,
+    $optional = false,
+  ) {
+    $course = Course::get_by_slug($course_slug);
+    $lesson = Lesson::get_by_slug($lesson_slug);
+
+    if (!$course) {
+      throw new Aba_Exception('Course not found');
+    }
+
+    if (!$lesson) {
+      throw new Aba_Exception('Lesson not found');
+    }
+
+    return self::create(
+      $course->getId(),
+      $lesson->getId(),
+      $order,
       $optional,
     );
   }
@@ -194,6 +245,175 @@ class Syllabus
     $result = $wpdb->insert($table_name, $data);
     if ($result === false) {
       throw new Aba_Exception('Failed to insert Syllabus');
+    }
+  }
+
+  public static function get_by_course_slug($course_slug)
+  {
+    global $wpdb;
+
+    $course_table_name = $wpdb->prefix . Course::$table_name;
+    $syllabus_table_name = $wpdb->prefix . self::$table_name;
+
+    $result = $wpdb->get_results(
+      $wpdb->prepare(
+        "SELECT s.* FROM $syllabus_table_name s
+          JOIN $course_table_name c ON s.course_id = c.id
+          WHERE c.slug = %s
+          ORDER BY s.order",
+        $course_slug
+      ),
+      'ARRAY_A'
+    );
+
+    if ($result === false) {
+      throw new Aba_Exception('Failed to retrieve Syllabuses');
+    }
+
+    if ($result) {
+      return array_map(function ($row) {
+        return self::fromRow($row);
+      }, $result);
+    } else {
+      return [];
+    }
+  }
+
+  public static function get_by_course_id($course_id)
+  {
+    global $wpdb;
+
+    $course_table_name = $wpdb->prefix . Course::$table_name;
+    $syllabus_table_name = $wpdb->prefix . self::$table_name;
+
+    $result = $wpdb->get_results(
+      $wpdb->prepare(
+        "SELECT s.* FROM $syllabus_table_name s
+          JOIN $course_table_name c ON s.course_id = c.id
+          WHERE c.id = %d
+          ORDER BY s.order",
+        $course_id
+      ),
+      'ARRAY_A'
+    );
+
+    if ($result === false) {
+      throw new Aba_Exception('Failed to retrieve Syllabuses');
+    }
+
+    if ($result) {
+      return array_map(function ($row) {
+        return self::fromRow($row);
+      }, $result);
+    } else {
+      return [];
+    }
+  }
+
+  public function delete()
+  {
+    global $wpdb;
+
+    $table_name = $wpdb->prefix . self::$table_name;
+
+    $result = $wpdb->delete(
+      $table_name,
+      array('id' => $this->id)
+    );
+
+    if ($result === false) {
+      throw new Aba_Exception('Failed to delete Syllabus');
+    }
+  }
+
+  static public function swap_order($slug1, $slug2)
+  {
+    global $wpdb;
+
+    $table_name = $wpdb->prefix . self::$table_name;
+    $now = dt_to_sql(new \DateTime());
+
+    $wpdb->query("START TRANSACTION");
+    $syllabus1 = $wpdb->get_row(
+      $wpdb->prepare(
+        "SELECT * FROM $table_name WHERE slug = %s",
+        $slug1
+      ),
+    );
+    $syllabus2 = $wpdb->get_row(
+      $wpdb->prepare(
+        "SELECT * FROM $table_name WHERE slug = %s",
+        $slug2
+      ),
+    );
+
+    if (!$syllabus1 || !$syllabus2) {
+      $wpdb->query("ROLLBACK");
+      throw new Aba_Exception('Failed to swap Syllabus records');
+    }
+
+    $swap1 = $wpdb->update(
+      $table_name,
+      array('order' => $syllabus2->order, 'updated_at' => $now),
+      array('slug' => $slug1)
+    );
+    $swap2 = $wpdb->update(
+      $table_name,
+      array('order' => $syllabus1->order, 'updated_at' => $now),
+      array('slug' => $slug2)
+    );
+
+    if ($swap1 === false || $swap2 === false) {
+      $wpdb->query("ROLLBACK");
+      throw new Aba_Exception('Failed to swap Syllabus records');
+    } else {
+      $wpdb->query("COMMIT");
+    }
+
+    $row = $wpdb->get_row(
+      $wpdb->prepare(
+        "SELECT * FROM $table_name WHERE slug = %s",
+        $slug1
+      ),
+      'ARRAY_A'
+    );
+
+    if ($row) {
+      return self::fromRow($row);
+    } else {
+      return null;
+    }
+  }
+
+  public function toggle_optional()
+  {
+    global $wpdb;
+
+    $table_name = $wpdb->prefix . self::$table_name;
+    $now = dt_to_sql(new \DateTime());
+
+    $result = $wpdb->update(
+      $table_name,
+      array('optional' => !$this->optional, 'updated_at' => $now),
+      array('id' => $this->id)
+    );
+
+    if ($result === false) {
+      throw new Aba_Exception('Failed to toggle Syllabus optional');
+    }
+
+    $row = $wpdb->get_row(
+      $wpdb->prepare(
+        "SELECT * FROM $table_name WHERE id = %d",
+        $this->id
+      ),
+      'ARRAY_A'
+    );
+
+    if ($row) {
+      return self::fromRow($row);
+    } else {
+      return null;
     }
   }
 }

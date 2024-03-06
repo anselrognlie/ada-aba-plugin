@@ -1,5 +1,13 @@
-const loadLessons = async function () {
-  const response = await fetch(`${ada_aba_vars.root}ada-aba/v1/lessons`, {
+const loadLessons = async function (excludeCourseSlug = '') {
+  const params = {};
+  if (excludeCourseSlug) {
+    params.excludeCourseSlug = excludeCourseSlug;
+  }
+
+  const url = new URL(`${ada_aba_vars.root}ada-aba/v1/lessons`);
+  Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
+
+  const response = await fetch(url, {
     headers: {
       'X-WP-Nonce': ada_aba_vars.nonce,
       'Accept': 'text/html',

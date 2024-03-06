@@ -70,4 +70,3 @@ const activateCourse = async function (slug) {
   return await response.json();
   // console.log(data);
 };
-

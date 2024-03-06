@@ -132,6 +132,9 @@ class Core
     require_once plugin_dir_path(dirname(__FILE__)) . 'admin/controllers/courses-controller.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'admin/fragments/lessons-fragments.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'admin/controllers/lessons-controller.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'admin/fragments/course-lessons-fragments.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'admin/controllers/course-lessons-controller.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'admin/controllers/ui/syllabus-controller.php';
 
     /**
      * The class responsible for defining all actions that occur in the admin area.
@@ -158,9 +161,14 @@ class Core
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/models/course.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/models/lesson.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/models/syllabus.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/models/course-lesson.php';
 
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/dto/course/course-scalar.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/dto/lesson/lesson-scalar.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/dto/syllabus/syllabus-scalar.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/dto/course-lesson/course-lesson-scalar.php';
+    
+    require_once plugin_dir_path(dirname(__FILE__)) . 'admin/services/syllabus-edit-service.php';
   }
 
   /**

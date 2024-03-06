@@ -130,6 +130,53 @@ class Lesson
     }
   }
 
+  public static function get_by_id($id)
+  {
+    global $wpdb;
+
+    $table_name = $wpdb->prefix . self::$table_name;
+
+    $row = $wpdb->get_row(
+      $wpdb->prepare(
+        "SELECT * FROM $table_name WHERE id = %d",
+        $id
+      ),
+      'ARRAY_A'
+    );
+
+    if ($row) {
+      return self::fromRow($row);
+    } else {
+      return null;
+    }
+  }
+
+  public static function get_by_ids($ids)
+  {
+    global $wpdb;
+
+    if (count($ids) === 0) {
+      return [];
+    }
+
+    $table_name = $wpdb->prefix . self::$table_name;
+
+    $ids_str = implode(',', $ids);
+
+    $result = $wpdb->get_results(
+      "SELECT * FROM $table_name WHERE id IN ($ids_str)",
+      'ARRAY_A'
+    );
+
+    if ($result) {
+      return array_map(function ($row) {
+        return self::fromRow($row);
+      }, $result);
+    } else {
+      return [];
+    }
+  }
+
   // create a new Lesson from values, excluding those that can be generated
   public static function create(
     $name,
