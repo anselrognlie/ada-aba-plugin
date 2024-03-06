@@ -437,10 +437,10 @@ class Aba_Public
 
       if (call_user_func($method, $value)) {
         $this->plugin_will_handle();
-        error_log("$idx succeeded");
+        // error_log("$idx succeeded");
         call_user_func($handler);
       } else {
-        error_log("$idx failed");
+        // error_log("$idx failed");
       }
     }
 

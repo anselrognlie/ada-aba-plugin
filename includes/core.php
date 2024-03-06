@@ -151,7 +151,7 @@ class Core
 
     $this->loader = new Loader();
 
-    error_log(self::generate_nonce());
+    // error_log(self::generate_nonce());
   }
 
   private function require_models()
