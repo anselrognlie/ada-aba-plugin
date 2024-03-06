@@ -53,3 +53,10 @@ A few other approaches to consider:
 Intelephense stubs are required
 
 `composer require --dev php-stubs/wordpress-tests-stubs`
+
+## PDF generation
+
+We would like to generate a PDF certificate for course completion.
+
+[PDFlib](https://www.pdflib.com/) is a commercial product and watermarks the result without a license.
+[FPDF](http://www.fpdf.org/) is a free, open source package.
