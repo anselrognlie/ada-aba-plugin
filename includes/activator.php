@@ -47,6 +47,7 @@ class Activator
     $course_table_name = $wpdb->prefix . Models\Course::$table_name;
     $lesson_table_name = $wpdb->prefix . Models\Lesson::$table_name;
     $syllabus_table_name = $wpdb->prefix . Models\Syllabus::$table_name;
+    $challenge_action_table_name = $wpdb->prefix . Models\Challenge_Action::$table_name;
 
     $sql = "CREATE TABLE $learner_table_name (
     id mediumint(9) NOT NULL AUTO_INCREMENT,
@@ -100,6 +101,18 @@ class Activator
     FOREIGN KEY (lesson_id)
       REFERENCES $lesson_table_name(id)
    ) $charset_collate;";
+
+    $sql .= "CREATE TABLE $challenge_action_table_name (
+      id mediumint(9) NOT NULL AUTO_INCREMENT,
+      created_at datetime NOT NULL,
+      updated_at datetime NOT NULL,
+      deleted_at datetime,
+      slug varchar(255) NOT NULL UNIQUE,
+      expires_at datetime NOT NULL,
+      action_class text NOT NULL,
+      action_payload text NOT NULL,
+      PRIMARY KEY  (id)
+       ) $charset_collate;";
 
     require_once ABSPATH . 'wp-admin/includes/upgrade.php';
     dbDelta($sql);

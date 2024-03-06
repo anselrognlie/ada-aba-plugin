@@ -162,6 +162,7 @@ class Core
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/models/lesson.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/models/syllabus.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/models/course-lesson.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/models/challenge-action.php';
 
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/dto/course/course-scalar.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/dto/lesson/lesson-scalar.php';
