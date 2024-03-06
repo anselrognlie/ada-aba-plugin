@@ -36,7 +36,7 @@ class Course_Lessons_Controller {
     register_rest_route($this->namespace, '/' . $this->resource_name . '/(?P<slug>[\w\d]+)', array(
       array(
         'methods'  => WP_REST_Server::DELETABLE,
-        'callback' => array($this, 'delete'),
+        'callback' => array($this, 'remove'),
         'permission_callback' => array($this, 'permissions_check'),
       ),
     ));
@@ -87,14 +87,14 @@ class Course_Lessons_Controller {
     return rest_ensure_response(new Syllabus_Scalar($syllabus));
   }
 
-  public function delete($request)
+  public function remove($request)
   {
     $slug = $request['slug'];
     Core::log(sprintf('%1$s: slug: %2$s', __FUNCTION__, $slug));
 
     $syllabus = Syllabus::get_by_slug($slug);
     if ($syllabus) {
-      $syllabus->delete();
+      $syllabus->remove();
     }
     return rest_ensure_response(new Syllabus_Scalar($syllabus));
   }

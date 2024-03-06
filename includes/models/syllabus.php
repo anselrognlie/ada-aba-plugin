@@ -184,7 +184,10 @@ class Syllabus
 
     if ($order === -1) {
       $syllabuses = self::get_by_course_id($course_id);
-      $order = count($syllabuses) + 1;
+      $max_order = array_reduce($syllabuses, function ($max, $syllabus) {
+        return max($max, $syllabus->getOrder());
+      }, -1);
+      $order = $max_order + 1;
     }
 
     return new Syllabus(
@@ -245,6 +248,32 @@ class Syllabus
     $result = $wpdb->insert($table_name, $data);
     if ($result === false) {
       throw new Aba_Exception('Failed to insert Syllabus');
+    }
+  }
+
+  public function update()
+  {
+    global $wpdb;
+
+    $table_name = $wpdb->prefix . self::$table_name;
+
+    $now = new \DateTime();
+    $now = dt_to_sql($now);
+
+    $data = array(
+      'updated_at' => $now,
+      'course_id' => $this->course_id,
+      'lesson_id' => $this->lesson_id,
+      'order' => $this->order,
+      'slug' => $this->slug,
+      'optional' => $this->optional,
+    );
+
+    $where = array('id' => $this->id);
+
+    $result = $wpdb->update($table_name, $data, $where);
+    if ($result === false) {
+      throw new Aba_Exception('Failed to update learner');
     }
   }
 
@@ -324,6 +353,42 @@ class Syllabus
     if ($result === false) {
       throw new Aba_Exception('Failed to delete Syllabus');
     }
+  }
+
+  public function remove()
+  {
+    global $wpdb;
+
+    $table_name = $wpdb->prefix . self::$table_name;
+
+    $wpdb->query("START TRANSACTION");
+
+    $result = $wpdb->delete(
+      $table_name,
+      array('id' => $this->id)
+    );
+
+    if ($result === false) {
+      $wpdb->query("ROLLBACK");
+      throw new Aba_Exception('Failed to delete Syllabus');
+    }
+
+    $syllabuses = self::get_by_course_id($this->course_id);
+    $idx = 0;
+    try {
+      foreach ($syllabuses as $syllabus) {
+        if ($syllabus->getId() !== $this->id) {
+          $syllabus->setOrder($idx);
+          $idx += 1;
+          $syllabus->update();
+        }
+      }
+    } catch (Aba_Exception $e) {
+      $wpdb->query("ROLLBACK");
+      throw $e;
+    }
+
+    $wpdb->query("COMMIT");
   }
 
   static public function swap_order($slug1, $slug2)
