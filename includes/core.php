@@ -221,7 +221,7 @@ class Core
     $plugin_public = new Aba_Public($plugin_name, $this->get_version());
 
     $this->loader->add_shortcode($plugin_name . '-registration-form', $plugin_public, 'shortcode_register_form');
-    $this->loader->add_shortcode($plugin_name . '-confirm', $plugin_public, 'shortcode_confirm');
+    $this->loader->add_shortcode($plugin_name . '-learner-confirmation', $plugin_public, 'shortcode_learner_confirmation');
 
     $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_styles');
     $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_scripts');

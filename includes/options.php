@@ -43,7 +43,7 @@ class Options
   private $options;
 
   private const DEFAULT_OPTIONS = [
-    'confirmation-page' => -1,
+    'learner-confirmation-page' => -1,
     'registered-page' => -1,
     'send-email' => 1,
     'private-key' => 'replace with a good private key',
@@ -78,14 +78,19 @@ class Options
     return new Options($plugin_name, self::DEFAULT_OPTIONS);
   }
 
-  public function get_confirmation_page()
+  private function get_with_fallback($key)
   {
-    return $this->options['confirmation-page'];
+    return isset($this->options[$key]) ? $this->options[$key] : self::DEFAULT_OPTIONS[$key];
+  }
+
+  public function get_learner_confirmation_page()
+  {
+    return $this->get_with_fallback('learner-confirmation-page');
   }
 
   public function get_registered_page()
   {
-    return $this->options['registered-page'];
+    return $this->get_with_fallback('registered-page');
   }
 
   public function get_send_email()
@@ -95,7 +100,7 @@ class Options
 
   public function get_private_key()
   {
-    return isset($this->options['private-key']);
+    return $this->get_with_fallback('private-key');
   }
 
   public function save()

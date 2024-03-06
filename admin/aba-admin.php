@@ -192,11 +192,8 @@ class Aba_Admin
     add_submenu_page('ada-aba-setup', 'Syllabus', 'Syllabus', 'manage_options', 'ada-aba-syllabus', array($this, 'syllabus_page'));
   }
 
-  private function get_setup_page_content(
-    $pages,
-    $confirmation_page_id,
-    $registered_page_id,
-  ) {
+  private function get_setup_page_content()
+  {
     ob_start();
     include 'partials/display.php';
     return ob_get_clean();
@@ -218,8 +215,12 @@ class Aba_Admin
     return ob_get_clean();
   }
 
-  private function get_syllabuses_page_content($courses, $selected_course, $course_lessons, $available_lessons)
-  {
+  private function get_syllabuses_page_content(
+    $courses,
+    $selected_course,
+    $course_lessons,
+    $available_lessons
+  ) {
     ob_start();
     include 'partials/syllabuses.php';
     return ob_get_clean();
@@ -242,14 +243,14 @@ class Aba_Admin
     );
 
     add_settings_field(
-      'confirmation-page',
-      'Confirmation Page',
+      'learner-confirmation-page',
+      'Learner Confirmation Page',
       array($this, 'sandbox_add_settings_field_select'),
       $this->plugin_name . '-settings',
       $this->plugin_name . '-settings-section',
       array(
-        'label_for' => 'confirmation-page',
-        'description' => 'Page where the [ada-aba-confirmation] shortcode is used.',
+        'label_for' => 'learner-confirmation-page',
+        'description' => 'Page where the [ada-aba-learner-confirmation] shortcode is used.',
         'options' => array($this, 'generate_pages')
       )
     );
@@ -298,7 +299,7 @@ class Aba_Admin
 
     $new_input = array();
     $valid_options = array(
-      'confirmation-page' => null,
+      'learner-confirmation-page' => null,
       'registered-page' => null,
       'private-key' => null,
       // 'private-key' => array(
@@ -469,7 +470,7 @@ class Aba_Admin
   {
     $pages = $this->get_page_options();
     // Core::log(print_r($pages, true));
-    echo $this->get_setup_page_content($pages, -1, -1);
+    echo $this->get_setup_page_content();
   }
 
   public function course_page()

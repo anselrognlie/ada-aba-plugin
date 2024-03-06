@@ -52,7 +52,7 @@ class Aba_Public
   private $load_handlers = [];
 
   public static $registration_shortcode = "registration-form";
-  public static $confirm_shortcode = "confirm";
+  public static $learner_confirmation_shortcode = "learner-confirmation";
 
   /**
    * Initialize the class and set its properties.
@@ -74,10 +74,10 @@ class Aba_Public
     return $this->plugin_name . '-' . $bare_shortcode;
   }
 
-  private function get_confirm_page()
+  private function get_learner_confirmation_page()
   {
     $options = Options::get_options($this->plugin_name);
-    $post_id = $options->get_confirmation_page();
+    $post_id = $options->get_learner_confirmation_page();
     $post = get_post($post_id);
     $slug = $post?->post_name;
     return $slug;
@@ -100,9 +100,9 @@ class Aba_Public
   private function register_load_handlers()
   {
     $registration = $this->get_shortcode(self::$registration_shortcode);
-    $confirm_page = $this->get_confirm_page();
+    $learner_confirmation_page = $this->get_learner_confirmation_page();
 
-    if (!$confirm_page) {
+    if (!$learner_confirmation_page) {
       return;
     }
 
@@ -114,8 +114,8 @@ class Aba_Public
       ),
       array(
         'method' => array($this, 'is_page_name'),
-        'value' => $confirm_page,
-        'handler' => array($this, 'handle_confirm'),
+        'value' => $learner_confirmation_page,
+        'handler' => array($this, 'handle_learner_confirmation'),
       ),
     );
   }
@@ -259,16 +259,16 @@ class Aba_Public
     return $_GET['u'];
   }
 
-  public function shortcode_confirm()
+  public function shortcode_learner_confirmation()
   {
     if ($this->is_user_confirmed()) {
-      return $this->handle_confirm_success();
+      return $this->handle_learner_confirmation_success();
     } else {
-      return $this->handle_confirm_failed();
+      return $this->handle_learner_confirmation_failed();
     }
   }
 
-  public function handle_confirm()
+  public function handle_learner_confirmation()
   {
     $this->clean_expired_registrations();
 
@@ -285,8 +285,8 @@ class Aba_Public
       return;
     }
 
-    $confirm_page = $this->get_confirm_page();
-    if (empty($confirm_page)) {
+    $learner_confirmation_page = $this->get_learner_confirmation_page();
+    if (empty($learner_confirmation_page)) {
       return;
     }
 
@@ -303,14 +303,14 @@ class Aba_Public
     }
 
     if ($failed || empty($learner)) {
-      // return a failure to confirm page
-      wp_redirect(home_url($confirm_page));
+      // show a failure to confirm page
+      wp_redirect(home_url($learner_confirmation_page));
       return;
     } else {
-      // return a success to confirm page
+      // show a success to confirm page
       $user = $learner->getSlug();
       $this->send_registered_email($learner);
-      wp_redirect(home_url($confirm_page) . "?u=$user");
+      wp_redirect(home_url($learner_confirmation_page) . "?u=$user");
       return;
     }
 
@@ -366,14 +366,14 @@ class Aba_Public
     return $this->get_registration_posted_content($resend_link);
   }
 
-  private function handle_confirm_success()
+  private function handle_learner_confirmation_success()
   {
     $user = $this->get_confirmed_user();
     $progress_link = home_url($this->get_progress_page($user)) ?? '';
     return $this->get_registered_content($progress_link);
   }
 
-  private function handle_confirm_failed()
+  private function handle_learner_confirmation_failed()
   {
     return $this->get_registered_error_content();
   }
@@ -491,7 +491,7 @@ class Aba_Public
   {
     $options = Options::get_options($this->plugin_name);
 
-    $page_id = (int) $options->get_confirmation_page();
+    $page_id = (int) $options->get_learner_confirmation_page();
     if ($page_id <= 0) {
       return $_POST['verify_link'];
     }
