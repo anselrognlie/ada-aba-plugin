@@ -108,6 +108,8 @@ class Activator
       updated_at datetime NOT NULL,
       deleted_at datetime,
       slug varchar(255) NOT NULL UNIQUE,
+      email varchar(255) NOT NULL,
+      nonce varchar(255) NOT NULL UNIQUE,
       expires_at datetime NOT NULL,
       action_class text NOT NULL,
       action_payload text NOT NULL,
