@@ -17,6 +17,8 @@ class Challenge_Action
   private $expires_at;
   private $action_class;
   private $action_payload;
+  private $nonce;
+  private $email;
 
   public static $table_name = 'ada_aba_challenge_action';
 
@@ -26,15 +28,19 @@ class Challenge_Action
     $updated_at,
     $deleted_at,
     $slug,
+    $email,
+    $nonce,
     $expires_at,
     $action_class,
-    $action_payload
+    $action_payload,
   ) {
     $this->id = $id;
     $this->created_at = $created_at;
     $this->updated_at = $updated_at;
     $this->deleted_at = $deleted_at;
+    $this->nonce = $nonce;
     $this->slug = $slug;
+    $this->email = $email;
     $this->expires_at = $expires_at;
     $this->action_class = $action_class;
     $this->action_payload = $action_payload;
@@ -80,6 +86,16 @@ class Challenge_Action
     return $this->action_payload;
   }
 
+  public function getNonce()
+  {
+    return $this->nonce;
+  }
+
+  public function getEmail()
+  {
+    return $this->email;
+  }
+
   public function setId($id)
   {
     $this->id = $id;
@@ -120,6 +136,16 @@ class Challenge_Action
     $this->action_payload = $action_payload;
   }
 
+  public function setNonce($nonce)
+  {
+    $this->nonce = $nonce;
+  }
+
+  public function setEmail($email)
+  {
+    $this->email = $email;
+  }
+
   public static function fromRow($row)
   {
     return new self(
@@ -128,9 +154,11 @@ class Challenge_Action
       $row['updated_at'],
       $row['deleted_at'],
       $row['slug'],
+      $row['email'],
+      $row['nonce'],
       $row['expires_at'],
       $row['action_class'],
-      $row['action_payload']
+      $row['action_payload'],
     );
   }
 
