@@ -154,7 +154,6 @@ class Courses_Controller {
     $slug = $request['slug'];
     $name = $request->get_param('name');
     Core::log(sprintf('%1$s: slug: %2$s, name: %3$s', __FUNCTION__, $slug, $name));
-    error_log(print_r($request->get_params(), true));
 
     $course = Course::get_by_slug($slug);
     if ($course) {
