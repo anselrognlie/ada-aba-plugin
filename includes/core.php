@@ -170,6 +170,13 @@ class Core
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/dto/course-lesson/course-lesson-scalar.php';
     
     require_once plugin_dir_path(dirname(__FILE__)) . 'admin/services/syllabus-edit-service.php';
+
+    require_once plugin_dir_path(dirname(__FILE__)) . 'public/shortcodes/ada-build-shortcode.php';
+
+    require_once plugin_dir_path(dirname(__FILE__)) . 'public/workflows/keys.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'public/workflows/workflow-base.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'public/workflows/registration-workflow.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'public/workflows/confirmation-workflow.php';
   }
 
   /**
@@ -222,6 +229,7 @@ class Core
 
     $this->loader->add_shortcode($plugin_name . '-registration-form', $plugin_public, 'shortcode_register_form');
     $this->loader->add_shortcode($plugin_name . '-learner-confirmation', $plugin_public, 'shortcode_learner_confirmation');
+    $this->loader->add_shortcode($plugin_name . '-ada-build', $plugin_public, 'shortcode_ada_build');
 
     $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_styles');
     $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_scripts');

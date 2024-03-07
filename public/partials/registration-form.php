@@ -14,8 +14,8 @@
 ?>
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
-<form method="post" action="/<?php echo $form_url ?>/">
-  <h1>Ada Build Registration</h1>
+<form method="post">
+  <h2>Registration</h2>
   <label for="first_name">First Name</label>
   <input type="text" id="first_name" name="first_name" value="<?php echo $first_name ?>" required>
   <label for="last_name">Last Name</label>
@@ -23,7 +23,7 @@
   <label for="email">Email</label>
   <input type="email" id="email" name="email" value="<?php echo $email ?>" required>
 
-  <input type="hidden" name="<?php echo $shortcode ?>">
+  <input type="hidden" name="action" value="<?php echo $action ?>">
   <input type="hidden" name="verify_link" value="<?php echo $verify_link ?>">
 
   <input type="submit" value="Submit">

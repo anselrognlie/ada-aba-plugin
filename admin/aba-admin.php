@@ -243,27 +243,14 @@ class Aba_Admin
     );
 
     add_settings_field(
-      'learner-confirmation-page',
-      'Learner Confirmation Page',
+      'ada-build-page',
+      'Ada Build Page',
       array($this, 'sandbox_add_settings_field_select'),
       $this->plugin_name . '-settings',
       $this->plugin_name . '-settings-section',
       array(
-        'label_for' => 'learner-confirmation-page',
-        'description' => 'Page where the [ada-aba-learner-confirmation] shortcode is used.',
-        'options' => array($this, 'generate_pages')
-      )
-    );
-
-    add_settings_field(
-      'registered-page',
-      'Registered Page',
-      array($this, 'sandbox_add_settings_field_select'),
-      $this->plugin_name . '-settings',
-      $this->plugin_name . '-settings-section',
-      array(
-        'label_for' => 'registered-page',
-        'description' => 'Page where the [ada-aba-registered] shortcode is used.',
+        'label_for' => 'ada-build-page',
+        'description' => 'Page where the [ada-aba-ada-build] shortcode is used. All actions pass through this page. It is automatically updated when the host page is loaded.',
         'options' => array($this, 'generate_pages')
       )
     );
@@ -300,6 +287,7 @@ class Aba_Admin
     $new_input = array();
     $valid_options = array(
       'learner-confirmation-page' => null,
+      'confirm-page' => null,
       'registered-page' => null,
       'private-key' => null,
       // 'private-key' => array(

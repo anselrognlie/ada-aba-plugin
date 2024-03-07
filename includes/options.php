@@ -43,8 +43,7 @@ class Options
   private $options;
 
   private const DEFAULT_OPTIONS = [
-    'learner-confirmation-page' => -1,
-    'registered-page' => -1,
+    'ada-build-page' => -1,
     'send-email' => 1,
     'private-key' => 'replace with a good private key',
   ];
@@ -83,14 +82,14 @@ class Options
     return isset($this->options[$key]) ? $this->options[$key] : self::DEFAULT_OPTIONS[$key];
   }
 
-  public function get_learner_confirmation_page()
+  public function get_ada_build_page()
   {
-    return $this->get_with_fallback('learner-confirmation-page');
+    return $this->get_with_fallback('ada-build-page');
   }
 
-  public function get_registered_page()
+  public function set_ada_build_page($post_id)
   {
-    return $this->get_with_fallback('registered-page');
+    return $this->options['ada-build-page'] = $post_id;
   }
 
   public function get_send_email()
