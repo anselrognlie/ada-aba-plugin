@@ -120,6 +120,36 @@ class Aba_Public
     );
   }
 
+  // registered in Core
+  public function handle_page_loaded()
+  {
+    global $wp;
+    // $current_url = home_url(add_query_arg(array(), $wp->request));
+    // $current_url = add_query_arg( $wp->query_vars, home_url() );
+    // $current_url = $_SERVER['REQUEST_URI'];
+    // $request_method = $_SERVER['REQUEST_METHOD'];
+
+    // Core::log(sprintf('%1$s: url: %2$s verb: %5$s _POST: %3$s _GET: %4$s',
+    //   __FUNCTION__, $current_url,
+    //   print_r($_POST, true), print_r($_GET, true), $request_method));
+
+    foreach ($this->load_handlers as $idx => $entry) {
+      $method = $entry['method'];
+      $value = $entry['value'];
+      $handler = $entry['handler'];
+
+      if (call_user_func($method, $value)) {
+        $this->plugin_will_handle();
+        // error_log("$idx succeeded");
+        call_user_func($handler);
+      } else {
+        // error_log("$idx failed");
+      }
+    }
+
+    Session::close();
+  }
+
   private function is_in_post($value)
   {
     return isset($_POST[$value]);
@@ -416,35 +446,6 @@ class Aba_Public
 
     // Core::log(sprintf('%1$s: %2$d', __FUNCTION__, $session->get('handled')));
     // $session->save();
-  }
-
-  public function handle_page_loaded()
-  {
-    global $wp;
-    // $current_url = home_url(add_query_arg(array(), $wp->request));
-    // $current_url = add_query_arg( $wp->query_vars, home_url() );
-    // $current_url = $_SERVER['REQUEST_URI'];
-    // $request_method = $_SERVER['REQUEST_METHOD'];
-
-    // Core::log(sprintf('%1$s: url: %2$s verb: %5$s _POST: %3$s _GET: %4$s',
-    //   __FUNCTION__, $current_url,
-    //   print_r($_POST, true), print_r($_GET, true), $request_method));
-
-    foreach ($this->load_handlers as $idx => $entry) {
-      $method = $entry['method'];
-      $value = $entry['value'];
-      $handler = $entry['handler'];
-
-      if (call_user_func($method, $value)) {
-        $this->plugin_will_handle();
-        // error_log("$idx succeeded");
-        call_user_func($handler);
-      } else {
-        // error_log("$idx failed");
-      }
-    }
-
-    Session::close();
   }
 
   private function get_registration_posted_content(
