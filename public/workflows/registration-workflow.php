@@ -15,14 +15,8 @@ class Registration_Workflow extends Workflow_Base
     parent::__construct($plugin_name);
   }
 
-  public function can_handle_load()
+  public function can_handle_load_precise()
   {
-    $build_page = $this->get_ada_build_page();
-
-    if (!$this->is_page_name($build_page)) {
-      return false;
-    }
-
     return $this->did_registration_post();
   }
 

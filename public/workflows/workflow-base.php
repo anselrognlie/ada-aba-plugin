@@ -15,10 +15,21 @@ abstract class Workflow_Base
     $this->options = Options::get_options($this->plugin_name);
   }
 
-  abstract public function can_handle_load();
+  abstract public function can_handle_load_precise();
   abstract public function handle_load();
   abstract public function can_handle_page();
   abstract public function handle_page();
+
+  public function can_handle_load()
+  {
+    $build_page = $this->get_ada_build_page();
+
+    if (!$this->is_page_name($build_page)) {
+      return false;
+    }
+
+    return $this->can_handle_load_precise();
+  }
 
   protected function get_ada_build_page()
   {
