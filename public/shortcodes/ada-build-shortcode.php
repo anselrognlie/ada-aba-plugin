@@ -26,8 +26,12 @@ class Ada_Build_Shortcode
   private function store_host_page()
   {
     $options = Options::get_options($this->plugin_name);
-    $options->set_ada_build_page(get_the_ID());
-    $options->save();
+    $page_id = get_the_ID();
+    
+    if ($options->get_ada_build_page() !== $page_id) {
+      $options->set_ada_build_page(get_the_ID());
+      $options->save();
+    }
   }
 
   private function register_page_workflows()
