@@ -35,23 +35,17 @@ class Register_Action extends Action_Base
 
   protected function complete_specific()
   {
-    $learner = Learner::create(
+    $learner = $this->create_or_get_learner(
       $this->first_name,
       $this->last_name,
       $this->getEmail(),
     );
 
-    $failed = false;
-    try {
-      $failed = $learner->insert();
-    } catch (Aba_Exception $e) {
-      // potentially add code to let user update or resend email
+    if (!$learner) {
+      throw new Aba_Exception('Could not create or get learner');
     }
 
-    if (!$failed) {
-      Emails::send_welcome_email($learner);
-    }
-
+    Emails::send_welcome_email($learner);
     Links\redirect_to_confirmation_page($learner->getSlug(), false);
   }
 
@@ -78,6 +72,23 @@ class Register_Action extends Action_Base
     );
 
     return [$subject, $body];
+  }
+
+  private function create_or_get_learner()
+  {
+    $learner = Learner::create(
+      $this->first_name,
+      $this->last_name,
+      $this->getEmail(),
+    );
+
+    try {
+      $learner->insert();
+    } catch (Aba_Exception $e) {
+      // errors on violation of unique constraints
+      $learner = Learner::get_by_email($this->getEmail());
+    }
+    return $learner;
   }
 
   public static function create($email, $first_name, $last_name)

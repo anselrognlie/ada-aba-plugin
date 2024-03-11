@@ -9,6 +9,9 @@ use Ada_Aba\Includes\Models\Challenge_Action;
 use Ada_Aba\Includes\Models\Db_Helpers\Transaction;
 use Ada_Aba\Includes\Options;
 use Ada_Aba\Public\Action\Links;
+use Ada_Aba\Public\Action\Errors;
+
+use function Ada_Aba\Public\Action\Links\redirect_to_error_page;
 
 abstract class Action_Base
 {
@@ -73,7 +76,8 @@ abstract class Action_Base
         $this->cleanup();
       } catch (Aba_Exception $e) {
         Transaction::rollback();
-        throw $e;
+        Core::log($e->getMessage());
+        redirect_to_error_page(Errors\COMPLETE_ACTION);
       }
       Transaction::complete();
   }
@@ -134,7 +138,15 @@ abstract class Action_Base
 
   public function run()
   {
-    $this->log_action();
+    try
+    {
+      $this->log_action();
+    } catch (Aba_Exception $e) {
+      Core::log($e);
+      redirect_to_error_page(Errors\LOG_ACTION);
+      return;
+    }
+
     $this->notify();
   }
 

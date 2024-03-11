@@ -31,6 +31,12 @@ function get_confirm_link($action_slug)
   return Core::get_ada_build_url() . '?' . Keys\CONFIRM . "=$action_slug";
 }
 
+function get_error_link($error)
+{
+  $hex_err = dechex($error);
+  return Core::get_ada_build_url() . '?' . Keys\ERROR . "=0x$hex_err";
+}
+
 function redirect_to_confirm_page($action_slug, $halt = true)
 {
   $url = get_confirm_link($action_slug);
@@ -54,6 +60,17 @@ function redirect_to_verify_page($nonce, $halt = true)
 function redirect_to_confirmation_page($user_slug, $halt = true)
 {
   $url = get_confirmation_link($user_slug);
+  wp_redirect($url);
+
+  if ($halt) {
+    exit;
+  }
+}
+
+
+function redirect_to_error_page($error, $halt = true)
+{
+  $url = get_error_link($error);
   wp_redirect($url);
 
   if ($halt) {

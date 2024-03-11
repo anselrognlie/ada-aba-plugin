@@ -15,9 +15,9 @@
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 
-<h2>The action could not be completed</h2>
+<h2>An error occured.</h2>
 
 <p>
-  Please try using your confirmation link again later. If you continue to have
-  trouble, you may need to try performing the original action again.
+  An error occurred (<?php echo $error ?>) while trying to carry out your request.
+  Please try again later.
 </p>

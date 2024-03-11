@@ -130,7 +130,6 @@ class Aba_Public
   {
     $this->load_handlers = array(
       new Action_Workflow($this->plugin_name),
-      new Confirmation_Workflow($this->plugin_name),
       new Registration_Workflow($this->plugin_name),
     );
   }
