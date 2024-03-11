@@ -63,7 +63,6 @@ class Deactivator
 
     $setting_name = $plugin_name . '-settings';
     $cmd = "DELETE FROM $table_name WHERE option_name = '$setting_name'";
-    Core::log($cmd);
     $wpdb->query($cmd);
   }
 }

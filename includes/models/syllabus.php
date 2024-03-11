@@ -137,7 +137,6 @@ class Syllabus
 
   public static function fromRow($row)
   {
-    // Core::log(print_r($row, true));
     return new Syllabus(
       $row['id'],
       $row['created_at'],

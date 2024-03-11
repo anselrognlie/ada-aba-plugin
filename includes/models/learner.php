@@ -206,7 +206,6 @@ class Learner
 
   public static function fromRow($row)
   {
-    // Core::log(print_r($row, true));
     return new Learner(
       $row['id'],
       $row['created_at'],

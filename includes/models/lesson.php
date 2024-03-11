@@ -98,7 +98,6 @@ class Lesson
 
   public static function fromRow($row)
   {
-    // Core::log(print_r($row, true));
     return new Lesson(
       $row['id'],
       $row['created_at'],

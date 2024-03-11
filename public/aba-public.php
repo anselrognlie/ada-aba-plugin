@@ -146,7 +146,6 @@ class Aba_Public
 
   public function shortcode_ada_build()
   {
-    Core::log(sprintf('%1$s: %2$s', __FUNCTION__, $this->plugin_name));
     $code = new Ada_Build_Shortcode($this->plugin_name);
     return $code->run();
   }

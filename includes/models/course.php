@@ -128,7 +128,6 @@ class Course
 
   public static function fromRow($row)
   {
-    // Core::log(print_r($row, true));
     return new Course(
       $row['id'],
       $row['created_at'],
