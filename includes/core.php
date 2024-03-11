@@ -290,6 +290,12 @@ class Core
     error_log($msg);
   }
 
+  public static function privy($msg)
+  {
+    $len = strlen($msg);
+    return "[$len chars]";
+  }
+
   public static function set_log_level($level)
   {
     self::$log_level = $level;
