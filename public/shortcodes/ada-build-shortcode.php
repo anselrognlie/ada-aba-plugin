@@ -5,6 +5,7 @@ namespace Ada_Aba\Public\Shortcodes;
 use Ada_Aba\Includes\Options;
 use Ada_Aba\Public\Workflows\Confirmation_Workflow;
 use Ada_Aba\Public\Workflows\Registration_Workflow;
+use Ada_Aba\Public\Workflows\Action_Workflow;
 
 class Ada_Build_Shortcode
 {
@@ -37,6 +38,7 @@ class Ada_Build_Shortcode
   private function register_page_workflows()
   {
     $this->workflows = array(
+      new Action_Workflow($this->plugin_name),
       new Confirmation_Workflow($this->plugin_name),
       new Registration_Workflow($this->plugin_name),
     );

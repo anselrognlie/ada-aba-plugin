@@ -15,7 +15,7 @@
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 
-<h1>Your email address has been confirmed!</h1>
+<h2>Your email address has been confirmed!</h2>
 
 <p>
   You can start tracking your progress by

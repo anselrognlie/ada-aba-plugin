@@ -15,9 +15,4 @@
 
 <p>
   Thank you for registering for Ada Build.
-  Click the following link to complete your registration by verifying your email:
-</p>
-
-<p>
-  <a href="<?php echo $verify_link ?>">Verify email</a>
 </p>

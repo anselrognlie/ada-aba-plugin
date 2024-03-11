@@ -2,7 +2,9 @@
 
 namespace Ada_Aba\Public\Workflows;
 
+use Ada_Aba\Includes\Core;
 use Ada_Aba\Includes\Options;
+use Ada_Aba\Public\Action\Keys;
 
 abstract class Workflow_Base
 {
@@ -33,8 +35,12 @@ abstract class Workflow_Base
 
   protected function get_ada_build_page()
   {
-    $post = get_post($this->options->get_ada_build_page());
-    return $post ? $post->post_name : '@intentionally@illegal@page@name@';
+    return Core::get_ada_build_page();
+  }
+
+  protected function get_ada_build_url()
+  {
+    return Core::get_ada_build_url();
   }
 
   protected function get_current_page()

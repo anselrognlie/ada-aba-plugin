@@ -17,9 +17,6 @@ class Learner
   private $last_name;
   private $email;
   private $slug;
-  private $challenge_nonce;
-  private $challenge_expires_at;
-  private $verified;
 
   public static $table_name = 'ada_aba_learner';
 
@@ -32,9 +29,6 @@ class Learner
     $last_name,
     $email,
     $slug,
-    $challenge_nonce,
-    $challenge_expires_at,
-    $verified
   ) {
     $this->id = $id;
     $this->created_at = $created_at;
@@ -44,9 +38,6 @@ class Learner
     $this->last_name = $last_name;
     $this->email = $email;
     $this->slug = $slug;
-    $this->challenge_nonce = $challenge_nonce;
-    $this->challenge_expires_at = $challenge_expires_at;
-    $this->verified = $verified;
   }
 
   // Getters
@@ -90,21 +81,6 @@ class Learner
     return $this->slug;
   }
 
-  public function getChallengeNonce()
-  {
-    return $this->challenge_nonce;
-  }
-
-  public function getChallengeExpiresAt()
-  {
-    return $this->challenge_expires_at;
-  }
-
-  public function getVerified()
-  {
-    return $this->verified;
-  }
-
   // Setters
   public function setId($id)
   {
@@ -146,21 +122,6 @@ class Learner
     $this->slug = $slug;
   }
 
-  public function setChallengeNonce($challenge_nonce)
-  {
-    $this->challenge_nonce = $challenge_nonce;
-  }
-
-  public function setChallengeExpiresAt($challenge_expires_at)
-  {
-    $this->challenge_expires_at = $challenge_expires_at;
-  }
-
-  public function setVerified($verified)
-  {
-    $this->verified = $verified;
-  }
-
   public static function get_by_email($email)
   {
     global $wpdb;
@@ -182,20 +143,19 @@ class Learner
     }
   }
 
-  public static function get_by_verify_code($verify_code, $restrict_verified = true, $verified = 0)
+  public static function get_by_slug($slug)
   {
     global $wpdb;
 
     $table_name = $wpdb->prefix . self::$table_name;
 
-    $cmd = $wpdb->prepare("SELECT * FROM $table_name WHERE challenge_nonce = %s", $verify_code);
-
-    if ($restrict_verified) {
-      $verified_num = $verified ? 1 : 0;
-      $cmd .= " AND verified = $verified_num";
-    }
-
-    $row = $wpdb->get_row($cmd, 'ARRAY_A');
+    $row = $wpdb->get_row(
+      $wpdb->prepare(
+        "SELECT * FROM $table_name WHERE slug = %s",
+        $slug
+      ),
+      'ARRAY_A'
+    );
 
     if ($row) {
       return self::fromRow($row);
@@ -215,9 +175,6 @@ class Learner
       $row['last_name'],
       $row['email'],
       $row['slug'],
-      $row['challenge_nonce'],
-      $row['challenge_expires_at'],
-      $row['verified']
     );
   }
 
@@ -226,22 +183,13 @@ class Learner
     return Core::generate_nonce();
   }
 
-  public static function generateNonce()
-  {
-    $nonce = Core::generate_nonce();
-    $expires_at = new \DateTime();
-    $expires_at->add(new \DateInterval('PT30M'));
-    return [$nonce, $expires_at];
-  }
-
   // create a new learner from values, excluding those that can be generated
   public static function create(
     $first_name,
     $last_name,
     $email
   ) {
-    $slug = self::generateSlug($first_name, $last_name);
-    [$challenge_nonce, $challenge_expires_at] = self::generateNonce();
+    $slug = self::generateSlug();
     $now = new \DateTime();
 
     return new Learner(
@@ -253,9 +201,6 @@ class Learner
       $last_name,
       $email,
       $slug,
-      $challenge_nonce,
-      dt_to_sql($challenge_expires_at),
-      0
     );
   }
 
@@ -273,9 +218,6 @@ class Learner
       'last_name' => $this->last_name,
       'email' => $this->email,
       'slug' => $this->slug,
-      'challenge_nonce' => $this->challenge_nonce,
-      'challenge_expires_at' => $this->challenge_expires_at,
-      'verified' => $this->verified
     );
 
     $result = $wpdb->insert($table_name, $data);
@@ -284,26 +226,6 @@ class Learner
     } else {
       $this->id = $wpdb->insert_id;
     }
-  }
-
-  public static function clean_expired_registrations()
-  {
-    global $wpdb;
-
-    $table_name = $wpdb->prefix . self::$table_name;
-
-    $now = new \DateTime();
-    $now = dt_to_sql($now);
-
-    $wpdb->query(
-      "DELETE FROM $table_name WHERE challenge_expires_at < '$now' AND verified = 0"
-    );
-  }
-
-  public function verify()
-  {
-    $this->verified = 1;
-    $this->update();
   }
 
   // function to update the managed fields of a learner
@@ -322,9 +244,6 @@ class Learner
       'last_name' => $this->last_name,
       'email' => $this->email,
       'slug' => $this->slug,
-      'challenge_nonce' => $this->challenge_nonce,
-      'challenge_expires_at' => $this->challenge_expires_at,
-      'verified' => $this->verified
     );
 
     $where = array('id' => $this->id);
@@ -332,6 +251,22 @@ class Learner
     $result = $wpdb->update($table_name, $data, $where);
     if ($result === false) {
       throw new Aba_Exception('Failed to update learner');
+    }
+  }
+
+  public function delete()
+  {
+    global $wpdb;
+
+    $table_name = $wpdb->prefix . self::$table_name;
+
+    $result = $wpdb->delete(
+      $table_name,
+      array('id' => $this->id)
+    );
+
+    if ($result === false) {
+      throw new Aba_Exception('Failed to delete Learner');
     }
   }
 }

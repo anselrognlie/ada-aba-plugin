@@ -14,17 +14,10 @@
 ?>
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
-
-<h1>Your confirmation has been resent</h1>
-
 <p>
-  Please click the verification link in the email sent to the address you provided to complete the registration process.
+  Please click the verification link below to complete this action. If you did not take this action, please ignore this email.
 </p>
 
 <p>
-  If you do not see the email, please check your spam folder.
-</p>
-
-<p>
-  To resend the email, click <a href="<?php echo $resend_link ?>">here</a>.
+  <a href="<?php echo $verify_link ?>">Verify link</a>
 </p>

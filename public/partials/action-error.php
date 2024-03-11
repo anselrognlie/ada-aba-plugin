@@ -8,14 +8,14 @@
  * @link       https://www.adadevelopersacademy.org
  * @since      1.0.0
  *
- * @package    Ada_Aba
+ * @package    Ada_Abad.d
  * @subpackage Ada_Aba/public/partials
  */
 ?>
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 
-<h2>Your email address could not be confirmed</h2>
+<h2>The action could not be completed</h2>
 
 <p>
   Please try using your confirmation link again later. If you continue to have

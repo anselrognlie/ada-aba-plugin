@@ -15,7 +15,7 @@ class Challenge_Action
   private $deleted_at;
   private $slug;
   private $expires_at;
-  private $action_class;
+  private $action_builder;
   private $action_payload;
   private $nonce;
   private $email;
@@ -31,7 +31,7 @@ class Challenge_Action
     $email,
     $nonce,
     $expires_at,
-    $action_class,
+    $action_builder,
     $action_payload,
   ) {
     $this->id = $id;
@@ -42,7 +42,7 @@ class Challenge_Action
     $this->slug = $slug;
     $this->email = $email;
     $this->expires_at = $expires_at;
-    $this->action_class = $action_class;
+    $this->action_builder = $action_builder;
     $this->action_payload = $action_payload;
   }
 
@@ -76,9 +76,9 @@ class Challenge_Action
     return $this->expires_at;
   }
 
-  public function getActionClass()
+  public function getActionBuilder()
   {
-    return $this->action_class;
+    return $this->action_builder;
   }
 
   public function getActionPayload()
@@ -126,9 +126,9 @@ class Challenge_Action
     $this->expires_at = $expires_at;
   }
 
-  public function setActionClass($action_class)
+  public function setActionBuilder($action_builder)
   {
-    $this->action_class = $action_class;
+    $this->action_builder = $action_builder;
   }
 
   public function setActionPayload($action_payload)
@@ -157,7 +157,7 @@ class Challenge_Action
       $row['email'],
       $row['nonce'],
       $row['expires_at'],
-      $row['action_class'],
+      $row['action_builder'],
       $row['action_payload'],
     );
   }
@@ -183,17 +183,118 @@ class Challenge_Action
     return self::fromRow($row);
   }
 
-  public static function clean_expired_challenges()
+  public static function get_by_nonce($nonce)
   {
     global $wpdb;
 
     $table_name = $wpdb->prefix . self::$table_name;
 
-    $wpdb->query(
+    $row = $wpdb->get_row(
       $wpdb->prepare(
-        "DELETE FROM $table_name WHERE expires_at < %s",
+        "SELECT * FROM $table_name WHERE nonce = %s",
+        $nonce
+      ),
+      ARRAY_A
+    );
+
+    if (!$row) {
+      return null;
+    }
+
+    return self::fromRow($row);
+  }
+
+  public static function get_expired_challenges()
+  {
+    global $wpdb;
+
+    $table_name = $wpdb->prefix . self::$table_name;
+
+    $rows = $wpdb->get_results(
+      $wpdb->prepare(
+        "SELECT * FROM $table_name WHERE expires_at < %s",
         current_time('mysql', 1)
-      )
+      ),
+      ARRAY_A
+    );
+
+    if (!$rows) {
+      return [];
+    }
+
+    return array_map(function ($row) {
+      return self::fromRow($row);
+    }, $rows);
+  }
+
+  public static function generateNonce()
+  {
+    $nonce = Core::generate_nonce();
+    $expires_at = new \DateTime();
+    $expires_at->add(new \DateInterval('PT30M'));
+    return [$nonce, $expires_at];
+  }
+
+  // create a new learner from values, excluding those that can be generated
+  public static function create(
+    $email,
+    $action_builder,
+    $action_payload,
+  ) {
+    $slug = Core::generate_nonce();
+    [$challenge_nonce, $challenge_expires_at] = self::generateNonce();
+    $now = new \DateTime();
+
+    return new Challenge_Action(
+      null,
+      dt_to_sql($now),
+      dt_to_sql($now),
+      null,
+      $slug,
+      $email,
+      $challenge_nonce,
+      dt_to_sql($challenge_expires_at),
+      $action_builder,
+      $action_payload,
+    );
+  }
+
+  public function insert()
+  {
+    global $wpdb;
+
+    $table_name = $wpdb->prefix . self::$table_name;
+
+    $data = array(
+      'created_at' => $this->created_at,
+      'updated_at' => $this->updated_at,
+      'deleted_at' => $this->deleted_at,
+      'slug' => $this->slug,
+      'email' => $this->email,
+      'nonce' => $this->nonce,
+      'expires_at' => $this->expires_at,
+      'action_builder' => $this->action_builder,
+      'action_payload' => $this->action_payload,
+    );
+
+    $result = $wpdb->insert($table_name, $data);
+    if ($result === false) {
+      throw new Aba_Exception('Failed to insert challenge action');
+    } else {
+      $this->id = $wpdb->insert_id;
+    }
+  }
+
+  public function delete()
+  {
+    global $wpdb;
+
+    $table_name = $wpdb->prefix . self::$table_name;
+
+    $wpdb->delete(
+      $table_name,
+      array('id' => $this->id),
+      array('%d')
     );
   }
 }

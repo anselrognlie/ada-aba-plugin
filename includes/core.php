@@ -168,15 +168,23 @@ class Core
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/dto/lesson/lesson-scalar.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/dto/syllabus/syllabus-scalar.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/dto/course-lesson/course-lesson-scalar.php';
-    
+
     require_once plugin_dir_path(dirname(__FILE__)) . 'admin/services/syllabus-edit-service.php';
 
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/shortcodes/ada-build-shortcode.php';
 
-    require_once plugin_dir_path(dirname(__FILE__)) . 'public/workflows/keys.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'public/challenge-actions/action-builder-base.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'public/challenge-actions/action-base.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'public/challenge-actions/register-action.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'public/challenge-actions/register-action-builder.php';
+    
+    require_once plugin_dir_path(dirname(__FILE__)) . 'public/action/keys.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'public/action/links.php';
+    
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/workflows/workflow-base.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/workflows/registration-workflow.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/workflows/confirmation-workflow.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'public/workflows/action-workflow.php';
   }
 
   /**
@@ -314,4 +322,16 @@ class Core
     }
     return implode($random_string);
   }
+
+  public static function get_ada_build_page()
+  {
+    $post = get_post(Options::get_options()->get_ada_build_page());
+    return $post ? $post->post_name : '@intentionally@illegal@page@name@';
+  }
+
+  public static function get_ada_build_url()
+  {
+    return home_url(self::get_ada_build_page());
+  }
+
 }

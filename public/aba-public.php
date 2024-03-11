@@ -4,11 +4,10 @@ namespace Ada_Aba\Public;
 
 use Ada_Aba\Includes\Options;
 use Ada_Aba\Includes\Core;
-use Ada_Aba\Includes\Aba_Exception;
-use Ada_Aba\Includes\Models\Learner;
 use Ada_Aba\Public\Shortcodes\Ada_Build_Shortcode;
 use Ada_Aba\Public\Workflows\Confirmation_Workflow;
 use Ada_Aba\Public\Workflows\Registration_Workflow;
+use Ada_Aba\Public\Workflows\Action_Workflow;
 
 /**
  * The public-facing functionality of the plugin.
@@ -69,6 +68,7 @@ class Aba_Public
     $this->plugin_name = $plugin_name;
     $this->version = $version;
     $this->register_load_handlers();
+    Options::get_options($plugin_name);  // prime the instance for the rest of the plugin
   }
 
   /**
@@ -129,6 +129,7 @@ class Aba_Public
   private function register_load_handlers()
   {
     $this->load_handlers = array(
+      new Action_Workflow($this->plugin_name),
       new Confirmation_Workflow($this->plugin_name),
       new Registration_Workflow($this->plugin_name),
     );

@@ -40,6 +40,8 @@ class Options
    */
   protected $plugin_name;
 
+  private static $instance;
+
   private $options;
 
   private const DEFAULT_OPTIONS = [
@@ -63,13 +65,22 @@ class Options
     $this->options = $options;  // php uses value semantics for arrays
   }
 
-  public static function get_options($plugin_name)
+  public static function get_options($plugin_name = '')
   {
+    if (self::$instance !== null) {
+      return self::$instance;
+    }
+
+    if (empty($plugin_name)) {
+      throw new Aba_Exception('Options::get_options requires a plugin name');
+    }
+
     $options = get_option($plugin_name . '-settings');
     if ($options === false) {
       return self::get_default($plugin_name);
     }
-    return new Options($plugin_name, $options);
+    self::$instance = new Options($plugin_name, $options);
+    return self::$instance;
   }
 
   public static function get_default($plugin_name)

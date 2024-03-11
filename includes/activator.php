@@ -58,9 +58,6 @@ class Activator
     last_name text NOT NULL,
     email varchar(255) NOT NULL UNIQUE,
     slug varchar(255) NOT NULL UNIQUE,
-    challenge_nonce varchar(255) NOT NULL UNIQUE,
-    challenge_expires_at datetime NOT NULL,
-    verified tinyint(1) DEFAULT 0 NOT NULL,
     PRIMARY KEY  (id)
    ) $charset_collate;";
 
@@ -111,7 +108,7 @@ class Activator
       email varchar(255) NOT NULL,
       nonce varchar(255) NOT NULL UNIQUE,
       expires_at datetime NOT NULL,
-      action_class text NOT NULL,
+      action_builder text NOT NULL,
       action_payload text NOT NULL,
       PRIMARY KEY  (id)
        ) $charset_collate;";

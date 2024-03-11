@@ -14,11 +14,8 @@
 ?>
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
-
-<h1>Thank you for registering for Ada Build</h1>
-
 <p>
-  Please click the verification link in the email sent to the address you provided to complete the registration process.
+  Please click the verification link in the email sent to the address you provided to complete this action.
 </p>
 
 <p>

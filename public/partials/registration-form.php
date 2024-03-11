@@ -14,7 +14,7 @@
 ?>
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
-<form method="post">
+<form method="post" action="<?php echo $form_action ?>">
   <h2>Registration</h2>
   <label for="first_name">First Name</label>
   <input type="text" id="first_name" name="first_name" value="<?php echo $first_name ?>" required>
@@ -24,7 +24,6 @@
   <input type="email" id="email" name="email" value="<?php echo $email ?>" required>
 
   <input type="hidden" name="action" value="<?php echo $action ?>">
-  <input type="hidden" name="verify_link" value="<?php echo $verify_link ?>">
 
   <input type="submit" value="Submit">
   <?php
