@@ -6,6 +6,7 @@ use Ada_Aba\Includes\Models\Learner;
 use Ada_Aba\Includes\Aba_Exception;
 use Ada_Aba\Includes\Core;
 use Ada_Aba\Includes\Options;
+use Ada_Aba\Public\Action\Emails;
 use Ada_Aba\Public\Action\Links;
 use PhpParser\Node\Scalar\MagicConst\Line;
 
@@ -48,7 +49,7 @@ class Register_Action extends Action_Base
     }
 
     if (!$failed) {
-      $this->send_registered_email($learner);
+      Emails::send_welcome_email($learner);
     }
 
     Links\redirect_to_confirmation_page($learner->getSlug(), false);
@@ -85,30 +86,6 @@ class Register_Action extends Action_Base
     return $action;
   }
 
-  private function send_registered_email($learner)
-  {
-    $options = Options::get_options();
-    if (! $options->get_send_email()) {
-      return;
-    }
-
-    $first_name = $learner->getFirstName();
-    $last_name = $learner->getLastName();
-    $email = $learner->getEmail();
-
-    $progress_link = Links\get_progress_link($learner->getSlug());
-
-    $message = $this->get_registered_email_content(
-      $first_name,
-      $last_name,
-      $email,
-      $progress_link,
-    );
-    $headers = array('Content-Type: text/html; charset=UTF-8');
-
-    wp_mail($email, 'Ada Build Confirmed', $message, $headers);
-  }
-
   // the function parameters are used within the template
   private function get_registration_email_content(
     $first_name,
@@ -117,18 +94,6 @@ class Register_Action extends Action_Base
   ) {
     ob_start();
     include __DIR__ . '/../partials/registration-email.php';
-    return ob_get_clean();
-  }
-
-  // the function parameters are used within the template
-  private function get_registered_email_content(
-    $first_name,
-    $last_name,
-    $email,
-    $progress_link,
-  ) {
-    ob_start();
-    include __DIR__ . '/../partials/registered-email.php';
     return ob_get_clean();
   }
 }

@@ -180,6 +180,7 @@ class Core
     
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/action/keys.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/action/links.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'public/action/emails.php';
     
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/workflows/workflow-base.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/workflows/registration-workflow.php';

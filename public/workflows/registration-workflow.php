@@ -5,6 +5,7 @@ namespace Ada_Aba\Public\Workflows;
 use Ada_Aba\Includes\Core;
 use Ada_Aba\Includes\Models\Learner;
 use Ada_Aba\Includes\Aba_Exception;
+use Ada_Aba\Public\Action\Emails;
 use Ada_Aba\Public\Challenge_Actions\Register_Action;
 use Ada_Aba\Public\Action\Keys;
 use Ada_Aba\Public\Action\Links;
@@ -66,6 +67,14 @@ class Registration_Workflow extends Workflow_Base
     // would resend the welcome email. Ideally, the displayed message shouldn't
     // indicate whether the email is in the database or not, but for now, we'll
     // just assume it's not in the database.
+
+    // If this learner is already in the database, just send the welcome
+    $learner = Learner::get_by_email($email);
+    if ($learner) {
+      Emails::send_welcome_email($learner);
+      Links\redirect_to_confirmation_page($learner->getSlug());
+      return;
+    }
 
     // enqueue the action
     $action = Register_Action::create($email, $first_name, $last_name);
