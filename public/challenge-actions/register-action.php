@@ -6,6 +6,7 @@ use Ada_Aba\Includes\Models\Learner;
 use Ada_Aba\Includes\Aba_Exception;
 use Ada_Aba\Includes\Core;
 use Ada_Aba\Includes\Options;
+use Ada_Aba\Includes\Services\Enrollment_Service;
 use Ada_Aba\Public\Action\Emails;
 use Ada_Aba\Public\Action\Links;
 use PhpParser\Node\Scalar\MagicConst\Line;
@@ -84,6 +85,8 @@ class Register_Action extends Action_Base
 
     try {
       $learner->insert();
+      $enrollment_service = new Enrollment_Service($learner->getSlug());
+      $enrollment_service->enroll_in_default();
     } catch (Aba_Exception $e) {
       // errors on violation of unique constraints
       $learner = Learner::get_by_email($this->getEmail());

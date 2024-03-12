@@ -163,6 +163,8 @@ class Core
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/models/syllabus.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/models/course-lesson.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/models/challenge-action.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/models/enrollment.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/models/learner-course.php';
 
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/dto/course/course-scalar.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/dto/lesson/lesson-scalar.php';
@@ -170,6 +172,7 @@ class Core
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/dto/course-lesson/course-lesson-scalar.php';
 
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/services/syllabus-edit-service.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/services/enrollment-service.php';
 
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/shortcodes/ada-build-shortcode.php';
 

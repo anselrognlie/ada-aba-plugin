@@ -164,6 +164,27 @@ class Learner
     }
   }
 
+  public static function get_by_id($id)
+  {
+    global $wpdb;
+
+    $table_name = $wpdb->prefix . self::$table_name;
+
+    $row = $wpdb->get_row(
+      $wpdb->prepare(
+        "SELECT * FROM $table_name WHERE id = %d",
+        $id
+      ),
+      'ARRAY_A'
+    );
+
+    if ($row) {
+      return self::fromRow($row);
+    } else {
+      return null;
+    }
+  }
+
   public static function fromRow($row)
   {
     return new Learner(

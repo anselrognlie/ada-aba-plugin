@@ -48,8 +48,10 @@ class Activator
     $lesson_table_name = $wpdb->prefix . Models\Lesson::$table_name;
     $syllabus_table_name = $wpdb->prefix . Models\Syllabus::$table_name;
     $challenge_action_table_name = $wpdb->prefix . Models\Challenge_Action::$table_name;
+    $enrollment_table_name = $wpdb->prefix . Models\Enrollment::$table_name;
+    $sql = [];
 
-    $sql = "CREATE TABLE $learner_table_name (
+    $sql[] = "CREATE TABLE IF NOT EXISTS $learner_table_name (
     id mediumint(9) NOT NULL AUTO_INCREMENT,
     created_at datetime NOT NULL,
     updated_at datetime NOT NULL,
@@ -59,9 +61,10 @@ class Activator
     email varchar(255) NOT NULL UNIQUE,
     slug varchar(255) NOT NULL UNIQUE,
     PRIMARY KEY  (id)
-   ) $charset_collate;";
+   ) $charset_collate;
+   ";
 
-    $sql .= "CREATE TABLE $course_table_name (
+    $sql[] = "CREATE TABLE IF NOT EXISTS $course_table_name (
     id mediumint(9) NOT NULL AUTO_INCREMENT,
     created_at datetime NOT NULL,
     updated_at datetime NOT NULL,
@@ -70,9 +73,10 @@ class Activator
     slug varchar(255) NOT NULL UNIQUE,
     active tinyint(1) DEFAULT 0 NOT NULL,
     PRIMARY KEY  (id)
-   ) $charset_collate;";
+   ) $charset_collate;
+   ";
 
-    $sql .= "CREATE TABLE $lesson_table_name (
+    $sql[] = "CREATE TABLE IF NOT EXISTS $lesson_table_name (
     id mediumint(9) NOT NULL AUTO_INCREMENT,
     created_at datetime NOT NULL,
     updated_at datetime NOT NULL,
@@ -80,9 +84,10 @@ class Activator
     name text NOT NULL,
     slug varchar(255) NOT NULL UNIQUE,
     PRIMARY KEY  (id)
-   ) $charset_collate;";
+   ) $charset_collate;
+   ";
 
-    $sql .= "CREATE TABLE $syllabus_table_name (
+    $sql[] = "CREATE TABLE IF NOT EXISTS $syllabus_table_name (
     id mediumint(9) NOT NULL AUTO_INCREMENT,
     created_at datetime NOT NULL,
     updated_at datetime NOT NULL,
@@ -93,13 +98,12 @@ class Activator
     slug varchar(255) NOT NULL UNIQUE,
     optional tinyint(1) DEFAULT 0 NOT NULL,
     PRIMARY KEY  (id),
-    FOREIGN KEY (course_id)
-      REFERENCES $course_table_name(id),
-    FOREIGN KEY (lesson_id)
-      REFERENCES $lesson_table_name(id)
-   ) $charset_collate;";
+    FOREIGN KEY (course_id) REFERENCES $course_table_name(id),
+    FOREIGN KEY (lesson_id) REFERENCES $lesson_table_name(id)
+   ) $charset_collate;
+   ";
 
-    $sql .= "CREATE TABLE $challenge_action_table_name (
+    $sql[] = "CREATE TABLE IF NOT EXISTS $challenge_action_table_name (
       id mediumint(9) NOT NULL AUTO_INCREMENT,
       created_at datetime NOT NULL,
       updated_at datetime NOT NULL,
@@ -111,10 +115,33 @@ class Activator
       action_builder text NOT NULL,
       action_payload text NOT NULL,
       PRIMARY KEY  (id)
-       ) $charset_collate;";
+       ) $charset_collate;
+       ";
 
-    require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-    dbDelta($sql);
+    $sql[] = "CREATE TABLE IF NOT EXISTS $enrollment_table_name (
+      id mediumint(9) NOT NULL AUTO_INCREMENT,
+      created_at datetime NOT NULL,
+      updated_at datetime NOT NULL,
+      deleted_at datetime,
+      learner_id mediumint(9) NOT NULL,
+      course_id mediumint(9) NOT NULL,
+      slug varchar(255) NOT NULL UNIQUE,
+      started_at datetime NOT NULL,
+      completed_at datetime,
+      completion varchar(255) UNIQUE,
+      PRIMARY KEY  (id),
+      FOREIGN KEY (learner_id) REFERENCES $learner_table_name(id),
+      FOREIGN KEY (course_id) REFERENCES $course_table_name(id)
+     ) $charset_collate;
+     ";
+
+    // dbDelta doesn't officially support foreign keys
+    // require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+    // dbDelta($sql);
+
+    foreach ($sql as $query) {
+      $wpdb->query($query);
+    }
   }
 
   private static function set_default_options($plugin_name)

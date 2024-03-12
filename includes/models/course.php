@@ -181,6 +181,24 @@ class Course
     }
   }
 
+  public static function get_active_course()
+  {
+    global $wpdb;
+
+    $table_name = $wpdb->prefix . self::$table_name;
+
+    $row = $wpdb->get_row(
+      "SELECT * FROM $table_name WHERE active = 1",
+      'ARRAY_A'
+    );
+
+    if ($row) {
+      return self::fromRow($row);
+    } else {
+      return null;
+    }
+  }
+
   public static function activate($slug)
   {
     global $wpdb;
