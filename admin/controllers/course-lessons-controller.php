@@ -2,11 +2,10 @@
 
 namespace Ada_Aba\Admin\Controllers;
 
-use Ada_Aba\Admin\Services\Syllabus_Edit_Service;
 use Ada_Aba\Includes\Core;
-use Ada_Aba\Includes\Models\Syllabus;
 use Ada_Aba\Includes\Dto\Syllabus\Syllabus_Scalar;
-use function Ada_Aba\Admin\Fragments\Courses\get_courses_fragment;
+use Ada_Aba\Includes\Models\Syllabus;
+use Ada_Aba\Includes\Services\Syllabus_Edit_Service;
 
 use \WP_REST_Server;
 use \WP_Error;

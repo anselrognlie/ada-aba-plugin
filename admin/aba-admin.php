@@ -16,7 +16,7 @@ use Ada_Aba\Includes\Core;
 use Ada_Aba\Includes\Array_Adapter;
 use Ada_Aba\Includes\Models\Course;
 use Ada_Aba\Includes\Models\Lesson;
-use Ada_Aba\Admin\Services\Syllabus_Edit_Service;
+use Ada_Aba\Includes\Services\Syllabus_Edit_Service;
 use Ada_Aba\Admin\Controllers\Courses_Controller;
 use Ada_Aba\Admin\Controllers\Lessons_Controller;
 use Ada_Aba\Admin\Controllers\Course_Lessons_Controller;

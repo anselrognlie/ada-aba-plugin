@@ -169,7 +169,7 @@ class Core
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/dto/syllabus/syllabus-scalar.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/dto/course-lesson/course-lesson-scalar.php';
 
-    require_once plugin_dir_path(dirname(__FILE__)) . 'admin/services/syllabus-edit-service.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/services/syllabus-edit-service.php';
 
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/shortcodes/ada-build-shortcode.php';
 

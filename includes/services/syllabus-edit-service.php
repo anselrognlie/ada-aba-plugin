@@ -1,8 +1,7 @@
 <?php
 
-namespace Ada_Aba\Admin\Services;
+namespace Ada_Aba\Includes\Services;
 
-use Ada_Aba\Includes\Core;
 use Ada_Aba\Includes\Models\Course;
 use Ada_Aba\Includes\Models\Lesson;
 use Ada_Aba\Includes\Models\Syllabus;

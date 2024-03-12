@@ -2,8 +2,8 @@
 
 namespace Ada_Aba\Admin\Controllers\UI;
 
-use Ada_Aba\Admin\Services\Syllabus_Edit_Service;
 use Ada_Aba\Includes\Core;
+use Ada_Aba\Includes\Services\Syllabus_Edit_Service;
 use function Ada_Aba\Admin\Fragments\Course_Lessons\get_available_lessons_fragment;
 use function Ada_Aba\Admin\Fragments\Course_Lessons\get_course_lessons_fragment;
 
