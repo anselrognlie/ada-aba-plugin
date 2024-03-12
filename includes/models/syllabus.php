@@ -311,13 +311,11 @@ class Syllabus
   {
     global $wpdb;
 
-    $syllabus_table_name = $wpdb->prefix . self::$table_name;
+    $table_name = $wpdb->prefix . self::$table_name;
 
     $result = $wpdb->get_results(
       $wpdb->prepare(
-        "SELECT s.* FROM $syllabus_table_name s
-          WHERE s.course_id = %d
-          ORDER BY s.order",
+        "SELECT * FROM $table_name WHERE course_id = %d ORDER BY `order`",
         $course_id
       ),
       'ARRAY_A'
