@@ -311,14 +311,12 @@ class Syllabus
   {
     global $wpdb;
 
-    $course_table_name = $wpdb->prefix . Course::$table_name;
     $syllabus_table_name = $wpdb->prefix . self::$table_name;
 
     $result = $wpdb->get_results(
       $wpdb->prepare(
         "SELECT s.* FROM $syllabus_table_name s
-          JOIN $course_table_name c ON s.course_id = c.id
-          WHERE c.id = %d
+          WHERE s.course_id = %d
           ORDER BY s.order",
         $course_id
       ),
