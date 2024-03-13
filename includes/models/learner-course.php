@@ -59,8 +59,8 @@ class Learner_Course {
     return $this->completion;
   }
 
-  public function isCompleted() {
-    return $this->completion;
+  public function isComplete() {
+    return !empty($this->completion);
   }
 
   public function setCompletion($completion) {

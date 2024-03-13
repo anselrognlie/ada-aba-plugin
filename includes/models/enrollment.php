@@ -96,7 +96,7 @@ class Enrollment
     return $this->completion;
   }
 
-  public function isCompleted()
+  public function isComplete()
   {
     return !empty($this->completion);
   }
