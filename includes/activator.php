@@ -99,6 +99,7 @@ class Activator
     slug varchar(255) NOT NULL UNIQUE,
     optional tinyint(1) DEFAULT 0 NOT NULL,
     PRIMARY KEY  (id),
+    UNIQUE KEY `course_id_lesson_id` (`course_id`,`lesson_id`),
     FOREIGN KEY (course_id) REFERENCES $course_table_name(id),
     FOREIGN KEY (lesson_id) REFERENCES $lesson_table_name(id)
    ) $charset_collate;
@@ -131,6 +132,7 @@ class Activator
       completed_at datetime,
       completion varchar(255) UNIQUE,
       PRIMARY KEY  (id),
+      UNIQUE KEY `course_id_learner_id` (`course_id`,`learner_id`),
       FOREIGN KEY (learner_id) REFERENCES $learner_table_name(id),
       FOREIGN KEY (course_id) REFERENCES $course_table_name(id)
      ) $charset_collate;
@@ -146,6 +148,7 @@ class Activator
       slug varchar(255) NOT NULL UNIQUE,
       completed_at datetime NOT NULL,
       PRIMARY KEY  (id),
+      UNIQUE KEY `learner_id_lesson_id` (`learner_id`,`lesson_id`),
       FOREIGN KEY (learner_id) REFERENCES $learner_table_name(id),
       FOREIGN KEY (lesson_id) REFERENCES $lesson_table_name(id)
      ) $charset_collate;
