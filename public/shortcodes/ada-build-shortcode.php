@@ -7,6 +7,7 @@ use Ada_Aba\Public\Workflows\Confirmation_Workflow;
 use Ada_Aba\Public\Workflows\Registration_Workflow;
 use Ada_Aba\Public\Workflows\Action_Workflow;
 use Ada_Aba\Public\Workflows\Error_Workflow;
+use Ada_Aba\Public\Workflows\Progress_Workflow;
 
 class Ada_Build_Shortcode
 {
@@ -39,9 +40,10 @@ class Ada_Build_Shortcode
   private function register_page_workflows()
   {
     $this->workflows = array(
+      new Error_Workflow($this->plugin_name),
       new Action_Workflow($this->plugin_name),
       new Confirmation_Workflow($this->plugin_name),
-      new Error_Workflow($this->plugin_name),
+      new Progress_Workflow($this->plugin_name),
       new Registration_Workflow($this->plugin_name),
     );
   }

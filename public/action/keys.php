@@ -11,3 +11,4 @@ const CONFIRM = 'confirm';
 const ERROR = 'e';
 const CHALLENGE = 'c';
 const USER = 'u';
+const ENROLL = 'enroll';

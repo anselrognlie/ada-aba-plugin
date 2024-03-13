@@ -160,6 +160,31 @@ class Course
     }
   }
 
+  public static function get_by_ids($ids)
+  {
+    if (count($ids) === 0) {
+      return [];
+    }
+
+    global $wpdb;
+
+    $table_name = $wpdb->prefix . self::$table_name;
+
+    $ids_str = implode(',', $ids);
+    $rows = $wpdb->get_results(
+      "SELECT * FROM $table_name WHERE id IN ($ids_str)",
+      'ARRAY_A'
+    );
+
+    if ($rows) {
+      return array_map(function ($row) {
+        return self::fromRow($row);
+      }, $rows);
+    } else {
+      return [];
+    }
+  }
+
   public static function get_by_slug($slug)
   {
     global $wpdb;

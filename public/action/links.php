@@ -37,6 +37,11 @@ function get_error_link($error)
   return Core::get_ada_build_url() . '?' . Keys\ERROR . "=0x$hex_err";
 }
 
+function get_enroll_link($user_slug)
+{
+  return Core::get_ada_build_url() . '?' . Keys\ENROLL . "=$user_slug";
+}
+
 function redirect_to_confirm_page($action_slug, $halt = true)
 {
   $url = get_confirm_link($action_slug);
@@ -78,3 +83,12 @@ function redirect_to_error_page($error, $halt = true)
   }
 }
 
+function redirect_to_progress_page($user_slug, $halt = true)
+{
+  $url = get_progress_link($user_slug);
+  wp_redirect($url);
+
+  if ($halt) {
+    exit;
+  }
+}

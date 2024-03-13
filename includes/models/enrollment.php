@@ -262,19 +262,32 @@ class Enrollment
     }
   }
 
-  public static function get_by_learner_id($learner_id)
-  {
+  public static function get_by_learner_id(
+    $learner_id,
+    $by_priority = false
+  ) {
     global $wpdb;
 
     $table_name = $wpdb->prefix . self::$table_name;
 
+    $order = '';
+    if ($by_priority) {
+      $order = 'ORDER BY started_at DESC';
+    }
+
     $result = $wpdb->get_results(
       $wpdb->prepare(
-        "SELECT * FROM $table_name WHERE learner_id = %d",
+        "SELECT * FROM $table_name WHERE learner_id = %d $order",
         $learner_id
       ),
       'ARRAY_A'
     );
+
+    Core::log(sprintf(
+      '%1$s::%2$s',
+      __CLASS__,
+      __FUNCTION__,
+    ));
 
     if ($result === false) {
       throw new Aba_Exception('Failed to retrieve Enrollments');

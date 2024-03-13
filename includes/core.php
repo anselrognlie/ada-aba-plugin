@@ -170,6 +170,7 @@ class Core
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/dto/lesson/lesson-scalar.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/dto/syllabus/syllabus-scalar.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/dto/course-lesson/course-lesson-scalar.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/dto/learner-course/learner-course-progress.php';
 
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/services/syllabus-edit-service.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/services/enrollment-service.php';
@@ -180,6 +181,8 @@ class Core
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/challenge-actions/action-base.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/challenge-actions/register-action.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/challenge-actions/register-action-builder.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'public/challenge-actions/enroll-action.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'public/challenge-actions/enroll-action-builder.php';
     
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/action/keys.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/action/links.php';
@@ -191,6 +194,8 @@ class Core
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/workflows/confirmation-workflow.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/workflows/action-workflow.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/workflows/error-workflow.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'public/workflows/progress-workflow.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'public/workflows/enroll-workflow.php';
   }
 
   /**
