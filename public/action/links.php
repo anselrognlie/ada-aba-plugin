@@ -18,7 +18,7 @@ function get_progress_link($slug)
 function get_confirmation_link($user_slug)
 {
   return Core::get_ada_build_url() . '?' . Keys\CONFIRMATION
-    . (empty($user_slug) ? '' : "&u=$user_slug");
+    . (empty($user_slug) ? '' : '&' . Keys\USER . "=$user_slug");
 }
 
 function get_resend_link($slug)
