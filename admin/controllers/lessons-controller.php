@@ -104,7 +104,6 @@ class Lessons_Controller {
   public function get($request)
   {
     $slug = $request['slug'];
-    Core::log(sprintf('%1$s: slug: %2$s', __FUNCTION__, $slug));
 
     $lesson = Lesson::get_by_slug($slug);
     return rest_ensure_response(new Lesson_Scalar($lesson));
@@ -120,7 +119,6 @@ class Lessons_Controller {
   public function delete($request)
   {
     $slug = $request['slug'];
-    Core::log(sprintf('%1$s: slug: %2$s', __FUNCTION__, $slug));
 
     $lesson = Lesson::get_by_slug($slug);
     if ($lesson) {
@@ -133,7 +131,6 @@ class Lessons_Controller {
   {
     $slug = $request['slug'];
     $name = $request->get_param('name');
-    Core::log(sprintf('%1$s: slug: %2$s, name: %3$s', __FUNCTION__, $slug, $name));
     error_log(print_r($request->get_params(), true));
 
     $lesson = Lesson::get_by_slug($slug);

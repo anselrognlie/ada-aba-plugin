@@ -195,7 +195,7 @@ abstract class Action_Base
 
   private function cleanup()
   {
-    Core::log(sprintf('%1$s: slug: %2$s', __FUNCTION__, $this->slug));
+    Core::log(sprintf('%1$s::%2$s: slug: %3$s', __CLASS__, __FUNCTION__, $this->slug));
     $challenge = Challenge_Action::get_by_slug($this->slug);
     $challenge->delete();
   }

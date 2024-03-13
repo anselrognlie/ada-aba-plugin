@@ -89,7 +89,6 @@ class Course_Lessons_Controller {
   public function remove($request)
   {
     $slug = $request['slug'];
-    Core::log(sprintf('%1$s: slug: %2$s', __FUNCTION__, $slug));
 
     $syllabus = Syllabus::get_by_slug($slug);
     if ($syllabus) {
@@ -101,7 +100,6 @@ class Course_Lessons_Controller {
   public function move_up($request)
   {
     $slug = $request['slug'];
-    Core::log(sprintf('%1$s: slug: %2$s', __FUNCTION__, $slug));
 
     $service = Syllabus_Edit_Service::get_by_member_syllabus_slug($slug);
     $service->move_up($slug);
@@ -113,7 +111,6 @@ class Course_Lessons_Controller {
   public function move_down($request)
   {
     $slug = $request['slug'];
-    Core::log(sprintf('%1$s: slug: %2$s', __FUNCTION__, $slug));
 
     $service = Syllabus_Edit_Service::get_by_member_syllabus_slug($slug);
     $service->move_down($slug);
@@ -125,7 +122,6 @@ class Course_Lessons_Controller {
   public function toggle_optional($request)
   {
     $slug = $request['slug'];
-    Core::log(sprintf('%1$s: slug: %2$s', __FUNCTION__, $slug));
 
     $syllabus = Syllabus::get_by_slug($slug);
     if ($syllabus) {

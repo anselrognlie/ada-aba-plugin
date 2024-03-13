@@ -56,7 +56,6 @@ class Syllabus_Controller {
   public function available_lessons($request)
   {
     $slug = $request['slug'];
-    Core::log(sprintf('%1$s: slug: %2$s', __FUNCTION__, $slug));
 
     $service = new Syllabus_Edit_Service($slug);
     $lessons = $service->getAvailableLessons();
@@ -73,7 +72,6 @@ class Syllabus_Controller {
   public function course_lessons($request)
   {
     $slug = $request['slug'];
-    Core::log(sprintf('%1$s: slug: %2$s', __FUNCTION__, $slug));
 
     $service = new Syllabus_Edit_Service($slug);
     $course_lessons = $service->getCourseLessons();

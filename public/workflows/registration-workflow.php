@@ -54,7 +54,8 @@ class Registration_Workflow extends Workflow_Base
     }
 
     Core::log(sprintf(
-      '%1$s: first: %2$s, last: %3$s, email: %4$s',
+      '%1$s::%2$s: first: %3$s, last: %4$s, email: %5$s',
+      __CLASS__,
       __FUNCTION__,
       Core::privy($first_name),
       Core::privy($last_name),

@@ -72,7 +72,7 @@ class Action_Workflow extends Workflow_Base
 
     if (!$action) {
       // unable to verify due to invalid or expired slug
-      Core::log(sprintf('%1$s: invalid or expired slug: %2$s', __FUNCTION__, $slug));
+      Core::log(sprintf('%1$s::%2$s: invalid or expired slug: %3$s', __CLASS__, __FUNCTION__, $slug));
 
       return $this->handle_unknown();
     }
@@ -87,12 +87,12 @@ class Action_Workflow extends Workflow_Base
   private function handle_verify()
   {
     $nonce = $_GET[Keys\VERIFY];
-    Core::log(sprintf('%1$s: nonce: %2$s', __FUNCTION__, $nonce));
+    Core::log(sprintf('%1$s::%2$s: nonce: %3$s', __CLASS__, __FUNCTION__, $nonce));
     $action = Action_Base::get_by_nonce($nonce);
 
     if (!$action) {
       // unable to verify due to invalid or expired nonce
-      Core::log(sprintf('%1$s: invalid or expired nonce: %2$s', __FUNCTION__, $nonce));
+      Core::log(sprintf('%1$s::%2$s: invalid or expired nonce: %3$s', __CLASS__, __FUNCTION__, $nonce));
 
       // allow to fall-through to error page
       return;
@@ -109,7 +109,7 @@ class Action_Workflow extends Workflow_Base
 
     if (!$action) {
       // unable to verify due to invalid or expired nonce
-      Core::log(sprintf('%1$s: invalid or expired slug: %2$s', __FUNCTION__, $slug));
+      Core::log(sprintf('%1$s::%2$s: invalid or expired slug: %3$s', __CLASS__, __FUNCTION__, $slug));
 
       // allow to fall-through to error page
       return;
