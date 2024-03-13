@@ -33,7 +33,7 @@ class Syllabus_Edit_Service {
     return $course;
   }
 
-  public function getCourseLessons()
+  public function get_course_lessons()
   {
     $syllabuses = Syllabus::get_by_course_slug($this->courseSlug);
     $lesson_ids = array_map(function($syllabus) {
@@ -58,10 +58,10 @@ class Syllabus_Edit_Service {
     return $course_lessons;
   }
 
-  public function getAvailableLessons()
+  public function get_available_lessons()
   {
     $lessons = Lesson::all();
-    $course_lessons = $this->getCourseLessons();
+    $course_lessons = $this->get_course_lessons();
     $course_lesson_ids = array_fill_keys(array_map(function($course_lesson) {
       return $course_lesson->getLesson()->getId();
     }, $course_lessons), true);
@@ -73,7 +73,7 @@ class Syllabus_Edit_Service {
 
   public function move_up($syllabus_slug)
   {
-    $course_lessons = $this->getCourseLessons();
+    $course_lessons = $this->get_course_lessons();
 
     // locate the syllabus immediately above the specified syllabus
     $idx = -1;
@@ -97,7 +97,7 @@ class Syllabus_Edit_Service {
 
   public function move_down($syllabus_slug)
   {
-    $course_lessons = $this->getCourseLessons();
+    $course_lessons = $this->get_course_lessons();
 
     // locate the syllabus immediately above the specified syllabus
     $idx = 1;

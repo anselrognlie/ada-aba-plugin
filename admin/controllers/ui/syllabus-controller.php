@@ -58,7 +58,7 @@ class Syllabus_Controller {
     $slug = $request['slug'];
 
     $service = new Syllabus_Edit_Service($slug);
-    $lessons = $service->getAvailableLessons();
+    $lessons = $service->get_available_lessons();
 
     $html = array_map(function ($course_lesson) {
       return get_available_lessons_fragment($course_lesson);
@@ -74,7 +74,7 @@ class Syllabus_Controller {
     $slug = $request['slug'];
 
     $service = new Syllabus_Edit_Service($slug);
-    $course_lessons = $service->getCourseLessons();
+    $course_lessons = $service->get_course_lessons();
 
     $html = array_map(function ($course_lesson) {
       return get_course_lessons_fragment($course_lesson);

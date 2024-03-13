@@ -494,8 +494,8 @@ class Aba_Admin
     $selected_course = self::get_selected_course($courses);
     $syllabus_edit_service = new Syllabus_Edit_Service($selected_course->getSlug());
 
-    $course_lessons = $syllabus_edit_service->getCourseLessons();
-    $available_lessons = $syllabus_edit_service->getAvailableLessons();
+    $course_lessons = $syllabus_edit_service->get_course_lessons();
+    $available_lessons = $syllabus_edit_service->get_available_lessons();
     echo $this->get_syllabuses_page_content($courses, $selected_course, $course_lessons, $available_lessons);
   }
 }

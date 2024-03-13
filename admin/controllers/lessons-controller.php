@@ -78,7 +78,7 @@ class Lessons_Controller {
     if (isset($request['excludeCourseSlug'])) {
       $course_slug = $request['excludeCourseSlug'];
       $service = new Syllabus_Edit_Service($course_slug);
-      $lessons = $service->getAvailableLessons();
+      $lessons = $service->get_available_lessons();
     }
 
     $serialized_lessons = array_map(function ($lesson) {
