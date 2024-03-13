@@ -283,12 +283,6 @@ class Enrollment
       'ARRAY_A'
     );
 
-    Core::log(sprintf(
-      '%1$s::%2$s',
-      __CLASS__,
-      __FUNCTION__,
-    ));
-
     if ($result === false) {
       throw new Aba_Exception('Failed to retrieve Enrollments');
     }
