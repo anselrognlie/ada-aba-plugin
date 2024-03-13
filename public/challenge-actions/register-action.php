@@ -4,12 +4,9 @@ namespace Ada_Aba\Public\Challenge_Actions;
 
 use Ada_Aba\Includes\Models\Learner;
 use Ada_Aba\Includes\Aba_Exception;
-use Ada_Aba\Includes\Core;
-use Ada_Aba\Includes\Options;
 use Ada_Aba\Includes\Services\Enrollment_Service;
 use Ada_Aba\Public\Action\Emails;
 use Ada_Aba\Public\Action\Links;
-use PhpParser\Node\Scalar\MagicConst\Line;
 
 class Register_Action extends Action_Base
 {
@@ -47,7 +44,7 @@ class Register_Action extends Action_Base
     }
 
     Emails::send_welcome_email($learner);
-    Links\redirect_to_confirmation_page($learner->getSlug(), false);
+    Links\redirect_to_confirmation_page($learner->getSlug(), halt: false);
   }
 
   protected function expired()
