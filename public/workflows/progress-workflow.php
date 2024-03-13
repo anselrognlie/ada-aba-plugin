@@ -2,10 +2,9 @@
 
 namespace Ada_Aba\Public\Workflows;
 
-use Ada_Aba\Includes\Dto\Learner_Course\Learner_Course_Progress;
+use Ada_Aba\Includes\Dto\Learner_Course\Learner_Course_Progress_Builder;
 use Ada_Aba\Includes\Models\Course;
 use Ada_Aba\Includes\Models\Learner;
-use Ada_Aba\Includes\Services\Enrollment_Service;
 use Ada_Aba\Public\Action\Keys;
 use Ada_Aba\Public\Action\Links;
 
@@ -52,10 +51,8 @@ class Progress_Workflow extends Workflow_Base
 
   private function handle_progress()
   {
-    $enrollment_service = new Enrollment_Service($this->learner_slug);
-    $learner_courses = array_map(function ($learner_course) {
-      return new Learner_Course_Progress($learner_course);
-    }, $enrollment_service->get_learner_courses());
+    $builder = new Learner_Course_Progress_Builder($this->learner_slug);
+    $learner_courses = $builder->build();
 
     $active_course = Course::get_active_course();
 

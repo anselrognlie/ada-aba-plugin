@@ -32,6 +32,22 @@
     <p>
       Completed: <?php echo $learner_course->isComplete() ? 'Y' : 'N'; ?>
     </p>
+    <ul>
+      <?php foreach ($learner_course->getLessons() as $lesson) : ?>
+        <li>
+          <?php echo htmlentities($lesson->getName()); ?>
+
+          <?php if ($lesson->isOptional()) : ?>
+            <span>(Optional)</span>
+          <?php endif; ?>
+
+          <?php if ($lesson->isComplete()) : ?>
+            <span>✅</span>
+          <?php else : ?>
+            <a href="#">Finish</a>
+          <?php endif; ?>
+        </li>
+      <?php endforeach; ?>
   <?php endforeach; ?>
 
 
