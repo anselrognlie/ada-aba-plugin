@@ -38,12 +38,12 @@ class Confirmation_Workflow extends Workflow_Base
 
   private function is_user_confirmed()
   {
-    return isset($_GET['u']);
+    return isset($_GET[Keys\USER]);
   }
 
   private function get_confirmed_user()
   {
-    return $_GET['u'];
+    return $_GET[Keys\USER];
   }
 
   private function handle_learner_confirmation_success()
