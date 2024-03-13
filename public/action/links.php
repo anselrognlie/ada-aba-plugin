@@ -42,6 +42,13 @@ function get_enroll_link($user_slug)
   return Core::get_ada_build_url() . '?' . Keys\ENROLL . "=$user_slug";
 }
 
+function get_complete_lesson_link($lesson_slug, $user_slug)
+{
+  return Core::get_ada_build_url() . '?'
+    . Keys\COMPLETE . "=$lesson_slug&"
+    . Keys\USER . "=$user_slug";
+}
+
 function redirect_to_confirm_page($action_slug, $halt = true)
 {
   $url = get_confirm_link($action_slug);

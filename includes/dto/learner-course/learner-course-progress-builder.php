@@ -7,6 +7,8 @@ use Ada_Aba\Includes\Models\Learner;
 use Ada_Aba\Includes\Services\Enrollment_Service;
 use Ada_Aba\Includes\Services\Syllabus_Edit_Service;
 
+use function Ada_Aba\Public\Action\Links\get_complete_lesson_link;
+
 class Learner_Course_Progress_Builder
 {
   private $learner_slug;
@@ -50,7 +52,8 @@ class Learner_Course_Progress_Builder
         $learner_lessons_progress = array_map(
           function ($course_lesson) use ($completed_idx) {
             $is_complete = isset($completed_idx[$course_lesson->getLesson()->getId()]);
-            return new Learner_Lesson_Progress($course_lesson, $is_complete);
+            $complete_link = get_complete_lesson_link($course_lesson->getLesson()->getSlug(), $this->learner_slug);
+            return new Learner_Lesson_Progress($course_lesson, $complete_link, $is_complete);
           },
           $course_lessons
         );

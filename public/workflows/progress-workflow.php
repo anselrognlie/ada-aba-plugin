@@ -58,7 +58,7 @@ class Progress_Workflow extends Workflow_Base
 
     $enroll_link = Links\get_enroll_link($this->learner_slug);
 
-    return $this->get_progress_content($learner_courses, $active_course, $enroll_link);
+    return $this->get_progress_content($this->learner_slug, $learner_courses, $active_course, $enroll_link);
   }
 
   private function handle_learner_not_found()
@@ -73,7 +73,7 @@ class Progress_Workflow extends Workflow_Base
   // output wrappers
   //
 
-  private function get_progress_content($learner_courses, $active_course, $enroll_link)
+  private function get_progress_content($learner_slug, $learner_courses, $active_course, $enroll_link)
   {
     ob_start();
     include __DIR__ . '/../partials/progress-page.php';

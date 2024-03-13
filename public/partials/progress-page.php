@@ -11,6 +11,7 @@
  * @package    Ada_Aba
  * @subpackage Ada_Aba/public/partials
  */
+
 ?>
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
@@ -44,7 +45,7 @@
           <?php if ($lesson->isComplete()) : ?>
             <span>✅</span>
           <?php else : ?>
-            <a href="#">Finish</a>
+            <a href="<?php echo $lesson->getCompleteLink(); ?>">Finish</a>
           <?php endif; ?>
         </li>
       <?php endforeach; ?>

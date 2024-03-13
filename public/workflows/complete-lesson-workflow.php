@@ -3,25 +3,24 @@
 namespace Ada_Aba\Public\Workflows;
 
 use Ada_Aba\Includes\Core;
-use Ada_Aba\Includes\Models\Course;
 use Ada_Aba\Includes\Models\Learner;
+use Ada_Aba\Includes\Models\Lesson;
 use Ada_Aba\Public\Action\Keys;
 use Ada_Aba\Public\Action\Links;
 use Ada_Aba\Public\Action\Errors;
-use Ada_Aba\Public\Challenge_Actions\Enroll_Action;
+use Ada_Aba\Public\Challenge_Actions\Complete_Lesson_Action;
 
 use function Ada_Aba\Public\Action\Links\redirect_to_error_page;
 
-class Enroll_Workflow extends Workflow_Base
+class Complete_Lesson_Workflow extends Workflow_Base
 {
   private $load_handlers;
-  private $learner_slug;
 
   public function __construct($plugin_name)
   {
     parent::__construct($plugin_name);
     $this->load_handlers = [
-      Keys\ENROLL => array($this, 'handle_enroll'),
+      Keys\COMPLETE => array($this, 'handle_complete'),
     ];
   }
 
@@ -55,31 +54,38 @@ class Enroll_Workflow extends Workflow_Base
     // no actions
   }
 
-  private function get_learner_slug()
+  private function get_lesson_slug()
   {
-    return $_GET[Keys\ENROLL];
+    return $_GET[Keys\COMPLETE];
   }
 
-  private function handle_enroll()
+  private function get_learner_slug()
+  {
+    return isset($_GET[Keys\USER]) ? $_GET[Keys\USER] : '';
+  }
+
+  private function handle_complete()
   {
     $learner_slug = $this->get_learner_slug();
     $learner = Learner::get_by_slug($learner_slug);
 
-    $active_course = Course::get_active_course();
+    $lesson_slug = $this->get_lesson_slug();
+    $lesson = Lesson::get_by_slug($lesson_slug);
 
-    if (!$learner || !$active_course) {
+    if (!$learner || !$lesson) {
       Core::log(sprintf(
-        '%1$s::%2$s' . ',%3$s,' . 'Learner: %4$s',
+        implode(',', ['%1$s::%2$s','%3$s','Learner: %4$s','Lesson: %5$s']),
         __CLASS__,
         __FUNCTION__,
-        'Invalid learner or no active course',
-        $learner_slug
+        'Invalid learner or lesson',
+        $learner_slug,
+        $lesson_slug,
       ));
       redirect_to_error_page(Errors\INVALID_REQUEST);
     }
 
     // enqueue the action
-    $action = Enroll_Action::create($learner->getEmail(), $learner_slug);
+    $action = Complete_Lesson_Action::create($learner->getEmail(), $lesson_slug, $learner_slug);
     $action->run();
 
     Links\redirect_to_confirm_page($action->getSlug());
