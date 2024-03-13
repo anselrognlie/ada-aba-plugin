@@ -48,13 +48,15 @@ class Deactivator
     $syllabus_table_name = $wpdb->prefix . Models\Syllabus::$table_name;
     $challenge_action_table_name = $wpdb->prefix . Models\Challenge_Action::$table_name;
     $enrollment_table_name = $wpdb->prefix . Models\Enrollment::$table_name;
+    $completed_lesson_table_name = $wpdb->prefix . Models\Completed_Lesson::$table_name;
 
-    // $wpdb->query("DROP TABLE IF EXISTS $learner_table_name");
-    // $wpdb->query("DROP TABLE IF EXISTS $course_table_name");
-    // $wpdb->query("DROP TABLE IF EXISTS $lesson_table_name");
-    // $wpdb->query("DROP TABLE IF EXISTS $syllabus_table_name");
-    // $wpdb->query("DROP TABLE IF EXISTS $challenge_action_table_name");
+    // $wpdb->query("DROP TABLE IF EXISTS $completed_lesson_table_name");
     // $wpdb->query("DROP TABLE IF EXISTS $enrollment_table_name");
+    // $wpdb->query("DROP TABLE IF EXISTS $challenge_action_table_name");
+    // $wpdb->query("DROP TABLE IF EXISTS $syllabus_table_name");
+    // $wpdb->query("DROP TABLE IF EXISTS $lesson_table_name");
+    // $wpdb->query("DROP TABLE IF EXISTS $course_table_name");
+    // $wpdb->query("DROP TABLE IF EXISTS $learner_table_name");
   }
 
   private static function clear_options($plugin_name)

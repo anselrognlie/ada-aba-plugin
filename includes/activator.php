@@ -49,6 +49,7 @@ class Activator
     $syllabus_table_name = $wpdb->prefix . Models\Syllabus::$table_name;
     $challenge_action_table_name = $wpdb->prefix . Models\Challenge_Action::$table_name;
     $enrollment_table_name = $wpdb->prefix . Models\Enrollment::$table_name;
+    $completed_lesson_table_name = $wpdb->prefix . Models\Completed_Lesson::$table_name;
     $sql = [];
 
     $sql[] = "CREATE TABLE IF NOT EXISTS $learner_table_name (
@@ -132,6 +133,21 @@ class Activator
       PRIMARY KEY  (id),
       FOREIGN KEY (learner_id) REFERENCES $learner_table_name(id),
       FOREIGN KEY (course_id) REFERENCES $course_table_name(id)
+     ) $charset_collate;
+     ";
+
+    $sql[] = "CREATE TABLE IF NOT EXISTS $completed_lesson_table_name (
+      id mediumint(9) NOT NULL AUTO_INCREMENT,
+      created_at datetime NOT NULL,
+      updated_at datetime NOT NULL,
+      deleted_at datetime,
+      learner_id mediumint(9) NOT NULL,
+      lesson_id mediumint(9) NOT NULL,
+      slug varchar(255) NOT NULL UNIQUE,
+      completed_at datetime NOT NULL,
+      PRIMARY KEY  (id),
+      FOREIGN KEY (learner_id) REFERENCES $learner_table_name(id),
+      FOREIGN KEY (lesson_id) REFERENCES $lesson_table_name(id)
      ) $charset_collate;
      ";
 
