@@ -13,3 +13,5 @@ const CHALLENGE = 'c';
 const USER = 'u';
 const ENROLL = 'enroll';
 const COMPLETE = 'complete';
+const REQUEST_CERTIFICATE = 'certreq';
+const CERTIFICATE = 'cert';

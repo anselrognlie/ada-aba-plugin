@@ -31,7 +31,9 @@
   <?php foreach ($learner_courses as $learner_course) : ?>
     <h3><?php echo $learner_course->getCourseName(); ?></h3>
     <p>
-      Completed: <?php echo $learner_course->isComplete() ? 'Y' : 'N'; ?>
+      <?php if ($learner_course->isComplete()) : ?>
+        <a href="<?php echo esc_url($learner_course->getRequestCertificateLink()); ?>">(Request Certificate)</a>
+      <?php endif; ?>
     </p>
     <ul>
       <?php foreach ($learner_course->getLessons() as $lesson) : ?>
@@ -49,7 +51,7 @@
           <?php endif; ?>
         </li>
       <?php endforeach; ?>
-  <?php endforeach; ?>
+    <?php endforeach; ?>
 
 
 
@@ -63,4 +65,4 @@
 
 
 
-<?php endif; ?>
+  <?php endif; ?>

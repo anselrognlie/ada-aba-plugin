@@ -8,6 +8,7 @@ use Ada_Aba\Includes\Services\Enrollment_Service;
 use Ada_Aba\Includes\Services\Syllabus_Edit_Service;
 
 use function Ada_Aba\Public\Action\Links\get_complete_lesson_link;
+use function Ada_Aba\Public\Action\Links\get_request_certificate_link;
 
 class Learner_Course_Progress_Builder
 {
@@ -58,8 +59,17 @@ class Learner_Course_Progress_Builder
           $course_lessons
         );
 
-        return new Learner_Course_Progress($learner_courses_model, $learner_lessons_progress);
-    }, $learner_courses, $learner_course_lessons);
+        $request_certificate_link = get_request_certificate_link($learner_courses_model->getSlug());
+
+        return new Learner_Course_Progress(
+          $learner_courses_model,
+          $request_certificate_link,
+          $learner_lessons_progress
+        );
+      },
+      $learner_courses,
+      $learner_course_lessons
+    );
 
     return $result;
   }
