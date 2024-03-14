@@ -15,3 +15,4 @@ const ENROLL = 'enroll';
 const COMPLETE = 'complete';
 const REQUEST_CERTIFICATE = 'certreq';
 const CERTIFICATE = 'cert';
+const SENT = 'sent';

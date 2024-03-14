@@ -179,6 +179,7 @@ class Core
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/services/enrollment-service.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/services/learner-lesson-service.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/services/course-lesson-service.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/services/learner-enrollment-service.php';
 
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/shortcodes/ada-build-shortcode.php';
 
@@ -204,6 +205,8 @@ class Core
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/workflows/progress-workflow.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/workflows/enroll-workflow.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/workflows/complete-lesson-workflow.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'public/workflows/one-shot-email-workflow.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'public/workflows/request-certificate-workflow.php';
   }
 
   /**

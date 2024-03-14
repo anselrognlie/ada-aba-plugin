@@ -8,6 +8,7 @@ use Ada_Aba\Public\Workflows\Registration_Workflow;
 use Ada_Aba\Public\Workflows\Action_Workflow;
 use Ada_Aba\Public\Workflows\Complete_Lesson_Workflow;
 use Ada_Aba\Public\Workflows\Enroll_Workflow;
+use Ada_Aba\Public\Workflows\Request_Certificate_Workflow;
 
 /**
  * The public-facing functionality of the plugin.
@@ -132,6 +133,7 @@ class Aba_Public
       new Action_Workflow($this->plugin_name),
       new Enroll_Workflow($this->plugin_name),
       new Complete_Lesson_Workflow($this->plugin_name),
+      new Request_Certificate_Workflow($this->plugin_name),
       new Registration_Workflow($this->plugin_name),
     );
   }

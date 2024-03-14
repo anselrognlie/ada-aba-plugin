@@ -16,15 +16,10 @@
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 
 <p>
-  You can start tracking your progress by
-  clicking <a href="<?php echo esc_url($progress_link) ?>">here</a>.
+  Congratulations on completing the course! You can view your completion
+  certificate at the following link: <a href="<?php echo esc_url($cert_link) ?>">Certificate Link</a>
 </p>
 
 <p>
-  You may wish to bookmark that link for future reference.
-  Otherwise, you will also receive an email with the same link.
-</p>
-
-<p>
-  We hope you enjoy the course!
+  We hope you enjoyed the course!
 </p>

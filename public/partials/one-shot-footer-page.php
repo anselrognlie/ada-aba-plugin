@@ -14,17 +14,10 @@
 ?>
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
-
 <p>
-  You can start tracking your progress by
-  clicking <a href="<?php echo esc_url($progress_link) ?>">here</a>.
+  If you do not see the email, please check your spam folder.
 </p>
 
 <p>
-  You may wish to bookmark that link for future reference.
-  Otherwise, you will also receive an email with the same link.
-</p>
-
-<p>
-  We hope you enjoy the course!
+  To resend the email, click <a href="<?php echo $resend_link ?>">here</a>.
 </p>

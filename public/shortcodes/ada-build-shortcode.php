@@ -8,6 +8,7 @@ use Ada_Aba\Public\Workflows\Registration_Workflow;
 use Ada_Aba\Public\Workflows\Action_Workflow;
 use Ada_Aba\Public\Workflows\Error_Workflow;
 use Ada_Aba\Public\Workflows\Progress_Workflow;
+use Ada_Aba\Public\Workflows\Request_Certificate_Workflow;
 
 class Ada_Build_Shortcode
 {
@@ -44,6 +45,7 @@ class Ada_Build_Shortcode
       new Action_Workflow($this->plugin_name),
       new Confirmation_Workflow($this->plugin_name),
       new Progress_Workflow($this->plugin_name),
+      new Request_Certificate_Workflow($this->plugin_name),
       new Registration_Workflow($this->plugin_name),
     );
   }

@@ -54,51 +54,44 @@ function get_request_certificate_link($enrollment_slug)
   return Core::get_ada_build_url() . '?' . Keys\REQUEST_CERTIFICATE . "=$enrollment_slug";
 }
 
+function get_certificate_link($completion_slug)
+{
+  return Core::get_ada_build_url() . '?' . Keys\CERTIFICATE . "=$completion_slug";
+}
 
 function redirect_to_confirm_page($action_slug, $halt = true)
 {
   $url = get_confirm_link($action_slug);
-  wp_redirect($url);
-
-  if ($halt) {
-    exit;
-  }
+  redirect_to_page($url, $halt);
 }
 
 function redirect_to_verify_page($nonce, $halt = true)
 {
   $url = get_verify_link($nonce);
-  wp_redirect($url);
-
-  if ($halt) {
-    exit;
-  }
+  redirect_to_page($url, $halt);
 }
 
 function redirect_to_confirmation_page($user_slug, $halt = true)
 {
   $url = get_confirmation_link($user_slug);
-  wp_redirect($url);
-
-  if ($halt) {
-    exit;
-  }
+  redirect_to_page($url, $halt);
 }
 
 
 function redirect_to_error_page($error, $halt = true)
 {
   $url = get_error_link($error);
-  wp_redirect($url);
-
-  if ($halt) {
-    exit;
-  }
+  redirect_to_page($url, $halt);
 }
 
 function redirect_to_progress_page($user_slug, $halt = true)
 {
   $url = get_progress_link($user_slug);
+  redirect_to_page($url, $halt);
+}
+
+function redirect_to_page($url, $halt = true)
+{
   wp_redirect($url);
 
   if ($halt) {
