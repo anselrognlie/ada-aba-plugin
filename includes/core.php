@@ -178,6 +178,7 @@ class Core
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/services/syllabus-edit-service.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/services/enrollment-service.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/services/learner-lesson-service.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/services/course-lesson-service.php';
 
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/shortcodes/ada-build-shortcode.php';
 

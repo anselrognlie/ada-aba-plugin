@@ -334,6 +334,33 @@ class Syllabus
     }
   }
 
+  public static function get_by_lesson_id($lesson_id)
+  {
+    global $wpdb;
+
+    $table_name = $wpdb->prefix . self::$table_name;
+
+    $result = $wpdb->get_results(
+      $wpdb->prepare(
+        "SELECT * FROM $table_name WHERE lesson_id = %d",
+        $lesson_id
+      ),
+      'ARRAY_A'
+    );
+
+    if ($result === false) {
+      throw new Aba_Exception('Failed to retrieve Syllabuses');
+    }
+
+    if ($result) {
+      return array_map(function ($row) {
+        return self::fromRow($row);
+      }, $result);
+    } else {
+      return [];
+    }
+  }
+
   public function delete()
   {
     global $wpdb;

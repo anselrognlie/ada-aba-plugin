@@ -292,6 +292,34 @@ class Enrollment
     }, $result);
   }
 
+  public static function get_by_learner_course(
+    $learner_id,
+    $course_id
+  ) {
+    global $wpdb;
+
+    $table_name = $wpdb->prefix . self::$table_name;
+
+    $result = $wpdb->get_row(
+      $wpdb->prepare(
+        "SELECT * FROM $table_name WHERE learner_id = %d AND course_id = %d",
+        $learner_id,
+        $course_id,
+      ),
+      'ARRAY_A'
+    );
+
+    if ($result === false) {
+      throw new Aba_Exception('Failed to retrieve Enrollments');
+    }
+
+    if ($result) {
+      return self::fromRow($result);
+    } else {
+      return null;
+    }
+  }
+
   public function delete()
   {
     global $wpdb;
@@ -306,5 +334,12 @@ class Enrollment
     if ($result === false) {
       throw new Aba_Exception('Failed to delete Enrollment');
     }
+  }
+
+  public function complete()
+  {
+    $this->completed_at = dt_to_sql(new \DateTime());
+    $this->completion = Core::generate_nonce();
+    $this->update();
   }
 }
