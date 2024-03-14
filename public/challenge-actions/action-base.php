@@ -8,6 +8,7 @@ use Ada_Aba\Includes\Core;
 use Ada_Aba\Includes\Models\Challenge_Action;
 use Ada_Aba\Includes\Models\Db_Helpers\Transaction;
 use Ada_Aba\Includes\Options;
+use Ada_Aba\Public\Action\Emails;
 use Ada_Aba\Public\Action\Links;
 use Ada_Aba\Public\Action\Errors;
 
@@ -186,11 +187,7 @@ abstract class Action_Base
     $verify_link = Links\get_verify_link($this->nonce);
     $footer = $this->get_email_footer($verify_link);
 
-    $headers = array(
-      'Content-Type: text/html; charset=UTF-8',
-    );
-
-    wp_mail($to, $subject, $body . $footer, $headers);
+    Emails::mail($to, $subject, $body . $footer);
   }
 
   private function cleanup()
