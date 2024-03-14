@@ -60,3 +60,7 @@ We would like to generate a PDF certificate for course completion.
 
 [PDFlib](https://www.pdflib.com/) is a commercial product and watermarks the result without a license.
 [FPDF](http://www.fpdf.org/) is a free, open source package.
+[FPDI](https://www.setasign.com/products/fpdi/about) can be used to import an existing PDF to use as a template. Then FPDF can be used to add content.
+
+There are also libraries that can generate a pdf from HTML and CSS.
+[dompdf](https://github.com/dompdf/dompdf)
