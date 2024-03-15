@@ -72,7 +72,6 @@ class Registration_Workflow extends Workflow_Base
     // If this learner is already in the database, just send the welcome
     $learner = Learner::get_by_email($email);
     if ($learner) {
-      Emails::send_welcome_email($learner);
       Links\redirect_to_confirmation_page($learner->getSlug());
       return;
     }
