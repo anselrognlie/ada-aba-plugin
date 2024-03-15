@@ -2,38 +2,64 @@
 
 namespace Ada_Aba\Public\Workflows;
 
+use Ada_Aba\Includes\Models\Learner;
 use Ada_Aba\Public\Action\Keys;
 use Ada_Aba\Public\Action\Links;
 
-class Confirmation_Workflow extends Workflow_Base
+class Confirmation_Workflow extends One_Shot_Email_Workflow
 {
+  private $email;
+  private $subject;
+  private $body;
+
   public function __construct($plugin_name)
   {
-    parent::__construct($plugin_name);
+    parent::__construct($plugin_name, Keys\CONFIRMATION);
   }
 
-  public function can_handle_load_precise()
+  protected function handle_request_load_internal()
   {
-    return false;
+    if (!$this->is_user_confirmed()) {
+      return;
+    }
+
+    $learner_slug = $this->get_confirmed_user();
+    $learner = Learner::get_by_slug($learner_slug);
+    if (!$learner) {
+      return;
+    }
+
+    return $this->prepare_welcome_email($learner);
   }
 
-  public function handle_load()
-  {
-    // no actions
-  }
-
-  public function can_handle_page()
-  {
-    return $this->is_in_get(Keys\CONFIRMATION);
-  }
-
-  public function handle_page()
+  protected function handle_request_page_internal()
   {
     if ($this->is_user_confirmed()) {
       return $this->handle_learner_confirmation_success();
     } else {
       return $this->handle_learner_confirmation_failed();
     }
+  }
+
+  protected function get_base_url()
+  {
+    $learner_slug = $this->is_user_confirmed() ? $this->get_confirmed_user() : '';
+    return Links\get_confirmation_link($learner_slug);
+  }
+
+  protected function get_email()
+  {
+    return $this->email;
+  }
+
+  protected function get_subject()
+  {
+    return $this->subject;
+  }
+
+  protected function get_body()
+  {
+    return $this->body;
   }
 
   private function is_user_confirmed()
@@ -58,9 +84,37 @@ class Confirmation_Workflow extends Workflow_Base
     return $this->get_registered_error_content();
   }
 
+  private function prepare_welcome_email($learner)
+  {
+    $first_name = $learner->getFirstName();
+    $last_name = $learner->getLastName();
+    $this->email = $learner->getEmail();
+
+    $progress_link = Links\get_progress_link($learner->getSlug());
+
+    $this->subject = 'Ada Build Confirmed';
+    $this->body = self::get_registered_email_content(
+      $first_name,
+      $last_name,
+      $this->email,
+      $progress_link,
+    );
+  }
+
   //
   // output wrappers
   //
+
+  private function get_registered_email_content(
+    $first_name,
+    $last_name,
+    $email,
+    $progress_link,
+  ) {
+    ob_start();
+    include __DIR__ . '/../partials/registered-email.php';
+    return ob_get_clean();
+  }
 
   private function get_registered_content(
     $progress_link,

@@ -43,7 +43,6 @@ class Register_Action extends Action_Base
       throw new Aba_Exception('Could not create or get learner');
     }
 
-    Emails::send_welcome_email($learner);
     Links\redirect_to_confirmation_page($learner->getSlug(), halt: false);
   }
 

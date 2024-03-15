@@ -22,7 +22,6 @@
 
 <p>
   You may wish to bookmark that link for future reference.
-  Otherwise, you will also receive an email with the same link.
 </p>
 
 <p>

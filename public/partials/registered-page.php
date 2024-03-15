@@ -20,13 +20,10 @@
 <p>
   You can start tracking your progress by
   clicking <a href="<?php echo $progress_link ?>">here</a>.
+  We hope you enjoy the course!
 </p>
 
 <p>
   You may wish to bookmark that link for future reference.
   Otherwise, you will also receive an email with the same link.
-</p>
-
-<p>
-  We hope you enjoy the course!
 </p>
