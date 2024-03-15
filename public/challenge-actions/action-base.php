@@ -77,7 +77,7 @@ abstract class Action_Base
         $this->cleanup();
       } catch (Aba_Exception $e) {
         Transaction::rollback();
-        Core::log($e->getMessage());
+        Core::log($e);
         redirect_to_error_page(Errors\COMPLETE_ACTION);
       }
       Transaction::complete();
