@@ -32,6 +32,12 @@ if (!defined('WPINC')) {
   die;
 }
 
+# requires, etc. for pdf libraries
+define('Ada_Aba\\FPDF_FONTPATH', __DIR__ . '/public/font/');
+require_once('src/fpdf.php');
+require_once('src/fpdi/src/autoload.php');
+
+
 const ADA_ABA_PLUGIN_NAME = 'ada-aba';
 
 /**

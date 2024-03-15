@@ -1,0 +1,15 @@
+The [FPDF](http://www.fpdf.org/) and [FPDI](https://www.setasign.com/products/fpdi/about) libraries should be placed in this directory. Both should be modified so that they live under the Ada_Aba namespace so as not to conflict with any other plugins which may be using the same libaries.
+
+The font files required for FPDF should be placed in public/font. The Ada_Aba\\FPDF_FONTPATH constant is set to reflect this.
+
+The needed requires are already in the code and should work so long as the required files are in the expected locations.
+
+The structure of this folder should be as follows:
+
+- src
+  - fpdf.php
+  - fpdi
+    - src
+      - fpdi src structure (e.g. Fpdi.php should appear here)
+
+FPDF should be in a 

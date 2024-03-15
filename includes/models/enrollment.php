@@ -188,6 +188,27 @@ class Enrollment
     }
   }
 
+  public static function get_by_completion_slug($slug)
+  {
+    global $wpdb;
+
+    $table_name = $wpdb->prefix . self::$table_name;
+
+    $row = $wpdb->get_row(
+      $wpdb->prepare(
+        "SELECT * FROM $table_name WHERE completion = %s",
+        $slug
+      ),
+      'ARRAY_A'
+    );
+
+    if ($row) {
+      return self::fromRow($row);
+    } else {
+      return null;
+    }
+  }
+
   // create a new Enrollment from values, excluding those that can be generated
   public static function create(
     $learner_id,

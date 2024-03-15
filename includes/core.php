@@ -178,6 +178,7 @@ class Core
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/dto/learner-course/learner-course-progress.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/dto/learner-course/learner-lesson-progress.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/dto/learner-course/learner-course-progress-builder.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/dto/certificate/certificate-details.php';
 
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/services/syllabus-edit-service.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/services/enrollment-service.php';
@@ -211,6 +212,7 @@ class Core
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/workflows/one-shot-email-workflow.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/workflows/confirmation-workflow.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/workflows/request-certificate-workflow.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'public/workflows/certificate-workflow.php';
   }
 
   /**
