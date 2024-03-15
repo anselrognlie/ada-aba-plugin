@@ -4,8 +4,6 @@ namespace Ada_Aba\Public\Workflows;
 
 use Ada_Aba\Includes\Core;
 use Ada_Aba\Includes\Models\Learner;
-use Ada_Aba\Includes\Aba_Exception;
-use Ada_Aba\Public\Action\Emails;
 use Ada_Aba\Public\Challenge_Actions\Register_Action;
 use Ada_Aba\Public\Action\Keys;
 use Ada_Aba\Public\Action\Links;
@@ -24,7 +22,7 @@ class Registration_Workflow extends Workflow_Base
 
   public function handle_load()
   {
-      $this->handle_registration_form();
+    $this->handle_registration_form();
   }
 
   public function can_handle_page()
