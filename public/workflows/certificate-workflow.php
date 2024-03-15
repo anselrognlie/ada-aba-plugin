@@ -62,6 +62,7 @@ class Certificate_Workflow extends Workflow_Base
     );
 
     echo $cert;
+    exit;
   }
 
   private function get_certificate(
