@@ -64,7 +64,11 @@ class Core
   protected $version;
 
   // info = 0, warning = 1, errror = 2
-  private static $log_level = 0;
+  const INFO = 0;
+  const WARNING = 1;
+  const ERROR = 2;
+
+  private static $log_level = self::INFO;
 
   /**
    * Define the core functionality of the plugin.
@@ -257,8 +261,6 @@ class Core
     $plugin_name = $this->get_plugin_name();
     $plugin_public = new Aba_Public($plugin_name, $this->get_version());
 
-    $this->loader->add_shortcode($plugin_name . '-registration-form', $plugin_public, 'shortcode_register_form');
-    $this->loader->add_shortcode($plugin_name . '-learner-confirmation', $plugin_public, 'shortcode_learner_confirmation');
     $this->loader->add_shortcode($plugin_name . '-ada-build', $plugin_public, 'shortcode_ada_build');
 
     $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_styles');
@@ -310,14 +312,37 @@ class Core
     return $this->version;
   }
 
-  public static function log($msg, $severity = 0)
+  public static function log($msg, $severity = self::INFO)
   {
     if ($severity < self::$log_level) {
-      // don't log if the speficied severity is lower than the current log level
+      // don't log if the specified severity is lower than the current log level
       return;
     }
 
     error_log($msg);
+  }
+
+
+  public static function log_ex($e, $context = [], $severity = self::ERROR)
+  {
+    if ($severity < self::$log_level) {
+      // don't log if the specified severity is lower than the current log level
+      return;
+    }
+
+    $trace = self::jTraceEx($e);
+    $context_str = join('\n', array_reduce(
+      array_keys($context),
+      function ($acc, $key) use ($context) {
+        $acc[] = "$key: $context[$key]";
+        return $acc;
+      },
+      []
+    ));
+
+    $msg = !$context ? $trace : "$context_str\n$trace";
+
+    self::log($msg, $severity);
   }
 
   public static function privy($msg)
@@ -356,4 +381,51 @@ class Core
     return home_url(self::get_ada_build_page());
   }
 
+  /**
+   * jTraceEx() - provide a Java style exception trace
+   *              from https://www.php.net/manual/en/exception.gettraceasstring.php#114980
+   * @param $exception
+   * @param $seen      - array passed to recursive calls to accumulate trace lines already seen
+   *                     leave as NULL when calling this function
+   * @return string representation of the exception trace
+   */
+  public static function jTraceEx($e, $seen = null)
+  {
+    $starter = $seen ? 'Caused by: ' : '';
+    $result = array();
+    if (!$seen) $seen = array();
+    $trace  = $e->getTrace();
+    $prev   = $e->getPrevious();
+    $result[] = sprintf('%s%s: %s', $starter, get_class($e), $e->getMessage());
+    $file = $e->getFile();
+    $line = $e->getLine();
+    while (true) {
+      $current = "$file:$line";
+      if (is_array($seen) && in_array($current, $seen)) {
+        $result[] = sprintf(' ... %d more', count($trace) + 1);
+        break;
+      }
+      $result[] = sprintf(
+        ' at %s%s%s(%s%s%s)',
+        count($trace) && array_key_exists('class', $trace[0]) ? str_replace('\\', '.', $trace[0]['class']) : '',
+        count($trace) && array_key_exists('class', $trace[0]) && array_key_exists('function', $trace[0]) ? '.' : '',
+        count($trace) && array_key_exists('function', $trace[0]) ? str_replace('\\', '.', $trace[0]['function']) : '(main)',
+        $line === null ? $file : basename($file),
+        $line === null ? '' : ':',
+        $line === null ? '' : $line
+      );
+      if (is_array($seen))
+        $seen[] = "$file:$line";
+      if (!count($trace))
+        break;
+      $file = array_key_exists('file', $trace[0]) ? $trace[0]['file'] : 'Unknown Source';
+      $line = array_key_exists('file', $trace[0]) && array_key_exists('line', $trace[0]) && $trace[0]['line'] ? $trace[0]['line'] : null;
+      array_shift($trace);
+    }
+    $result_str = join("\n", $result);
+    if ($prev)
+      $result_str  .= "\n" . self::jTraceEx($prev, $seen);
+
+    return $result_str;
+  }
 }

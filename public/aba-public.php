@@ -2,7 +2,10 @@
 
 namespace Ada_Aba\Public;
 
+use Ada_Aba\Includes\Aba_Exception;
+use Ada_Aba\Includes\Core;
 use Ada_Aba\Includes\Options;
+use Ada_Aba\Public\Action\Errors;
 use Ada_Aba\Public\Shortcodes\Ada_Build_Shortcode;
 use Ada_Aba\Public\Workflows\Registration_Workflow;
 use Ada_Aba\Public\Workflows\Action_Workflow;
@@ -10,6 +13,9 @@ use Ada_Aba\Public\Workflows\Complete_Lesson_Workflow;
 use Ada_Aba\Public\Workflows\Confirmation_Workflow;
 use Ada_Aba\Public\Workflows\Enroll_Workflow;
 use Ada_Aba\Public\Workflows\Request_Certificate_Workflow;
+use Exception;
+
+use function Ada_Aba\Public\Action\Links\redirect_to_error_page;
 
 /**
  * The public-facing functionality of the plugin.
@@ -143,16 +149,40 @@ class Aba_Public
   // registered in Core
   public function handle_page_loaded()
   {
-    foreach ($this->load_handlers as $handler) {
-      if ($handler->can_handle_load()) {
-        return $handler->handle_load();
+    try {
+      foreach ($this->load_handlers as $handler) {
+        if ($handler->can_handle_load()) {
+          return $handler->handle_load();
+        }
       }
+    } catch (Aba_Exception $e) {
+      Core::log($e);
+      redirect_to_error_page(Errors\UNKNOWN);
+    } catch (Exception $e) {
+      Core::log_ex($e);
+      redirect_to_error_page(Errors\UNKNOWN);
     }
   }
 
   public function shortcode_ada_build()
   {
-    $code = new Ada_Build_Shortcode($this->plugin_name);
-    return $code->run();
+    try {
+      $code = new Ada_Build_Shortcode($this->plugin_name);
+      return $code->run();
+    } catch (Aba_Exception $e) {
+      Core::log($e);
+      return $this->get_unknown_error_content();
+    } catch (Exception $e) {
+      Core::log_ex($e);
+      return $this->get_unknown_error_content();
+    }
+  }
+
+  private function get_unknown_error_content()
+  {
+    $error = '0x' . dechex(Errors\UNKNOWN);  // used in template
+    ob_start();
+    include __DIR__ . '/partials/error-page.php';
+    return ob_get_clean();
   }
 }
