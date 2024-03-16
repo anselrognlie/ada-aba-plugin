@@ -201,6 +201,8 @@ class Core
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/action/links.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/action/emails.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/action/errors.php';
+    
+    require_once plugin_dir_path(dirname(__FILE__)) . 'public/controllers/completion-controller.php';
 
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/workflows/workflow-base.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/workflows/registration-workflow.php';
@@ -267,6 +269,7 @@ class Core
 
     $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_styles');
     $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_scripts');
+    $this->loader->add_action('rest_api_init', $plugin_public, 'register_routes');
     $this->loader->add_action('wp_loaded', $plugin_public, 'handle_page_loaded');
   }
 

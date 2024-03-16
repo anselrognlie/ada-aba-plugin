@@ -14,12 +14,18 @@ use Ada_Aba\Public\Action\Errors;
 
 use function Ada_Aba\Public\Action\Links\redirect_to_error_page;
 
+enum Action_Context {
+  case BROWSER;
+  case API;
+};
+
 abstract class Action_Base
 {
   private $slug;
   private $email;
   private $nonce;
   private $expires_at;
+
 
   protected function __construct(
     $slug,
@@ -137,15 +143,20 @@ abstract class Action_Base
     }
   }
 
-  public function run()
+  public function run($context = Action_Context::BROWSER)
   {
-    try
-    {
+    try {
       $this->log_action();
     } catch (Aba_Exception $e) {
-      Core::log($e);
-      redirect_to_error_page(Errors\LOG_ACTION);
-      return;
+      if ($context === Action_Context::BROWSER) {
+        // When called in a browser, apply our standard error handling
+        Core::log($e);
+        redirect_to_error_page(Errors\LOG_ACTION);
+        return;
+      }
+
+      // We weren't in a browser, so we re-throw the exception so it can be handled elsewhere
+      throw $e;
     }
 
     $this->notify();

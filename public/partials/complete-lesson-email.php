@@ -18,7 +18,7 @@
 </p>
 
 <p>
-  If you clicked the Finish link in error,
+  If you did not intend to mark the lesson as complete, or if you are not ready to mark it as complete yet,
   just ignore the confirmation email and the status will not change.
   Click <a href="<?php echo esc_url($progress_link) ?>">here</a> to return to your progress view.
 </p>

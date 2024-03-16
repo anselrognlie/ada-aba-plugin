@@ -2,6 +2,7 @@
 
 namespace Ada_Aba\Public;
 
+use Ada_Aba\Admin\Controllers\Completion_Controller;
 use Ada_Aba\Includes\Aba_Exception;
 use Ada_Aba\Includes\Core;
 use Ada_Aba\Includes\Options;
@@ -61,8 +62,7 @@ class Aba_Public
 
   private $load_handlers = [];
 
-  public static $registration_shortcode = "registration-form";
-  public static $learner_confirmation_shortcode = "learner-confirmation";
+  private $completion_routes;
 
   /**
    * Initialize the class and set its properties.
@@ -133,6 +133,13 @@ class Aba_Public
         'nonce' => wp_create_nonce('wp_rest'),  // from https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/
       )
     );
+  }
+
+  public function register_routes()
+  {
+    // register course routes
+    $this->completion_routes = new Completion_Controller($this->plugin_name);
+    $this->completion_routes->register_routes();
   }
 
   private function register_load_handlers()
