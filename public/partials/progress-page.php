@@ -17,6 +17,7 @@
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 
 <h2>Course Progress</h2>
+<p><span>Learner ID: </span><span><?php echo $learner_slug ?></span></p>
 
 <?php if (empty($learner_courses)) : ?>
   <p> You are not enrolled in any courses. </p>
