@@ -27,7 +27,7 @@ const getLesson = async function (slug) {
   // console.log(data);
 };
 
-const addLesson = async function (name) {
+const addLesson = async function (name, url) {
   const response = await fetch(`${ada_aba_vars.root}ada-aba/v1/lessons`, {
     headers: {
       'X-WP-Nonce': ada_aba_vars.nonce,
@@ -36,13 +36,14 @@ const addLesson = async function (name) {
     method: 'POST',
     body: JSON.stringify({
       name: name,
+      url: url,
     }),
   });
   return await response.json();
   // console.log(data);
 };
 
-const updateLesson = async function (slug, name) {
+const updateLesson = async function (slug, name, url) {
   const response = await fetch(`${ada_aba_vars.root}ada-aba/v1/lessons/${slug}`, {
     headers: {
       'X-WP-Nonce': ada_aba_vars.nonce,
@@ -51,6 +52,7 @@ const updateLesson = async function (slug, name) {
     method: 'PATCH',
     body: JSON.stringify({
       name: name,
+      url: url,
     }),
   });
   return await response.json();

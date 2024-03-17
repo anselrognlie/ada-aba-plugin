@@ -15,8 +15,14 @@
 
 <form id="ada-aba-lessons-edit-lesson">
   <h2>Edit Lesson</h2>
-  <label for="lesson_name">Name</label>
-  <input type="text" id="ada-aba-lessons-edit-lesson-name" name="name" value="" required>
+  <p>
+    <label for="ada-aba-lessons-edit-lesson-name">Name</label>
+    <input type="text" id="ada-aba-lessons-edit-lesson-name" name="name" value="" required>
+  </p>
+  <p>
+    <label for="ada-aba-lessons-edit-lesson-url">URL</label>
+    <input type="text" id="ada-aba-lessons-edit-lesson-url" name="url" value="" required>
+  </p>
   <input type="hidden" id="ada-aba-lessons-edit-lesson-slug" name="slug" value="" required>
   <input type="submit" value="Update">
   <input type="reset" value="Cancel">

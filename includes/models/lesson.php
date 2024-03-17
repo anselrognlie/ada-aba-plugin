@@ -15,6 +15,7 @@ class Lesson
   private $deleted_at;
   private $name;
   private $slug;
+  private $url;
 
   public static $table_name = 'ada_aba_lesson';
 
@@ -24,7 +25,8 @@ class Lesson
     $updated_at,
     $deleted_at,
     $name,
-    $slug
+    $slug,
+    $url,
   ) {
     $this->id = $id;
     $this->created_at = $created_at;
@@ -32,6 +34,7 @@ class Lesson
     $this->deleted_at = $deleted_at;
     $this->name = $name;
     $this->slug = $slug;
+    $this->url = $url;
   }
 
   // Getters
@@ -65,6 +68,11 @@ class Lesson
     return $this->slug;
   }
 
+  public function getUrl()
+  {
+    return $this->url;
+  }
+
   // Setters
   public function setId($id)
   {
@@ -96,6 +104,11 @@ class Lesson
     $this->slug = $slug;
   }
 
+  public function setUrl($url)
+  {
+    $this->url = $url;
+  }
+
   public static function fromRow($row)
   {
     return new Lesson(
@@ -105,6 +118,7 @@ class Lesson
       $row['deleted_at'],
       $row['name'],
       $row['slug'],
+      $row['url'],
     );
   }
 
@@ -179,7 +193,7 @@ class Lesson
   // create a new Lesson from values, excluding those that can be generated
   public static function create(
     $name,
-    $active = false,
+    $url,
   ) {
     $nonce = Core::generate_nonce();
     $now = new \DateTime();
@@ -191,7 +205,7 @@ class Lesson
       null,
       $name,
       $nonce,
-      $active,
+      $url,
     );
   }
 
@@ -227,6 +241,7 @@ class Lesson
       'deleted_at' => $this->deleted_at,
       'name' => $this->name,
       'slug' => $this->slug,
+      'url' => $this->url,
     );
 
     $result = $wpdb->insert($table_name, $data);
@@ -247,6 +262,7 @@ class Lesson
       'updated_at' => dt_to_sql(new \DateTime()),
       'name' => $this->name,
       'slug' => $this->slug,
+      'url' => $this->url,
     );
 
     $result = $wpdb->update(

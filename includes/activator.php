@@ -92,6 +92,7 @@ class Activator
       deleted_at datetime,
       name text NOT NULL,
       slug varchar(255) NOT NULL UNIQUE,
+      url varchar(255) NOT NULL,
       PRIMARY KEY  (id)
       ) $charset_collate;
     ";

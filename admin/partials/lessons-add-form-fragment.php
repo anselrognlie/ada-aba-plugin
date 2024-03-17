@@ -15,7 +15,13 @@
 
 <form id="ada-aba-lessons-add-lesson">
   <h2>Add Lessons</h2>
-  <label for="lesson_name">Name</label>
-  <input type="text" id="ada-aba-lessons-add-lesson-name" name="name" value="" required>
+  <p>
+    <label for="ada-aba-lessons-add-lesson-name">Name</label>
+    <input type="text" id="ada-aba-lessons-add-lesson-name" name="name" value="" required>
+  </p>
+  <p>
+    <label for="ada-aba-lessons-add-lesson-url">URL</label>
+    <input type="text" id="ada-aba-lessons-add-lesson-url" name="url" value="" required>
+  </p>
   <input type="submit" value="Add">
 </form>

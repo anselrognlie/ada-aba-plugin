@@ -17,6 +17,7 @@ class Lesson_Scalar implements \JsonSerializable
       'id' => $this->lesson->getId(),
       'name' => $this->lesson->getName(),
       'slug' => $this->lesson->getSlug(),
+      'url' => $this->lesson->getUrl(),
     );
   }
 }

@@ -111,7 +111,10 @@ class Lessons_Controller {
 
   public function add($request)
   {
-    $lesson = Lesson::create($request->get_param('name'));
+    $name = $request->get_param('name');
+    $url = $request->get_param('url');
+
+    $lesson = Lesson::create($name, $url);
     $lesson->insert();
     return rest_ensure_response(new Lesson_Scalar($lesson));
   }
@@ -131,11 +134,14 @@ class Lessons_Controller {
   {
     $slug = $request['slug'];
     $name = $request->get_param('name');
+    $url = $request->get_param('url');
+
     error_log(print_r($request->get_params(), true));
 
     $lesson = Lesson::get_by_slug($slug);
     if ($lesson) {
       $lesson->setName($name);
+      $lesson->setUrl($url);
       $lesson->update();
     }
 
