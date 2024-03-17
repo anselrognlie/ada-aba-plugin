@@ -38,6 +38,13 @@ class Activator
     self::set_default_options($plugin_name);
   }
 
+  private static function does_table_have_column($table_name, $column_name)
+  {
+    global $wpdb;
+    $column_exists = $wpdb->get_var("SHOW COLUMNS FROM $table_name LIKE '$column_name'");
+    return $column_exists;
+  }
+
   private static function create_database_tables()
   {
     global $wpdb;
