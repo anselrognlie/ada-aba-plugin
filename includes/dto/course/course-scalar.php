@@ -18,6 +18,7 @@ class Course_Scalar implements \JsonSerializable
       'name' => $this->course->getName(),
       'slug' => $this->course->getSlug(),
       'active' => $this->course->isActive(),
+      'url' => $this->course->getUrl(),
     );
   }
 }

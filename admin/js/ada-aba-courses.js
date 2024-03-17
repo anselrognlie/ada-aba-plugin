@@ -45,15 +45,18 @@
 
   const resetAddForm = function () {
     $('#ada-aba-courses-add-course-name').val('');
+    $('#ada-aba-courses-add-course-url').val('');
   };
 
   const resetEditForm = function () {
     $('#ada-aba-courses-edit-course-name').val('');
+    $('#ada-aba-courses-edit-course-url').val('');
     $('#ada-aba-courses-edit-course-slug').val('');
   };
 
   const editCourse = function (course) {
     $('#ada-aba-courses-edit-course-name').val(course.name);
+    $('#ada-aba-courses-edit-course-url').val(course.url);
     $('#ada-aba-courses-edit-course-slug').val(course.slug);
   };
 
@@ -62,9 +65,10 @@
     form.on('submit', async function (e) {
       e.preventDefault();
       const name = $('#ada-aba-courses-add-course-name').val();
+      const url = $('#ada-aba-courses-add-course-url').val();
       resetAddForm();
 
-      const response = await addCourse(name);
+      const response = await addCourse(name, url);
       await updateCourses();
     });
   };
@@ -75,10 +79,11 @@
       e.preventDefault();
 
       const name = $('#ada-aba-courses-edit-course-name').val();
+      const url = $('#ada-aba-courses-edit-course-url').val();
       const slug = $('#ada-aba-courses-edit-course-slug').val();
       resetEditForm();
 
-      const response = await updateCourse(slug, name);
+      const response = await updateCourse(slug, name, url);
       await updateCourses();
     });
 

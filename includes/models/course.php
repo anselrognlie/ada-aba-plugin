@@ -16,6 +16,7 @@ class Course
   private $name;
   private $slug;
   private $active;
+  private $url;
 
   public static $table_name = 'ada_aba_course';
 
@@ -27,6 +28,7 @@ class Course
     $name,
     $slug,
     $active,
+    $url,
   ) {
     $this->id = $id;
     $this->created_at = $created_at;
@@ -35,6 +37,7 @@ class Course
     $this->name = $name;
     $this->slug = $slug;
     $this->active = $active;
+    $this->url = $url;
   }
 
   // Getters
@@ -73,6 +76,11 @@ class Course
     return $this->active;
   }
 
+  public function getUrl()
+  {
+    return $this->url;
+  }
+
   // Setters
   public function setId($id)
   {
@@ -109,22 +117,10 @@ class Course
     $this->active = $active;
   }
 
-  // public static function get_by_email($email) {
-  //   global $wpdb;
-
-  //   $table_name = $wpdb->prefix . self::$table_name;
-
-  //   $row = $wpdb->get_row(
-  //     "SELECT * FROM $table_name WHERE email = '$email'",
-  //     'ARRAY_A'
-  //   );
-
-  //   if ($row) {
-  //     return self::fromRow($row);
-  //   } else {
-  //     return null;
-  //   }
-  // }
+  public function setUrl($url)
+  {
+    $this->url = $url;
+  }
 
   public static function fromRow($row)
   {
@@ -136,6 +132,7 @@ class Course
       $row['name'],
       $row['slug'],
       $row['active'],
+      $row['url'],
     );
   }
 
@@ -267,7 +264,8 @@ class Course
   // create a new Course from values, excluding those that can be generated
   public static function create(
     $name,
-    $active = false,
+    $active,
+    $url
   ) {
     $nonce = Core::generate_nonce();
     $now = new \DateTime();
@@ -280,6 +278,7 @@ class Course
       $name,
       $nonce,
       $active,
+      $url,
     );
   }
 
@@ -316,6 +315,7 @@ class Course
       'name' => $this->name,
       'slug' => $this->slug,
       'active' => $this->active,
+      'url' => $this->url,
     );
 
     $result = $wpdb->insert($table_name, $data);
@@ -337,6 +337,7 @@ class Course
       'name' => $this->name,
       'slug' => $this->slug,
       'active' => $this->active,
+      'url' => $this->url,
     );
 
     $result = $wpdb->update(

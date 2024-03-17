@@ -119,7 +119,10 @@ class Courses_Controller {
 
   public function add($request)
   {
-    $course = Course::create($request->get_param('name'));
+    $name = $request->get_param('name');
+    $url = $request->get_param('url');
+
+    $course = Course::create($name, false, $url);
     $course->insert();
     return rest_ensure_response(new Course_Scalar($course));
   }
@@ -148,10 +151,12 @@ class Courses_Controller {
   {
     $slug = $request['slug'];
     $name = $request->get_param('name');
+    $url = $request->get_param('url');
 
     $course = Course::get_by_slug($slug);
     if ($course) {
       $course->setName($name);
+      $course->setUrl($url);
       $course->update();
     }
 

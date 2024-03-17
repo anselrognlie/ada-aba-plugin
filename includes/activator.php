@@ -73,11 +73,10 @@ class Activator
       name text NOT NULL,
       slug varchar(255) NOT NULL UNIQUE,
       active tinyint(1) DEFAULT 0 NOT NULL,
+      url varchar(255) NOT NULL,
       PRIMARY KEY  (id)
       ) $charset_collate;
     ";
-
-
 
     $sql[] = "CREATE TABLE IF NOT EXISTS $lesson_table_name (
       id mediumint(9) NOT NULL AUTO_INCREMENT,
