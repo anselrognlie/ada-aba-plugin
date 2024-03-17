@@ -23,6 +23,11 @@ class Learner_Course_Progress
     return $this->learner_course->getCourse()->getName();
   }
 
+  public function getCourseUrl()
+  {
+    return $this->learner_course->getCourse()->getUrl();
+  }
+
   public function isComplete()
   {
     return $this->learner_course->isComplete();

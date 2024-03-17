@@ -29,7 +29,8 @@
 
   <!-- enrollments information -->
   <?php foreach ($learner_courses as $learner_course) : ?>
-    <h3><?php echo $learner_course->getCourseName(); ?></h3>
+    <h3><?php echo $learner_course->getCourseName(); ?>
+      <a href="<?php echo $learner_course->getCourseUrl() ?>"><img src="<?php echo plugins_url("$plugin_name/public/assets/img/link-external.png") ?>"></a></h3>
     <p>
       <?php if ($learner_course->isComplete()) : ?>
         <a href="<?php echo esc_url($learner_course->getRequestCertificateLink()); ?>">(Request Certificate)</a>
@@ -38,7 +39,7 @@
     <ul>
       <?php foreach ($learner_course->getLessons() as $lesson) : ?>
         <li>
-          <?php echo htmlentities($lesson->getName()); ?>
+          <a href="<?php echo $lesson->getUrl() ?>"><?php echo htmlentities($lesson->getName()); ?></a>
 
           <?php if ($lesson->isOptional()) : ?>
             <span>(Optional)</span>

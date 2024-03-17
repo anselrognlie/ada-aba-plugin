@@ -75,6 +75,7 @@ class Progress_Workflow extends Workflow_Base
 
   private function get_progress_content($learner_slug, $learner_courses, $active_course, $enroll_link)
   {
+    $plugin_name = $this->plugin_name;
     ob_start();
     include __DIR__ . '/../partials/progress-page.php';
     return ob_get_clean();

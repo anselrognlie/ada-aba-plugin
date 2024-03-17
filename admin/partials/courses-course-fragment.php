@@ -21,5 +21,6 @@
 		<span><a href="#" class="ada-aba-courses-activate">Activate</a></span>
 	<?php endif ?>
 	<span><a href="#" class="ada-aba-courses-edit">Edit</a></span>
+	<span><a href="<?php echo $course->getUrl() ?>" target="_blank" class="ada-aba-courses-url">Url</a></span>
 	<span><a href="#" class="ada-aba-courses-delete">Delete</a></span>
 </p>

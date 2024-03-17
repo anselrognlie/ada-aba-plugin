@@ -21,6 +21,11 @@ class Learner_Lesson_Progress
     return $this->course_lesson->getLesson()->getName();
   }
 
+  public function getUrl()
+  {
+    return $this->course_lesson->getLesson()->getUrl();
+  }
+
   public function getSlug()
   {
     return $this->course_lesson->getLesson()->getSlug();
