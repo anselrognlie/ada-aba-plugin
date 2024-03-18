@@ -23,6 +23,10 @@
     <label for="ada-aba-lessons-edit-lesson-url">URL</label>
     <input type="text" id="ada-aba-lessons-edit-lesson-url" name="url" value="" required>
   </p>
+  <p>
+    <input type="checkbox" id="ada-aba-lessons-edit-lesson-complete" name="complete" value="">
+    <label for="ada-aba-lessons-edit-lesson-complete">Show complete on progress</label>
+  </p>
   <input type="hidden" id="ada-aba-lessons-edit-lesson-slug" name="slug" value="" required>
   <input type="submit" value="Update">
   <input type="reset" value="Cancel">

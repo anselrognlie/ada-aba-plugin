@@ -16,6 +16,9 @@
 <p class="ada-aba-lesson" data-ada-aba-lesson-slug="<?php echo $lesson->getSlug() ?>">
 	<span><?php echo $lesson->getName() ?></span>
 	<span>[<?php echo $lesson->getSlug() ?>]</span>
+	<?php if ($lesson->canCompleteOnProgress()) : ?>
+		<span>[P]</span>
+	<?php endif ?>
 	<span><a href="#" class="ada-aba-lessons-edit">Edit</a></span>
 	<span><a href="<?php echo $lesson->getUrl() ?>" target="_blank" class="ada-aba-courses-url">Url</a></span>
 	<span><a href="#" class="ada-aba-lessons-delete">Delete</a></span>

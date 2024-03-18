@@ -16,6 +16,7 @@ class Lesson
   private $name;
   private $slug;
   private $url;
+  private $complete_on_progress;
 
   public static $table_name = 'ada_aba_lesson';
 
@@ -27,6 +28,7 @@ class Lesson
     $name,
     $slug,
     $url,
+    $complete_on_progress,
   ) {
     $this->id = $id;
     $this->created_at = $created_at;
@@ -35,6 +37,7 @@ class Lesson
     $this->name = $name;
     $this->slug = $slug;
     $this->url = $url;
+    $this->complete_on_progress = $complete_on_progress;
   }
 
   // Getters
@@ -73,6 +76,11 @@ class Lesson
     return $this->url;
   }
 
+  public function canCompleteOnProgress()
+  {
+    return $this->complete_on_progress;
+  }
+
   // Setters
   public function setId($id)
   {
@@ -109,6 +117,11 @@ class Lesson
     $this->url = $url;
   }
 
+  public function setCompleteOnProgress($complete_on_progress)
+  {
+    $this->complete_on_progress = $complete_on_progress;
+  }
+
   public static function fromRow($row)
   {
     return new Lesson(
@@ -119,6 +132,7 @@ class Lesson
       $row['name'],
       $row['slug'],
       $row['url'],
+      $row['complete_on_progress'],
     );
   }
 
@@ -194,6 +208,7 @@ class Lesson
   public static function create(
     $name,
     $url,
+    $complete_on_progress,
   ) {
     $nonce = Core::generate_nonce();
     $now = new \DateTime();
@@ -206,6 +221,7 @@ class Lesson
       $name,
       $nonce,
       $url,
+      $complete_on_progress,
     );
   }
 
@@ -242,6 +258,7 @@ class Lesson
       'name' => $this->name,
       'slug' => $this->slug,
       'url' => $this->url,
+      'complete_on_progress' => $this->complete_on_progress,
     );
 
     $result = $wpdb->insert($table_name, $data);
@@ -263,6 +280,7 @@ class Lesson
       'name' => $this->name,
       'slug' => $this->slug,
       'url' => $this->url,
+      'complete_on_progress' => $this->complete_on_progress,
     );
 
     $result = $wpdb->update(

@@ -31,6 +31,11 @@ class Learner_Lesson_Progress
     return $this->course_lesson->getLesson()->getSlug();
   }
 
+  public function canCompleteOnProgress()
+  {
+    return $this->course_lesson->getLesson()->canCompleteOnProgress();
+  }
+
   public function getCompleteLink()
   {
     return $this->complete_link;

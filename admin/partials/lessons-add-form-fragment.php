@@ -23,5 +23,9 @@
     <label for="ada-aba-lessons-add-lesson-url">URL</label>
     <input type="text" id="ada-aba-lessons-add-lesson-url" name="url" value="" required>
   </p>
+  <p>
+    <input type="checkbox" id="ada-aba-lessons-add-lesson-complete" name="complete" value="">
+    <label for="ada-aba-lessons-add-lesson-complete">Show complete on progress</label>
+  </p>
   <input type="submit" value="Add">
 </form>

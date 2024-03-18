@@ -27,7 +27,7 @@ const getLesson = async function (slug) {
   // console.log(data);
 };
 
-const addLesson = async function (name, url) {
+const addLesson = async function (name, url, completeOnProgress) {
   const response = await fetch(`${ada_aba_vars.root}ada-aba/v1/lessons`, {
     headers: {
       'X-WP-Nonce': ada_aba_vars.nonce,
@@ -37,13 +37,14 @@ const addLesson = async function (name, url) {
     body: JSON.stringify({
       name: name,
       url: url,
+      complete_on_progress: completeOnProgress,
     }),
   });
   return await response.json();
   // console.log(data);
 };
 
-const updateLesson = async function (slug, name, url) {
+const updateLesson = async function (slug, name, url, completeOnProgress) {
   const response = await fetch(`${ada_aba_vars.root}ada-aba/v1/lessons/${slug}`, {
     headers: {
       'X-WP-Nonce': ada_aba_vars.nonce,
@@ -53,6 +54,7 @@ const updateLesson = async function (slug, name, url) {
     body: JSON.stringify({
       name: name,
       url: url,
+      complete_on_progress: completeOnProgress,
     }),
   });
   return await response.json();

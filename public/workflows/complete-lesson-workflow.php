@@ -72,7 +72,7 @@ class Complete_Lesson_Workflow extends Workflow_Base
     $lesson_slug = $this->get_lesson_slug();
     $lesson = Lesson::get_by_slug($lesson_slug);
 
-    if (!$learner || !$lesson) {
+    if (!$learner || !$lesson || !$lesson->canCompleteOnProgress()) {
       Core::log(sprintf(
         implode(',', ['%1$s::%2$s','%3$s','Learner: %4$s','Lesson: %5$s']),
         __CLASS__,

@@ -113,8 +113,9 @@ class Lessons_Controller {
   {
     $name = $request->get_param('name');
     $url = $request->get_param('url');
+    $complete_on_progress = $request->get_param('complete_on_progress');
 
-    $lesson = Lesson::create($name, $url);
+    $lesson = Lesson::create($name, $url, $complete_on_progress);
     $lesson->insert();
     return rest_ensure_response(new Lesson_Scalar($lesson));
   }
@@ -135,13 +136,15 @@ class Lessons_Controller {
     $slug = $request['slug'];
     $name = $request->get_param('name');
     $url = $request->get_param('url');
+    $complete_on_progress = $request->get_param('complete_on_progress');
 
-    error_log(print_r($request->get_params(), true));
+    // error_log(print_r($request->get_params(), true));
 
     $lesson = Lesson::get_by_slug($slug);
     if ($lesson) {
       $lesson->setName($name);
       $lesson->setUrl($url);
+      $lesson->setCompleteOnProgress($complete_on_progress);
       $lesson->update();
     }
 

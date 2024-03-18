@@ -18,6 +18,7 @@ class Lesson_Scalar implements \JsonSerializable
       'name' => $this->lesson->getName(),
       'slug' => $this->lesson->getSlug(),
       'url' => $this->lesson->getUrl(),
+      'complete_on_progress' => (bool) $this->lesson->canCompleteOnProgress(),
     );
   }
 }

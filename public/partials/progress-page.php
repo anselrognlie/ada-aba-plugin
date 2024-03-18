@@ -49,7 +49,9 @@
           <?php if ($lesson->isComplete()) : ?>
             <span>✅</span>
           <?php else : ?>
-            <a href="<?php echo $lesson->getCompleteLink(); ?>">Finish</a>
+            <?php if ($lesson->canCompleteOnProgress()) : ?>
+              <a href="<?php echo $lesson->getCompleteLink(); ?>">Finish</a>
+            <?php endif; ?>
           <?php endif; ?>
         </li>
       <?php endforeach; ?>

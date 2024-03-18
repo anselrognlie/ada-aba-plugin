@@ -93,6 +93,7 @@ class Activator
       name text NOT NULL,
       slug varchar(255) NOT NULL UNIQUE,
       url varchar(255) NOT NULL,
+      complete_on_progress tinyint(1) NOT NULL,
       PRIMARY KEY  (id)
       ) $charset_collate;
     ";
