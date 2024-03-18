@@ -36,6 +36,7 @@ if (!defined('WPINC')) {
 define('Ada_Aba\\FPDF_FONTPATH', __DIR__ . '/public/font/');
 require_once('src/fpdf.php');
 require_once('src/fpdi/src/autoload.php');
+require_once('src/Parsedown.php');
 
 
 const ADA_ABA_PLUGIN_NAME = 'ada-aba';

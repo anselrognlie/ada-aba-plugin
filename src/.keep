@@ -2,6 +2,8 @@ The [FPDF](http://www.fpdf.org/) and [FPDI](https://www.setasign.com/products/fp
 
 The font files required for FPDF should be placed in public/font. The Ada_Aba\\FPDF_FONTPATH constant is set to reflect this.
 
+The [Parsedown](https://parsedown.org/) markdown parser is used to handle markdown in the survey data. The Parsedown.php file from the project repo should be placed in this directory. It should be modified so that it lives under the Ada_Aba namespace.
+
 The needed requires are already in the code and should work so long as the required files are in the expected locations.
 
 The structure of this folder should be as follows:
@@ -11,5 +13,4 @@ The structure of this folder should be as follows:
   - fpdi
     - src
       - fpdi src structure (e.g. Fpdi.php should appear here)
-
-FPDF should be in a 
+  - Parsedown.php

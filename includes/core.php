@@ -215,6 +215,7 @@ class Core
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/workflows/confirmation-workflow.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/workflows/request-certificate-workflow.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/workflows/certificate-workflow.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'public/workflows/markdown-test-workflow.php';
   }
 
   /**

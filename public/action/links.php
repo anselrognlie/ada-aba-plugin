@@ -59,6 +59,11 @@ function get_certificate_link($completion_slug)
   return Core::get_ada_build_url() . '?' . Keys\CERTIFICATE . "=$completion_slug";
 }
 
+function get_markdown_link()
+{
+  return Core::get_ada_build_url() . '?' . Keys\MARKDOWN;
+}
+
 function redirect_to_confirm_page($action_slug, $halt = true)
 {
   $url = get_confirm_link($action_slug);
