@@ -2,3 +2,11 @@
  * All of the CSS for your admin-specific functionality should be
  * included in this file.
  */
+
+ #ada-aba-question-editor.active {
+  display: block;
+ }
+
+ #ada-aba-question-editor {
+  display: none;
+ }

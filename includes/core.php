@@ -139,6 +139,7 @@ class Core
     require_once plugin_dir_path(dirname(__FILE__)) . 'admin/fragments/course-lessons-fragments.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'admin/controllers/course-lessons-controller.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'admin/controllers/ui/syllabus-controller.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'admin/controllers/ui/question-builders-controller.php';
 
     /**
      * The class responsible for defining all actions that occur in the admin area.
@@ -170,6 +171,7 @@ class Core
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/models/enrollment.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/models/learner-course.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/models/completed-lesson.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/models/question.php';
 
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/dto/course/course-scalar.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/dto/lesson/lesson-scalar.php';
@@ -216,6 +218,12 @@ class Core
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/workflows/request-certificate-workflow.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/workflows/certificate-workflow.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/workflows/markdown-test-workflow.php';
+
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/questions/question-builder-base.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/questions/question-base.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/questions/no-response-question-builder.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/questions/no-response-question.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/questions/question-palette.php';
   }
 
   /**

@@ -57,6 +57,7 @@ class Activator
     $challenge_action_table_name = $wpdb->prefix . Models\Challenge_Action::$table_name;
     $enrollment_table_name = $wpdb->prefix . Models\Enrollment::$table_name;
     $completed_lesson_table_name = $wpdb->prefix . Models\Completed_Lesson::$table_name;
+    $question_table_name = $wpdb->prefix . Models\Question::$table_name;
     $sql = [];
 
     $sql[] = "CREATE TABLE IF NOT EXISTS $learner_table_name (
@@ -164,7 +165,21 @@ class Activator
       ) $charset_collate;
     ";
 
-    // dbDelta doesn't officially support foreign keys
+    $sql[] = "CREATE TABLE IF NOT EXISTS $question_table_name (
+      id mediumint(9) NOT NULL AUTO_INCREMENT,
+      created_at datetime NOT NULL,
+      updated_at datetime NOT NULL,
+      deleted_at datetime,
+      slug varchar(255) NOT NULL UNIQUE,
+      builder text NOT NULL,
+      prompt text NOT NULL,
+      `description` text NOT NULL,
+      `data` text NOT NULL,
+      PRIMARY KEY  (id)
+      ) $charset_collate;
+    ";
+
+// dbDelta doesn't officially support foreign keys
     // require_once ABSPATH . 'wp-admin/includes/upgrade.php';
     // dbDelta($sql);
 

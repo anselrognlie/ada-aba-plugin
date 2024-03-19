@@ -27,6 +27,9 @@
 </div>
 
 <div>
+	<label>One-time slug:</label> <span><?php echo $slug ?></span>
+</div>
+<div>
 	<p>A useful snippet to generate a good private key is
 	<p>
 		<code>

@@ -20,8 +20,9 @@ use Ada_Aba\Includes\Services\Syllabus_Edit_Service;
 use Ada_Aba\Admin\Controllers\Courses_Controller;
 use Ada_Aba\Admin\Controllers\Lessons_Controller;
 use Ada_Aba\Admin\Controllers\Course_Lessons_Controller;
+use Ada_Aba\Admin\Controllers\UI\Question_Builders_Controller;
 use Ada_Aba\Admin\Controllers\UI\Syllabus_Controller;
-
+use Ada_Aba\Includes\Questions\Question_Palette;
 
 /**
  * The admin-specific functionality of the plugin.
@@ -58,6 +59,7 @@ class Aba_Admin
   private $lesson_routes;
   private $course_lesson_routes;
   private $syllabus_routes;
+  private $question_builders_routes;
 
   /**
    * Initialize the class and set its properties.
@@ -163,6 +165,26 @@ class Aba_Admin
       $api_course_lessons_script = $this->plugin_name . '-api-syllabus';
       $this->enqueue_api_script($api_course_lessons_script, plugin_dir_url(__FILE__) . "js/api/$api_course_lessons_script.js", array('jquery'), $this->version, false);
     }
+
+    if ($hook === 'ada-build-analytics_page_ada-aba-questions') {
+      $question_plugins = array(
+        'question-base-plugin',
+        'no-response-question-plugin',
+        'question-palette'
+      );
+      foreach ($question_plugins as $plugin) {
+        $plugin_script = $this->plugin_name . '-' . $plugin;
+        wp_enqueue_script($plugin_script, plugin_dir_url(__FILE__) . "js/questions/$plugin_script.js", array('jquery'), $this->version, false);
+      }
+
+      $questions_script = $this->plugin_name . '-questions';
+      wp_enqueue_script($questions_script, plugin_dir_url(__FILE__) . "js/$questions_script.js", array('jquery'), $this->version, false);
+
+      $api_questions_script = $this->plugin_name . '-api-questions';
+      $this->enqueue_api_script($api_questions_script, plugin_dir_url(__FILE__) . "js/api/$api_questions_script.js", array('jquery'), $this->version, false);
+      $api_question_builders_script = $this->plugin_name . '-api-question-builders';
+      $this->enqueue_api_script($api_question_builders_script, plugin_dir_url(__FILE__) . "js/api/$api_question_builders_script.js", array('jquery'), $this->version, false);
+    }
   }
 
   public function register_routes()
@@ -182,6 +204,10 @@ class Aba_Admin
     // register syllabus ui routes
     $this->syllabus_routes = new Syllabus_Controller($this->plugin_name);
     $this->syllabus_routes->register_routes();
+
+    // register question ui routes
+    $this->question_builders_routes = new Question_Builders_Controller($this->plugin_name);
+    $this->question_builders_routes->register_routes();
   }
 
   public function add_setup_menu()
@@ -190,10 +216,13 @@ class Aba_Admin
     add_submenu_page('ada-aba-setup', 'Courses', 'Courses', 'manage_options', 'ada-aba-course', array($this, 'course_page'));
     add_submenu_page('ada-aba-setup', 'Lessons', 'Lessons', 'manage_options', 'ada-aba-lesson', array($this, 'lesson_page'));
     add_submenu_page('ada-aba-setup', 'Syllabus', 'Syllabus', 'manage_options', 'ada-aba-syllabus', array($this, 'syllabus_page'));
+    add_submenu_page('ada-aba-setup', 'Questions', 'Questions', 'manage_options', 'ada-aba-questions', array($this, 'question_page'));
   }
 
   private function get_setup_page_content()
   {
+    $slug = Core::generate_nonce();
+
     ob_start();
     include 'partials/display.php';
     return ob_get_clean();
@@ -223,6 +252,13 @@ class Aba_Admin
   ) {
     ob_start();
     include 'partials/syllabuses.php';
+    return ob_get_clean();
+  }
+
+  private function get_questions_page_content($builders)
+  {
+    ob_start();
+    include 'partials/questions.php';
     return ob_get_clean();
   }
 
@@ -497,5 +533,13 @@ class Aba_Admin
     $course_lessons = $syllabus_edit_service->get_course_lessons();
     $available_lessons = $syllabus_edit_service->get_available_lessons();
     echo $this->get_syllabuses_page_content($courses, $selected_course, $course_lessons, $available_lessons);
+  }
+
+  public function question_page()
+  {
+    $palette = new Question_Palette();
+    $builders = $palette->getBuilders();
+    // error_log(print_r($builders, true));
+    echo $this->get_questions_page_content($builders);
   }
 }
