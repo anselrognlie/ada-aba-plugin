@@ -140,6 +140,9 @@ class Core
     require_once plugin_dir_path(dirname(__FILE__)) . 'admin/controllers/course-lessons-controller.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'admin/controllers/ui/syllabus-controller.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'admin/controllers/ui/question-builders-controller.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'admin/fragments/questions-fragments.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'admin/controllers/ui/questions-controller.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'admin/controllers/questions-controller.php';
 
     /**
      * The class responsible for defining all actions that occur in the admin area.
@@ -181,6 +184,8 @@ class Core
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/dto/learner-course/learner-lesson-progress.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/dto/learner-course/learner-course-progress-builder.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/dto/certificate/certificate-details.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/dto/question/question-list-item.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/dto/question/question-scalar.php';
 
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/services/syllabus-edit-service.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/services/enrollment-service.php';

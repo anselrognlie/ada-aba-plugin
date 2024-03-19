@@ -2,6 +2,8 @@
 
 namespace Ada_Aba\Admin\Controllers\UI;
 
+use Ada_Aba\Includes\Models\Question;
+use Ada_Aba\Includes\Questions\Question_Base;
 use Ada_Aba\Includes\Questions\Question_Palette;
 use \WP_REST_Server;
 use \WP_Error;
@@ -24,6 +26,14 @@ class Question_Builders_Controller {
       array(
         'methods'  => WP_REST_Server::READABLE,
         'callback' => array($this, 'build_editor'),
+        'permission_callback' => array($this, 'permissions_check'),
+      ),
+    ));
+
+    register_rest_route($this->namespace, '/' . $this->resource_name  . '/(?P<slug>[-_\w\d]+)/question', array(
+      array(
+        'methods'  => WP_REST_Server::READABLE,
+        'callback' => array($this, 'build_editor_for_question'),
         'permission_callback' => array($this, 'permissions_check'),
       ),
     ));
@@ -70,6 +80,27 @@ class Question_Builders_Controller {
     return rest_ensure_response($response);
   }
 
+  public function build_editor_for_question($request)
+  {
+    $question_slug = $request['slug'];
+
+    $model = Question::get_by_slug($question_slug);
+    $question = Question_Base::get_by_slug($question_slug);
+    $builder = $question->get_builder();
+    $html = $builder->editor($model);
+
+    $response = [
+      'json' => [
+        'id' => $model->getId(),
+        'slug' => $model->getSlug(),
+        'builder_slug' => $builder->get_slug(),
+      ],
+      'html' => $html,
+    ];
+
+    return rest_ensure_response($response);
+  }
+
   public function build_preview($request)
   {
     $slug = $request['builder_slug'];
@@ -93,7 +124,7 @@ class Question_Builders_Controller {
     $html = $builder->preview($request->get_json_params());
 
     $response = [
-      'data' => [
+      'json' => [
         'id' => $id,
         'slug' => $question_slug
       ],

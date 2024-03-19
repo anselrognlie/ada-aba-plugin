@@ -40,12 +40,14 @@ class No_Response_Question_Builder extends Question_Builder_Base
     return 'no-response';
   }
 
-  protected function editorDerived()
+  protected function editorDerived($model)
   {
+    return '';
   }
 
   protected function previewDerived($request)
   {
+    return '';
   }
 
   protected function getData($request)

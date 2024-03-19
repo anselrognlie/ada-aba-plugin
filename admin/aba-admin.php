@@ -21,7 +21,11 @@ use Ada_Aba\Admin\Controllers\Courses_Controller;
 use Ada_Aba\Admin\Controllers\Lessons_Controller;
 use Ada_Aba\Admin\Controllers\Course_Lessons_Controller;
 use Ada_Aba\Admin\Controllers\UI\Question_Builders_Controller;
+use Ada_Aba\Admin\Controllers\UI\Questions_Controller as Questions_UI_Controller;
+use Ada_Aba\Admin\Controllers\Questions_Controller;
 use Ada_Aba\Admin\Controllers\UI\Syllabus_Controller;
+use Ada_Aba\Includes\Dto\Question\Question_List_Item;
+use Ada_Aba\Includes\Models\Question;
 use Ada_Aba\Includes\Questions\Question_Palette;
 
 /**
@@ -60,6 +64,8 @@ class Aba_Admin
   private $course_lesson_routes;
   private $syllabus_routes;
   private $question_builders_routes;
+  private $questions_ui_routes;
+  private $questions_routes;
 
   /**
    * Initialize the class and set its properties.
@@ -205,9 +211,17 @@ class Aba_Admin
     $this->syllabus_routes = new Syllabus_Controller($this->plugin_name);
     $this->syllabus_routes->register_routes();
 
-    // register question ui routes
+    // register question builders ui routes
     $this->question_builders_routes = new Question_Builders_Controller($this->plugin_name);
     $this->question_builders_routes->register_routes();
+
+    // register questions ui routes
+    $this->questions_ui_routes = new Questions_UI_Controller($this->plugin_name);
+    $this->questions_ui_routes->register_routes();
+
+    // register questions routes
+    $this->questions_routes = new Questions_Controller($this->plugin_name);
+    $this->questions_routes->register_routes();
   }
 
   public function add_setup_menu()
@@ -255,7 +269,7 @@ class Aba_Admin
     return ob_get_clean();
   }
 
-  private function get_questions_page_content($builders)
+  private function get_questions_page_content($questions, $builders)
   {
     ob_start();
     include 'partials/questions.php';
@@ -537,9 +551,14 @@ class Aba_Admin
 
   public function question_page()
   {
+    $question_models = Question::all();
+    $questions = array_map(function ($question) {
+      return new Question_List_Item($question);
+    }, $question_models);
+
     $palette = new Question_Palette();
     $builders = $palette->getBuilders();
     // error_log(print_r($builders, true));
-    echo $this->get_questions_page_content($builders);
+    echo $this->get_questions_page_content($questions, $builders);
   }
 }

@@ -6,32 +6,37 @@ use Ada_Aba\Includes\Core;
 use Ada_Aba\Includes\Models\Question;
 use Ada_Aba\Parsedown;
 
+use function PHPUnit\Framework\isEmpty;
+
 abstract class Question_Builder_Base
 {
   abstract public function build($model);
   abstract public function create();
   abstract public function get_display_name();
   abstract public function get_slug();
-  abstract protected function editorDerived();
+  abstract protected function editorDerived($model);
   abstract protected function previewDerived($request);
   abstract protected function getData($request);
 
-  public function editor()
+  public function editor($model = null)
   {
     $slug = $this->get_slug();
+
+    $prompt = !empty($model) ? $model->getPrompt() : '';
+    $description = !empty($model) ? $model->getDescription() : '';
 
     return join('', array(
       '<div class="ada-aba-question-editor">',
       '<input type="hidden" id="ada-aba-question-editor-panel-builder-slug" name="builder" value="' . $slug . '" />',
       '<div class="ada-aba-question-editor__prompt">',
       '<label for="ada-aba-question-editor-panel-prompt">Prompt</label>',
-      '<textarea id="ada-aba-question-editor-panel-prompt" name="prompt" rows="4" cols="50"></textarea>',
+      '<textarea id="ada-aba-question-editor-panel-prompt" name="prompt" rows="4" cols="50">' . $prompt . '</textarea>',
       '</div>',
       '<div class="ada-aba-question-editor__description">',
       '<label for="ada-aba-question-editor-panel-description">Description</label>',
-      '<textarea id="ada-aba-question-editor-panel-description" name="description" rows="4" cols="50"></textarea>',
+      '<textarea id="ada-aba-question-editor-panel-description" name="description" rows="4" cols="50">' . $description . '</textarea>',
       '</div>',
-      $this->editorDerived(),
+      $this->editorDerived($model),
       '</div>',
     ));
   }
@@ -69,7 +74,10 @@ abstract class Question_Builder_Base
       $model->setData($data);
       $model->update();
     } else {
-      $model = Question::create(get_class($this), $slug, $prompt, $description, $data);
+      $model = Question::create(get_class($this), $prompt, $description, $data);
+      if (!empty($slug)) {
+        $model->setSlug($slug);
+      }
       $model->insert();
     }
 

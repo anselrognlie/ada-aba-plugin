@@ -5,31 +5,76 @@
   let questionPlugin;
 
   const wireQuestionActions = function () {
+    // add delete button click event
+    $('.ada-aba-questions-delete').on('click', async function (e) {
+      e.preventDefault();
+
+      const dataSource = $(this).closest('.ada-aba-question');
+      const slug = dataSource.data('ada-aba-question-slug');
+      const id = `${dataSource.data('ada-aba-question-id')}`;
+      console.log('id', id);
+      if (!confirm('Are you sure you want to delete this question?')) {
+        return;
+      }
+
+      const editorId = $('#ada-aba-question-editor-id').val();
+      console.log('editorId', editorId);
+      if (id === editorId) {
+        console.log('clearing editor');
+        $('#ada-aba-question-editor-id').val('');
+      }
+
+      await deleteQuestion(slug);
+      await updateQuestions();
+    });
+
+    // add edit button click event
+    $('.ada-aba-questions-edit').on('click', async function (e) {
+      e.preventDefault();
+
+      const dataSource = $(this).closest('.ada-aba-question');
+      const slug = dataSource.data('ada-aba-question-slug');
+
+      // copy values into edit form
+      const response = await getEditorForQuestion(slug);
+
+      // insert into page
+      insertEditorPanel(response.json.builder_slug, response.html);
+
+      // update id info in editor
+      updateEditorIdAndSlug(response.json);
+    });
+  };
+
+  const wirePageActions = function () {
     // add new button click event
     $('#ada-aba-question-new').on('click', async function (e) {
       e.preventDefault();
 
       const builderSlug = $('#ada-aba-question-builders').val()
       // console.log('builderSlug', builderSlug);
-      const palette = new QuestionsPalette();
-      questionPlugin = palette.getQuestionPlugin(builderSlug);
 
       // copy values into edit form
-      const response = await getQuestionEditor(builderSlug);
+      const response = await getQuestionBuilder(builderSlug);
 
       // insert into page
-      insertEditorPanel(response.html);
+      insertEditorPanel(builderSlug, response.html);
     });
   };
 
-  const insertEditorPanel = function (editPane) {
+  const insertEditorPanel = function (builderSlug, editPane) {
     $('#ada-aba-question-editor-panel').html(editPane);
     $('#ada-aba-question-editor').addClass('active');
+    $('#ada-aba-question-editor-id').val('');
+    $('#ada-aba-question-editor-slug').val('');
 
     // wire editor
     // common actions
     wireCommonEditorActions();
+
     // per-question actions
+    const palette = new QuestionsPalette();
+    questionPlugin = palette.getQuestionPlugin(builderSlug);
     questionPlugin.wireEditorActions();
   }
 
@@ -71,9 +116,10 @@
       const response = await saveQuestion(slug, data);
 
       // update questions list
+      await updateQuestions();
 
       // update id info in editor
-      updateEditorIdAndSlug(response.data);
+      updateEditorIdAndSlug(response.json);
 
       // insert into page
       insertPreviewPanel(response.html);
@@ -139,9 +185,10 @@
   };
 
   $(function () {
-    questionsDiv = $('#ada-aba-questions');
+    questionsDiv = $('#ada-aba-questions-list');
     // setupAddQuestionForm();
     setupEditQuestionForm();
+    wirePageActions();
     wireQuestionActions();
   });
 
