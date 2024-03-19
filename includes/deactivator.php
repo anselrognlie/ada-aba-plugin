@@ -49,7 +49,9 @@ class Deactivator
     $challenge_action_table_name = $wpdb->prefix . Models\Challenge_Action::$table_name;
     $enrollment_table_name = $wpdb->prefix . Models\Enrollment::$table_name;
     $completed_lesson_table_name = $wpdb->prefix . Models\Completed_Lesson::$table_name;
+    $question_table_name = $wpdb->prefix . Models\Question::$table_name;
 
+    // $wpdb->query("DROP TABLE IF EXISTS $question_table_name");
     // $wpdb->query("DROP TABLE IF EXISTS $completed_lesson_table_name");
     // $wpdb->query("DROP TABLE IF EXISTS $enrollment_table_name");
     // $wpdb->query("DROP TABLE IF EXISTS $challenge_action_table_name");
