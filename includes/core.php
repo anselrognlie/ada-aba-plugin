@@ -228,6 +228,10 @@ class Core
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/questions/question-base.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/questions/no-response-question-builder.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/questions/no-response-question.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/questions/short-answer-question-builder.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/questions/short-answer-question.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/questions/paragraph-question-builder.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/questions/paragraph-question.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/questions/question-palette.php';
   }
 

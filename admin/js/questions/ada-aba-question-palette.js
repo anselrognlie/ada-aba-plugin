@@ -5,6 +5,8 @@
     constructor() {
       this.palette = [
         new NoResponseQuestionPlugin(),
+        new ShortAnswerQuestionPlugin(),
+        new ParagraphQuestionPlugin(),
       ];
     }
 

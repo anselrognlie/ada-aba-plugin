@@ -10,6 +10,8 @@ class Question_Palette
   {
     $this->builders = array(
       new No_Response_Question_Builder(),
+      new Short_Answer_Question_Builder(),
+      new Paragraph_Question_Builder(),
     );
   }
 

@@ -69,9 +69,6 @@
     $('#ada-aba-question-editor-slug').val('');
 
     // wire editor
-    // common actions
-    wireCommonEditorActions();
-
     // per-question actions
     const palette = new QuestionsPalette();
     questionPlugin = palette.getQuestionPlugin(builderSlug);
@@ -143,40 +140,6 @@
     wireQuestionActions();
   };
 
-  const resetAddForm = function () {
-    $('#ada-aba-questions-add-question-name').val('');
-    $('#ada-aba-questions-add-question-url').val('');
-    $('#ada-aba-questions-add-question-complete').prop('checked', false);
-  };
-
-  const resetEditForm = function () {
-    $('#ada-aba-questions-edit-question-name').val('');
-    $('#ada-aba-questions-edit-question-url').val('');
-    $('#ada-aba-questions-edit-question-slug').val('');
-    $('#ada-aba-questions-edit-question-complete').prop('checked', false);
-  };
-
-  const editQuestion = function (question) {
-    $('#ada-aba-questions-edit-question-name').val(question.name);
-    $('#ada-aba-questions-edit-question-url').val(question.url);
-    $('#ada-aba-questions-edit-question-slug').val(question.slug);
-    $('#ada-aba-questions-edit-question-complete').prop('checked', question.complete_on_progress);
-  };
-
-  const setupAddQuestionForm = function () {
-    const form = $('#ada-aba-questions-add-question');
-    form.on('submit', async function (e) {
-      e.preventDefault();
-      const name = $('#ada-aba-questions-add-question-name').val();
-      const url = $('#ada-aba-questions-add-question-url').val();
-      const completeOnProgress = $('#ada-aba-questions-add-question-complete').prop('checked');
-      resetAddForm();
-
-      const response = await addQuestion(name, url, completeOnProgress);
-      await updateQuestions();
-    });
-  };
-
   const setupEditQuestionForm = function () {
     const form = $('#ada-aba-question-editor');
     form.on('submit', async function (e) {
@@ -186,9 +149,9 @@
 
   $(function () {
     questionsDiv = $('#ada-aba-questions-list');
-    // setupAddQuestionForm();
     setupEditQuestionForm();
     wirePageActions();
+    wireCommonEditorActions();
     wireQuestionActions();
   });
 

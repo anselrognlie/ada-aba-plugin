@@ -176,6 +176,8 @@ class Aba_Admin
       $question_plugins = array(
         'question-base-plugin',
         'no-response-question-plugin',
+        'short-answer-question-plugin',
+        'paragraph-question-plugin',
         'question-palette'
       );
       foreach ($question_plugins as $plugin) {
