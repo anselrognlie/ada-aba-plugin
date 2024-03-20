@@ -87,6 +87,6 @@ abstract class Workflow_Base
 
   protected function get_post_value($key)
   {
-    return isset($_POST[$key]) ? $_POST[$key] : '';
+    return Core::safe_key($_POST, $key, '');
   }
 }

@@ -90,7 +90,7 @@ class Options
 
   private function get_with_fallback($key)
   {
-    return isset($this->options[$key]) ? $this->options[$key] : self::DEFAULT_OPTIONS[$key];
+    return Core::safe_key($this->options, $key, self::DEFAULT_OPTIONS[$key]);
   }
 
   public function get_ada_build_page()

@@ -393,6 +393,11 @@ class Core
     return implode($random_string);
   }
 
+  public static function safe_key($arr, $key, $default = null)
+  {
+    return array_key_exists($key, $arr) ? $arr[$key] : $default;
+  }
+
   public static function get_ada_build_page()
   {
     $post = get_post(Options::get_options()->get_ada_build_page());

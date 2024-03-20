@@ -65,14 +65,9 @@ class Markdown_Test_Workflow extends Workflow_Base
     }
   }
 
-  private static function get_safe($array, $key)
-  {
-    return isset($array[$key]) ? $array[$key] : '';
-  }
-
   private function handle_markdown()
   {
-    $content = self::get_safe($_POST, 'md-content');
+    $content = Core::safe_key($_POST, 'md-content', '');
     $parsedown = new Parsedown();
     $rendered = $parsedown->text($content);
     $action = Links\get_markdown_link()

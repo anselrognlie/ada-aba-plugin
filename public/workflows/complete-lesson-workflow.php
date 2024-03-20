@@ -61,7 +61,7 @@ class Complete_Lesson_Workflow extends Workflow_Base
 
   private function get_learner_slug()
   {
-    return isset($_GET[Keys\USER]) ? $_GET[Keys\USER] : '';
+    return Core::safe_key($_GET, Keys\USER, '');
   }
 
   private function handle_complete()
