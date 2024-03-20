@@ -32,7 +32,7 @@ class No_Response_Question_Builder extends Question_Builder_Base
 
   public function get_display_name()
   {
-    return 'Paragraph';
+    return 'No Response';
   }
 
   public function get_slug()
