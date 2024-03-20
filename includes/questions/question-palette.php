@@ -12,6 +12,8 @@ class Question_Palette
       new No_Response_Question_Builder(),
       new Short_Answer_Question_Builder(),
       new Paragraph_Question_Builder(),
+      new Multiple_Choice_Question_Builder(),
+      new Checkboxes_Question_Builder(),
     );
   }
 

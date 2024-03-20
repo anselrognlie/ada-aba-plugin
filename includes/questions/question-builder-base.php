@@ -11,54 +11,52 @@ use function PHPUnit\Framework\isEmpty;
 abstract class Question_Builder_Base
 {
   abstract public function build($model);
-  abstract public function create();
   abstract public function get_display_name();
   abstract public function get_slug();
-  abstract protected function editorDerived($model);
+  abstract protected function editorDerived($question);
   abstract protected function previewDerived($request);
   abstract protected function getData($request);
 
-  public function editor($model = null)
+  public function editor($question = null)
   {
-    $slug = $this->get_slug();
+    $builder_slug = $this->get_slug();
 
-    $prompt = !empty($model) ? $model->getPrompt() : '';
-    $description = !empty($model) ? $model->getDescription() : '';
+    $prompt = !empty($question) ? $question->getPrompt() : '';
+    $description = !empty($question) ? $question->getDescription() : '';
 
-    return join('', array(
-      '<div class="ada-aba-question-editor">',
-      '<input type="hidden" id="ada-aba-question-editor-panel-builder-slug" name="builder" value="' . $slug . '" />',
-      '<div class="ada-aba-question-editor__prompt">',
-      '<label for="ada-aba-question-editor-panel-prompt">Prompt</label>',
-      '<textarea id="ada-aba-question-editor-panel-prompt" name="prompt" rows="4" cols="50">' . $prompt . '</textarea>',
-      '</div>',
-      '<div class="ada-aba-question-editor__description">',
-      '<label for="ada-aba-question-editor-panel-description">Description</label>',
-      '<textarea id="ada-aba-question-editor-panel-description" name="description" rows="4" cols="50">' . $description . '</textarea>',
-      '</div>',
-      $this->editorDerived($model),
-      '</div>',
-    ));
+    $derived_editor = $this->editorDerived($question);
+
+    return $this->get_editor_fragment($builder_slug, $prompt, $description, $derived_editor);
+  }
+
+  private function get_editor_fragment($builder_slug, $prompt, $description, $derived_editor)
+  {
+    ob_start();
+    include __DIR__ . '/../partials/question-base-editor-fragment.php';
+    return ob_get_clean();
   }
 
   public function preview($request)
   {
     $parsedown = new Parsedown();
-    $prompt = $request['prompt'];
-    $description = $request['description'];
-    return join('', array(
-      '<div class="ada-aba-question-preview">',
-      $parsedown->text($prompt),
-      $parsedown->text($description),
-      $this->previewDerived($request),
-      '</div>',
-    ));
+    $prompt = $parsedown->text($request['prompt']);
+    $description = $parsedown->text($request['description']);
+    $question_html = $this->previewDerived($request);
+
+    return $this->get_base_preview_fragment($prompt, $description, $question_html);
+  }
+
+  private function get_base_preview_fragment($prompt, $description, $question_html)
+  {
+    ob_start();
+    include __DIR__ . '/../partials/question-base-preview-fragment.php';
+    return ob_get_clean();
   }
 
   public function save($request)
   {
     $id = $request['id'];
-    $slug = $request['slug']; 
+    $slug = $request['slug'];
     $prompt = $request['prompt'];
     $description = $request['description'];
     $data = $this->getData($request);

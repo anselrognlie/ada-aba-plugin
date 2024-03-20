@@ -6,6 +6,7 @@ use Ada_Aba\Includes\Models\Question;
 
 abstract class Question_Base
 {
+  private $id;
   private $slug;
   private $prompt;
   private $description;
@@ -13,13 +14,35 @@ abstract class Question_Base
   public abstract function get_builder();
 
   protected function __construct(
+    $id,
     $slug,
     $prompt,
     $description
   ) {
+    $this->id = $id;
     $this->slug = $slug;
     $this->prompt = $prompt;
     $this->description = $description;
+  }
+
+  public function getId()
+  {
+    return $this->id;
+  }
+
+  public function getSlug()
+  {
+    return $this->slug;
+  }
+
+  public function getPrompt()
+  {
+    return $this->prompt;
+  }
+
+  public function getDescription()
+  {
+    return $this->description;
   }
 
   public static function get_by_slug($slug)

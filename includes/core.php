@@ -232,6 +232,12 @@ class Core
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/questions/short-answer-question.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/questions/paragraph-question-builder.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/questions/paragraph-question.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/questions/with-options-question-builder.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/questions/with-options-question.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/questions/multiple-choice-question-builder.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/questions/multiple-choice-question.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/questions/checkboxes-question-builder.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/questions/checkboxes-question.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/questions/question-palette.php';
   }
 
@@ -395,7 +401,7 @@ class Core
 
   public static function safe_key($arr, $key, $default = null)
   {
-    return array_key_exists($key, $arr) ? $arr[$key] : $default;
+    return (((bool) $arr) && array_key_exists($key, $arr)) ? $arr[$key] : $default;
   }
 
   public static function get_ada_build_page()

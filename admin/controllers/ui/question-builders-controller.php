@@ -87,7 +87,7 @@ class Question_Builders_Controller {
     $model = Question::get_by_slug($question_slug);
     $question = Question_Base::get_by_slug($question_slug);
     $builder = $question->get_builder();
-    $html = $builder->editor($model);
+    $html = $builder->editor($question);
 
     $response = [
       'json' => [

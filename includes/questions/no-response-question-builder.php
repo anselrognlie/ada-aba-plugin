@@ -6,24 +6,13 @@ class No_Response_Question_Builder extends Question_Builder_Base
 {
   public function build($model)
   {
+    $id = $model->getId();
     $slug = $model->getSlug();
     $prompt = $model->getPrompt();
     $description = $model->getDescription();
 
     return new No_Response_Question(
-      $slug,
-      $prompt,
-      $description
-    );
-  }
-
-  public function create()
-  {
-    $slug = null;
-    $prompt = '';
-    $description = '';
-
-    return new No_Response_Question(
+      $id,
       $slug,
       $prompt,
       $description
@@ -40,7 +29,7 @@ class No_Response_Question_Builder extends Question_Builder_Base
     return 'no-response';
   }
 
-  protected function editorDerived($model)
+  protected function editorDerived($question)
   {
     return '';
   }

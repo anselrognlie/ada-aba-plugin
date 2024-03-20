@@ -7,6 +7,8 @@
         new NoResponseQuestionPlugin(),
         new ShortAnswerQuestionPlugin(),
         new ParagraphQuestionPlugin(),
+        new MultipleChoiceQuestionPlugin(),
+        new CheckboxesQuestionPlugin(),
       ];
     }
 

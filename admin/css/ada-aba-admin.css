@@ -10,3 +10,8 @@
  #ada-aba-question-editor {
   display: none;
  }
+
+ #ada-aba-question-preview-panel-wo-options {
+  display: grid;
+  grid-template-columns: auto 1fr;
+ }

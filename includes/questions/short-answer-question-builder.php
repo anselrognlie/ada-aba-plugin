@@ -6,24 +6,13 @@ class Short_Answer_Question_Builder extends Question_Builder_Base
 {
   public function build($model)
   {
+    $id = $model->getId();
     $slug = $model->getSlug();
     $prompt = $model->getPrompt();
     $description = $model->getDescription();
 
     return new Short_Answer_Question(
-      $slug,
-      $prompt,
-      $description
-    );
-  }
-
-  public function create()
-  {
-    $slug = null;
-    $prompt = '';
-    $description = '';
-
-    return new Short_Answer_Question(
+      $id,
       $slug,
       $prompt,
       $description
@@ -40,7 +29,7 @@ class Short_Answer_Question_Builder extends Question_Builder_Base
     return 'short-answer';
   }
 
-  protected function editorDerived($model)
+  protected function editorDerived($question)
   {
     return '';
   }

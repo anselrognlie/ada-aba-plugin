@@ -178,6 +178,9 @@ class Aba_Admin
         'no-response-question-plugin',
         'short-answer-question-plugin',
         'paragraph-question-plugin',
+        'with-options-question-plugin',
+        'multiple-choice-question-plugin',
+        'checkboxes-question-plugin',
         'question-palette'
       );
       foreach ($question_plugins as $plugin) {
