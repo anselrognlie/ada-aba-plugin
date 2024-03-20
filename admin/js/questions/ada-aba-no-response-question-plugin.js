@@ -7,7 +7,7 @@
     }
 
     getSlug() {
-      return 'no-response';
+      return 'no-response';  // must match the server-side slug
     }
 
     wireEditorActionsDerived() {
