@@ -44,7 +44,7 @@
 				<div id="ada-aba-question-editor-panel"></div>
 				<button id="ada-aba-question-editor-save">Save</button>
 				<button id="ada-aba-question-editor-preview">Preview</button>
-				<button id="ada-aba-question-editor-cancel">Cancel</button>
+				<button id="ada-aba-question-editor-cancel">Close</button>
 			</form>
 			<div id="ada-aba-question-preview-panel"></div>
 		</div>
