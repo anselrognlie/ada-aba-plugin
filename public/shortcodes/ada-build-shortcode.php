@@ -10,6 +10,7 @@ use Ada_Aba\Public\Workflows\Error_Workflow;
 use Ada_Aba\Public\Workflows\Markdown_Test_Workflow;
 use Ada_Aba\Public\Workflows\Progress_Workflow;
 use Ada_Aba\Public\Workflows\Request_Certificate_Workflow;
+use Ada_Aba\Public\Workflows\Survey_Test_Workflow;
 
 class Ada_Build_Shortcode
 {
@@ -48,6 +49,7 @@ class Ada_Build_Shortcode
       new Confirmation_Workflow($this->plugin_name),
       new Progress_Workflow($this->plugin_name),
       new Request_Certificate_Workflow($this->plugin_name),
+      new Survey_Test_Workflow($this->plugin_name),
       new Registration_Workflow($this->plugin_name),
     );
   }

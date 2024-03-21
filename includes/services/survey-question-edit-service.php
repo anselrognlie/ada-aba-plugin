@@ -8,11 +8,11 @@ use Ada_Aba\Includes\Models\Survey_Question;
 use Ada_Aba\Includes\Relations\Survey_Question_Relations;
 
 class Survey_Question_Edit_Service {
-  public function get_survey_questions($surveySlug)
+  public function get_survey_questions($survey_slug)
   {
-    $survey = Survey::get_by_slug($surveySlug);
+    $survey = Survey::get_by_slug($survey_slug);
     $sq_service = new Survey_Question_Service();
-    $survey_questions = $sq_service::get_by_survey_slug($surveySlug);
+    $survey_questions = $sq_service->get_by_survey_slug($survey_slug);
     $question_ids = array_map(function($survey_question) {
       return $survey_question->getQuestionId();
     }, $survey_questions);

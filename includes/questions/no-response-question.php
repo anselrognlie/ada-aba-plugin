@@ -9,8 +9,7 @@ class No_Response_Question extends Question_Base
     $slug,
     $prompt,
     $description
-  )
-  {
+  ) {
     parent::__construct($id, $slug, $prompt, $description);
   }
 

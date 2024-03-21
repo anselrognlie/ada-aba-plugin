@@ -17,3 +17,4 @@ const REQUEST_CERTIFICATE = 'certreq';
 const CERTIFICATE = 'cert';
 const SENT = 'sent';
 const MARKDOWN = 'md';
+const SURVEY_TEST = 'st';

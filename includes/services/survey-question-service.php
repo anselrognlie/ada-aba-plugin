@@ -34,7 +34,7 @@ class Survey_Question_Service
     );
   }
 
-  public static function get_by_survey_slug($survey_slug)
+  public function get_by_survey_slug($survey_slug)
   {
     $survey = Survey::get_by_slug($survey_slug);
 

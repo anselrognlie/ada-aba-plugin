@@ -35,4 +35,21 @@ class With_Options_Question extends Question_Base
   {
     return new With_Options_Question_Builder();
   }
+
+  protected function render_options($type)
+  {
+    $base_content = parent::render_content();
+    $inputs = array_map(function ($option) use ($type) {
+      return '<input type="' . $type . '" name="' . $this->getSlug() . '" value="' . $option . '">' . $option . '<br>';
+    }, $this->options);
+    
+    return join('', [
+      $base_content,
+      '<div>',
+      ...$inputs,
+      $this->show_other ? '<input type="' . $type . '" name="' . $this->getSlug() . '" value="other">' . 'Other'
+        . '<input type="text" name="' . $this->getSlug() . '">' : '',
+      '</div>',
+    ]);
+  }
 }

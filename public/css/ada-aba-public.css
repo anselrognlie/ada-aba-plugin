@@ -2,3 +2,8 @@
  * All of the CSS for your public-facing functionality should be
  * included in this file.
  */
+
+ .ada-aba-survey-survey-question-required .ada-aba-survey-survey-question-prompt p::after {
+    color: red;
+    content: " *";
+ }

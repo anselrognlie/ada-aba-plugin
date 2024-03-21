@@ -19,4 +19,9 @@ class Multiple_Choice_Question extends With_Options_Question
   {
     return new Multiple_Choice_Question_Builder();
   }
+
+  protected function render_content()
+  {
+    return parent::render_options('radio');
+  }
 }

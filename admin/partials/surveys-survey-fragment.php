@@ -14,7 +14,8 @@
 ?>
 
 <p class="ada-aba-survey" data-ada-aba-survey-slug="<?php echo $survey->getSlug() ?>">
-	<span><?php echo $survey->getName() ?></span>
+	<span><?php echo htmlentities($survey->getName()) ?></span>
+	<span>[<?php echo htmlentities($survey->getSlug()) ?>]</span>
 	<?php if ($survey->isActive()) : ?>
 		<span>(Active)</span>
 	<?php else : ?>
