@@ -3,7 +3,20 @@
  * included in this file.
  */
 
- .ada-aba-survey-survey-question-required .ada-aba-survey-survey-question-prompt p::after {
-    color: red;
-    content: " *";
- }
+.ada-aba-survey-survey-question
+{
+  margin-bottom: 1.5em;
+}
+
+.ada-aba-survey-survey-question-required .ada-aba-survey-survey-question-prompt p::after {
+  color: red;
+  content: " *";
+}
+
+.ada-aba-survey-survey-question-prompt p {
+  margin: 0.75em 0px;
+}
+
+.ada-aba-survey-survey-question-prompt p:last-child {
+  margin-bottom: 0px;
+}
