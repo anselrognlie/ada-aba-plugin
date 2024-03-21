@@ -6,7 +6,7 @@ class Question_List_Item
 {
   private $question;
 
-  const MAX_DISPLAY_LENGTH = 50;
+  const MAX_DISPLAY_LENGTH = 100;
 
   public function __construct($question)
   {
