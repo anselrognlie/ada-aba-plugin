@@ -23,9 +23,11 @@ use Ada_Aba\Admin\Controllers\Course_Lessons_Controller;
 use Ada_Aba\Admin\Controllers\UI\Question_Builders_Controller;
 use Ada_Aba\Admin\Controllers\UI\Questions_Controller as Questions_UI_Controller;
 use Ada_Aba\Admin\Controllers\Questions_Controller;
+use Ada_Aba\Admin\Controllers\Surveys_Controller;
 use Ada_Aba\Admin\Controllers\UI\Syllabus_Controller;
 use Ada_Aba\Includes\Dto\Question\Question_List_Item;
 use Ada_Aba\Includes\Models\Question;
+use Ada_Aba\Includes\Models\Survey;
 use Ada_Aba\Includes\Questions\Question_Palette;
 
 /**
@@ -66,6 +68,7 @@ class Aba_Admin
   private $question_builders_routes;
   private $questions_ui_routes;
   private $questions_routes;
+  private $surveys_routes;
 
   /**
    * Initialize the class and set its properties.
@@ -172,7 +175,7 @@ class Aba_Admin
       $this->enqueue_api_script($api_course_lessons_script, plugin_dir_url(__FILE__) . "js/api/$api_course_lessons_script.js", array('jquery'), $this->version, false);
     }
 
-    if ($hook === 'ada-build-analytics_page_ada-aba-questions') {
+    if ($hook === 'ada-build-analytics_page_ada-aba-question') {
       $question_plugins = array(
         'question-base-plugin',
         'no-response-question-plugin',
@@ -195,6 +198,14 @@ class Aba_Admin
       $this->enqueue_api_script($api_questions_script, plugin_dir_url(__FILE__) . "js/api/$api_questions_script.js", array('jquery'), $this->version, false);
       $api_question_builders_script = $this->plugin_name . '-api-question-builders';
       $this->enqueue_api_script($api_question_builders_script, plugin_dir_url(__FILE__) . "js/api/$api_question_builders_script.js", array('jquery'), $this->version, false);
+    }
+
+    if ($hook === 'ada-build-analytics_page_ada-aba-survey') {
+      $surveys_script = $this->plugin_name . '-surveys';
+      wp_enqueue_script($surveys_script, plugin_dir_url(__FILE__) . "js/$surveys_script.js", array('jquery'), $this->version, false);
+
+      $api_surveys_script = $this->plugin_name . '-api-surveys';
+      $this->enqueue_api_script($api_surveys_script, plugin_dir_url(__FILE__) . "js/api/$api_surveys_script.js", array('jquery'), $this->version, false);
     }
   }
 
@@ -227,6 +238,10 @@ class Aba_Admin
     // register questions routes
     $this->questions_routes = new Questions_Controller($this->plugin_name);
     $this->questions_routes->register_routes();
+
+    // register survey routes
+    $this->surveys_routes = new Surveys_Controller($this->plugin_name);
+    $this->surveys_routes->register_routes();
   }
 
   public function add_setup_menu()
@@ -235,7 +250,8 @@ class Aba_Admin
     add_submenu_page('ada-aba-setup', 'Courses', 'Courses', 'manage_options', 'ada-aba-course', array($this, 'course_page'));
     add_submenu_page('ada-aba-setup', 'Lessons', 'Lessons', 'manage_options', 'ada-aba-lesson', array($this, 'lesson_page'));
     add_submenu_page('ada-aba-setup', 'Syllabus', 'Syllabus', 'manage_options', 'ada-aba-syllabus', array($this, 'syllabus_page'));
-    add_submenu_page('ada-aba-setup', 'Questions', 'Questions', 'manage_options', 'ada-aba-questions', array($this, 'question_page'));
+    add_submenu_page('ada-aba-setup', 'Surveys', 'Surveys', 'manage_options', 'ada-aba-survey', array($this, 'survey_page'));
+    add_submenu_page('ada-aba-setup', 'Questions', 'Questions', 'manage_options', 'ada-aba-question', array($this, 'question_page'));
   }
 
   private function get_setup_page_content()
@@ -278,6 +294,14 @@ class Aba_Admin
   {
     ob_start();
     include 'partials/questions.php';
+    return ob_get_clean();
+  }
+
+  private function get_surveys_page_content(
+    $surveys,
+  ) {
+    ob_start();
+    include 'partials/surveys.php';
     return ob_get_clean();
   }
 
@@ -565,5 +589,11 @@ class Aba_Admin
     $builders = $palette->getBuilders();
     // error_log(print_r($builders, true));
     echo $this->get_questions_page_content($questions, $builders);
+  }
+
+  public function survey_page()
+  {
+    $surveys = Survey::all();
+    echo $this->get_surveys_page_content($surveys);
   }
 }

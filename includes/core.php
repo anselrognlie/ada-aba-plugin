@@ -143,6 +143,8 @@ class Core
     require_once plugin_dir_path(dirname(__FILE__)) . 'admin/fragments/questions-fragments.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'admin/controllers/ui/questions-controller.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'admin/controllers/questions-controller.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'admin/fragments/surveys-fragments.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'admin/controllers/surveys-controller.php';
 
     /**
      * The class responsible for defining all actions that occur in the admin area.
@@ -175,6 +177,7 @@ class Core
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/models/learner-course.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/models/completed-lesson.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/models/question.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/models/survey.php';
 
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/dto/course/course-scalar.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/dto/lesson/lesson-scalar.php';
@@ -186,6 +189,7 @@ class Core
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/dto/certificate/certificate-details.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/dto/question/question-list-item.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/dto/question/question-scalar.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/dto/survey/survey-scalar.php';
 
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/services/syllabus-edit-service.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/services/enrollment-service.php';
@@ -208,7 +212,7 @@ class Core
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/action/links.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/action/emails.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/action/errors.php';
-    
+
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/controllers/completion-controller.php';
 
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/workflows/workflow-base.php';

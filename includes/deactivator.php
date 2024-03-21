@@ -50,7 +50,9 @@ class Deactivator
     $enrollment_table_name = $wpdb->prefix . Models\Enrollment::$table_name;
     $completed_lesson_table_name = $wpdb->prefix . Models\Completed_Lesson::$table_name;
     $question_table_name = $wpdb->prefix . Models\Question::$table_name;
+    $survey_table_name = $wpdb->prefix . Models\Survey::$table_name;
 
+    // $wpdb->query("DROP TABLE IF EXISTS $survey_table_name");
     // $wpdb->query("DROP TABLE IF EXISTS $question_table_name");
     // $wpdb->query("DROP TABLE IF EXISTS $completed_lesson_table_name");
     // $wpdb->query("DROP TABLE IF EXISTS $enrollment_table_name");
