@@ -4,6 +4,7 @@ namespace Ada_Aba\Includes\Models;
 
 use Ada_Aba\Includes\Core;
 use Ada_Aba\Includes\Aba_Exception;
+use Ada_Aba\Includes\Models\Db_Helpers\Transaction;
 
 use function Ada_Aba\Includes\Models\Db_Helpers\dt_to_sql;
 
@@ -228,7 +229,7 @@ class Course
     $table_name = $wpdb->prefix . self::$table_name;
     $now = dt_to_sql(new \DateTime());
 
-    $wpdb->query("START TRANSACTION");
+    Transaction::start();
     $deactivate = $wpdb->query(
       "UPDATE $table_name SET active = 0, updated_at = '$now' WHERE active = 1"
     );
@@ -240,10 +241,10 @@ class Course
     );
 
     if ($deactivate === false || $activate === false) {
-      $wpdb->query("ROLLBACK");
+      Transaction::rollback();
       throw new Aba_Exception('Failed to activate Course');
     } else {
-      $wpdb->query("COMMIT");
+      Transaction::complete();
     }
 
     $row = $wpdb->get_row(

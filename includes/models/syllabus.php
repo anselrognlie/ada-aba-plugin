@@ -4,6 +4,7 @@ namespace Ada_Aba\Includes\Models;
 
 use Ada_Aba\Includes\Core;
 use Ada_Aba\Includes\Aba_Exception;
+use Ada_Aba\Includes\Models\Db_Helpers\Transaction;
 
 use function Ada_Aba\Includes\Models\Db_Helpers\dt_to_sql;
 
@@ -383,7 +384,7 @@ class Syllabus
 
     $table_name = $wpdb->prefix . self::$table_name;
 
-    $wpdb->query("START TRANSACTION");
+    Transaction::start();
 
     $result = $wpdb->delete(
       $table_name,
@@ -391,7 +392,7 @@ class Syllabus
     );
 
     if ($result === false) {
-      $wpdb->query("ROLLBACK");
+      Transaction::rollback();
       throw new Aba_Exception('Failed to delete Syllabus');
     }
 
@@ -405,12 +406,11 @@ class Syllabus
           $syllabus->update();
         }
       }
+      Transaction::complete();
     } catch (Aba_Exception $e) {
-      $wpdb->query("ROLLBACK");
+      Transaction::rollback();
       throw $e;
     }
-
-    $wpdb->query("COMMIT");
   }
 
   static public function swap_order($slug1, $slug2)
@@ -420,7 +420,7 @@ class Syllabus
     $table_name = $wpdb->prefix . self::$table_name;
     $now = dt_to_sql(new \DateTime());
 
-    $wpdb->query("START TRANSACTION");
+    Transaction::start();
     $syllabus1 = $wpdb->get_row(
       $wpdb->prepare(
         "SELECT * FROM $table_name WHERE slug = %s",
@@ -435,7 +435,7 @@ class Syllabus
     );
 
     if (!$syllabus1 || !$syllabus2) {
-      $wpdb->query("ROLLBACK");
+      Transaction::rollback();
       throw new Aba_Exception('Failed to swap Syllabus records');
     }
 
@@ -451,10 +451,10 @@ class Syllabus
     );
 
     if ($swap1 === false || $swap2 === false) {
-      $wpdb->query("ROLLBACK");
+      Transaction::rollback();
       throw new Aba_Exception('Failed to swap Syllabus records');
     } else {
-      $wpdb->query("COMMIT");
+      Transaction::complete();
     }
 
     $row = $wpdb->get_row(
