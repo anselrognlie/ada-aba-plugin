@@ -59,6 +59,7 @@ class Activator
     $completed_lesson_table_name = $wpdb->prefix . Models\Completed_Lesson::$table_name;
     $question_table_name = $wpdb->prefix . Models\Question::$table_name;
     $survey_table_name = $wpdb->prefix . Models\Survey::$table_name;
+    $survey_question_table_name = $wpdb->prefix . Models\Survey_Question::$table_name;
 
     $sql = [];
 
@@ -190,6 +191,23 @@ class Activator
       slug varchar(255) NOT NULL UNIQUE,
       active tinyint(1) DEFAULT 0 NOT NULL,
       PRIMARY KEY  (id)
+      ) $charset_collate;
+    ";
+
+    $sql[] = "CREATE TABLE IF NOT EXISTS $survey_question_table_name (
+      id mediumint(9) NOT NULL AUTO_INCREMENT,
+      created_at datetime NOT NULL,
+      updated_at datetime NOT NULL,
+      deleted_at datetime,
+      survey_id mediumint(9) NOT NULL,
+      question_id mediumint(9) NOT NULL,
+      `order` mediumint(9) NOT NULL,
+      slug varchar(255) NOT NULL UNIQUE,
+      optional tinyint(1) DEFAULT 0 NOT NULL,
+      PRIMARY KEY  (id),
+      UNIQUE KEY `survey_id_question_id` (`survey_id`,`question_id`),
+      FOREIGN KEY (survey_id) REFERENCES $survey_table_name(id),
+      FOREIGN KEY (question_id) REFERENCES $question_table_name(id)
       ) $charset_collate;
     ";
 

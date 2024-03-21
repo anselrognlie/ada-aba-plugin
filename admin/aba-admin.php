@@ -24,11 +24,15 @@ use Ada_Aba\Admin\Controllers\UI\Question_Builders_Controller;
 use Ada_Aba\Admin\Controllers\UI\Questions_Controller as Questions_UI_Controller;
 use Ada_Aba\Admin\Controllers\Questions_Controller;
 use Ada_Aba\Admin\Controllers\Surveys_Controller;
+use Ada_Aba\Admin\Controllers\Survey_Questions_Controller;
+use Ada_Aba\Admin\Controllers\UI\Survey_Questions_Controller as Survey_Questions_UI_Controller;
 use Ada_Aba\Admin\Controllers\UI\Syllabus_Controller;
 use Ada_Aba\Includes\Dto\Question\Question_List_Item;
+use Ada_Aba\Includes\Dto\Survey_Question\Survey_Question_List_Item;
 use Ada_Aba\Includes\Models\Question;
 use Ada_Aba\Includes\Models\Survey;
 use Ada_Aba\Includes\Questions\Question_Palette;
+use Ada_Aba\Includes\Services\Survey_Question_Edit_Service;
 
 /**
  * The admin-specific functionality of the plugin.
@@ -66,9 +70,11 @@ class Aba_Admin
   private $course_lesson_routes;
   private $syllabus_routes;
   private $question_builders_routes;
-  private $questions_ui_routes;
-  private $questions_routes;
-  private $surveys_routes;
+  private $question_ui_routes;
+  private $question_routes;
+  private $survey_routes;
+  private $survey_question_routes;
+  private $survey_question_ui_routes;
 
   /**
    * Initialize the class and set its properties.
@@ -165,10 +171,6 @@ class Aba_Admin
       $course_lessons_script = $this->plugin_name . '-course-lessons';
       wp_enqueue_script($course_lessons_script, plugin_dir_url(__FILE__) . "js/$course_lessons_script.js", array('jquery'), $this->version, false);
 
-      $api_courses_script = $this->plugin_name . '-api-courses';
-      $this->enqueue_api_script($api_courses_script, plugin_dir_url(__FILE__) . "js/api/$api_courses_script.js", array('jquery'), $this->version, false);
-      $api_lessons_script = $this->plugin_name . '-api-lessons';
-      $this->enqueue_api_script($api_lessons_script, plugin_dir_url(__FILE__) . "js/api/$api_lessons_script.js", array('jquery'), $this->version, false);
       $api_course_lessons_script = $this->plugin_name . '-api-course-lessons';
       $this->enqueue_api_script($api_course_lessons_script, plugin_dir_url(__FILE__) . "js/api/$api_course_lessons_script.js", array('jquery'), $this->version, false);
       $api_course_lessons_script = $this->plugin_name . '-api-syllabus';
@@ -207,6 +209,16 @@ class Aba_Admin
       $api_surveys_script = $this->plugin_name . '-api-surveys';
       $this->enqueue_api_script($api_surveys_script, plugin_dir_url(__FILE__) . "js/api/$api_surveys_script.js", array('jquery'), $this->version, false);
     }
+
+    if ($hook === 'ada-build-analytics_page_ada-aba-survey-question') {
+      $survey_questions_script = $this->plugin_name . '-survey-questions';
+      wp_enqueue_script($survey_questions_script, plugin_dir_url(__FILE__) . "js/$survey_questions_script.js", array('jquery'), $this->version, false);
+
+      $api_survey_questions_script = $this->plugin_name . '-api-survey-questions';
+      $this->enqueue_api_script($api_survey_questions_script, plugin_dir_url(__FILE__) . "js/api/$api_survey_questions_script.js", array('jquery'), $this->version, false);
+      $api_survey_questions_script = $this->plugin_name . '-api-survey-questions-ui';
+      $this->enqueue_api_script($api_survey_questions_script, plugin_dir_url(__FILE__) . "js/api/$api_survey_questions_script.js", array('jquery'), $this->version, false);
+    }
   }
 
   public function register_routes()
@@ -232,16 +244,23 @@ class Aba_Admin
     $this->question_builders_routes->register_routes();
 
     // register questions ui routes
-    $this->questions_ui_routes = new Questions_UI_Controller($this->plugin_name);
-    $this->questions_ui_routes->register_routes();
+    $this->question_ui_routes = new Questions_UI_Controller($this->plugin_name);
+    $this->question_ui_routes->register_routes();
 
     // register questions routes
-    $this->questions_routes = new Questions_Controller($this->plugin_name);
-    $this->questions_routes->register_routes();
+    $this->question_routes = new Questions_Controller($this->plugin_name);
+    $this->question_routes->register_routes();
 
     // register survey routes
-    $this->surveys_routes = new Surveys_Controller($this->plugin_name);
-    $this->surveys_routes->register_routes();
+    $this->survey_routes = new Surveys_Controller($this->plugin_name);
+    $this->survey_routes->register_routes();
+
+    // register survey-question data and ui routes
+    $this->survey_question_routes = new Survey_Questions_Controller($this->plugin_name);
+    $this->survey_question_routes->register_routes();
+    $this->survey_question_ui_routes = new Survey_Questions_UI_Controller($this->plugin_name);
+    $this->survey_question_ui_routes->register_routes();
+
   }
 
   public function add_setup_menu()
@@ -252,6 +271,7 @@ class Aba_Admin
     add_submenu_page('ada-aba-setup', 'Syllabus', 'Syllabus', 'manage_options', 'ada-aba-syllabus', array($this, 'syllabus_page'));
     add_submenu_page('ada-aba-setup', 'Surveys', 'Surveys', 'manage_options', 'ada-aba-survey', array($this, 'survey_page'));
     add_submenu_page('ada-aba-setup', 'Questions', 'Questions', 'manage_options', 'ada-aba-question', array($this, 'question_page'));
+    add_submenu_page('ada-aba-setup', 'Survey Questions', 'Survey Questions', 'manage_options', 'ada-aba-survey-question', array($this, 'survey_question_page'));
   }
 
   private function get_setup_page_content()
@@ -302,6 +322,17 @@ class Aba_Admin
   ) {
     ob_start();
     include 'partials/surveys.php';
+    return ob_get_clean();
+  }
+
+  private function get_survey_questions_page_content(
+    $surveys,
+    $selected_survey,
+    $survey_question_relations,
+    $available_questions
+  ) {
+    ob_start();
+    include 'partials/survey-questions.php';
     return ob_get_clean();
   }
 
@@ -552,25 +583,25 @@ class Aba_Admin
     echo $this->get_lessons_page_content($lessons);
   }
 
-  private static function get_selected_course($courses)
+  private static function get_selected_activatable_record($activatable_records)
   {
-    $selected_course_arr = array_filter($courses, function ($course) {
-      return $course->isActive();
+    $selected_activatable_record_arr = array_filter($activatable_records, function ($activatable_record) {
+      return $activatable_record->isActive();
     });
-    // error_log(print_r($selected_course_arr, true));
-    if (count($selected_course_arr) === 1) {
-      $selected_course = $selected_course_arr[0];
+    // error_log(print_r($selected_activatable_record_arr, true));
+    if (count($selected_activatable_record_arr) === 1) {
+      $selected_activatable_record = $selected_activatable_record_arr[0];
     } else {
-      $selected_course = null;
+      $selected_activatable_record = null;
     }
 
-    return $selected_course;
+    return $selected_activatable_record;
   }
 
   public function syllabus_page()
   {
     $courses = Course::all();
-    $selected_course = self::get_selected_course($courses);
+    $selected_course = self::get_selected_activatable_record($courses);
     $syllabus_edit_service = new Syllabus_Edit_Service($selected_course->getSlug());
 
     $course_lessons = $syllabus_edit_service->get_course_lessons();
@@ -595,5 +626,23 @@ class Aba_Admin
   {
     $surveys = Survey::all();
     echo $this->get_surveys_page_content($surveys);
+  }
+
+  public function survey_question_page()
+  {
+    $surveys = Survey::all();
+    $selected_survey = self::get_selected_activatable_record($surveys);
+    $selected_slug = $selected_survey->getSlug();
+    $survey_question_edit_service = new Survey_Question_Edit_Service();
+
+    $survey_questions = array_map(function ($survey_question_relation) {
+      return new Survey_Question_List_Item($survey_question_relation);
+    }, $survey_question_edit_service->get_survey_questions($selected_slug));
+
+    $available_questions = array_map(function ($question) {
+      return new Question_List_Item($question);
+    }, $survey_question_edit_service->get_available_questions($selected_slug));
+
+    echo $this->get_survey_questions_page_content($surveys, $selected_survey, $survey_questions, $available_questions);
   }
 }

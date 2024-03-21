@@ -145,6 +145,9 @@ class Core
     require_once plugin_dir_path(dirname(__FILE__)) . 'admin/controllers/questions-controller.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'admin/fragments/surveys-fragments.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'admin/controllers/surveys-controller.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'admin/fragments/survey-questions-fragments.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'admin/controllers/ui/survey-questions-controller.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'admin/controllers/survey-questions-controller.php';
 
     /**
      * The class responsible for defining all actions that occur in the admin area.
@@ -178,6 +181,9 @@ class Core
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/models/completed-lesson.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/models/question.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/models/survey.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/models/survey-question.php';
+
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/relations/survey-question-relations.php';
 
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/dto/course/course-scalar.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/dto/lesson/lesson-scalar.php';
@@ -190,12 +196,17 @@ class Core
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/dto/question/question-list-item.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/dto/question/question-scalar.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/dto/survey/survey-scalar.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/dto/survey-question/survey-question-list-item.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/dto/survey-question/survey-question-scalar.php';
 
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/services/syllabus-edit-service.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/services/enrollment-service.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/services/learner-lesson-service.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/services/course-lesson-service.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/services/learner-enrollment-service.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/services/survey-service.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/services/survey-question-service.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/services/survey-question-edit-service.php';
 
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/shortcodes/ada-build-shortcode.php';
 
