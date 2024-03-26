@@ -18,3 +18,4 @@ const CERTIFICATE = 'cert';
 const SENT = 'sent';
 const MARKDOWN = 'md';
 const SURVEY_TEST = 'st';
+const SURVEY = 'survey';

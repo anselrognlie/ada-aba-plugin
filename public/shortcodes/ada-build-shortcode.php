@@ -11,6 +11,7 @@ use Ada_Aba\Public\Workflows\Markdown_Test_Workflow;
 use Ada_Aba\Public\Workflows\Progress_Workflow;
 use Ada_Aba\Public\Workflows\Request_Certificate_Workflow;
 use Ada_Aba\Public\Workflows\Survey_Test_Workflow;
+use Ada_Aba\Public\Workflows\Survey_Workflow;
 
 class Ada_Build_Shortcode
 {
@@ -47,6 +48,7 @@ class Ada_Build_Shortcode
       new Action_Workflow($this->plugin_name),
       new Markdown_Test_Workflow($this->plugin_name),
       new Confirmation_Workflow($this->plugin_name),
+      new Survey_Workflow($this->plugin_name),
       new Progress_Workflow($this->plugin_name),
       new Request_Certificate_Workflow($this->plugin_name),
       new Survey_Test_Workflow($this->plugin_name),

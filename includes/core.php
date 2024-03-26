@@ -242,6 +242,7 @@ class Core
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/workflows/certificate-workflow.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/workflows/markdown-test-workflow.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/workflows/survey-test-workflow.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'public/workflows/survey-workflow.php';
 
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/questions/question-builder-base.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/questions/question-base.php';

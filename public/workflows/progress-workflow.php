@@ -5,8 +5,11 @@ namespace Ada_Aba\Public\Workflows;
 use Ada_Aba\Includes\Dto\Learner_Course\Learner_Course_Progress_Builder;
 use Ada_Aba\Includes\Models\Course;
 use Ada_Aba\Includes\Models\Learner;
+use Ada_Aba\Includes\Models\Surveyed_Learner;
 use Ada_Aba\Public\Action\Keys;
 use Ada_Aba\Public\Action\Links;
+
+use function Ada_Aba\Public\Action\Links\redirect_to_survey_page;
 
 class Progress_Workflow extends Workflow_Base
 {
@@ -20,12 +23,12 @@ class Progress_Workflow extends Workflow_Base
 
   public function can_handle_load_precise()
   {
-    return false;
+    return $this->is_in_get(Keys\USER);
   }
 
   public function handle_load()
   {
-    // no actions
+    $this->handle_survey();
   }
 
   public function can_handle_page()
@@ -47,6 +50,13 @@ class Progress_Workflow extends Workflow_Base
   private function get_learner_slug()
   {
     return $_GET[Keys\USER];
+  }
+
+  private function handle_survey() {
+    $learner_slug = $this->get_learner_slug();
+    if (!Surveyed_Learner::contains($learner_slug)) {
+      redirect_to_survey_page($learner_slug);
+    }
   }
 
   private function handle_progress()

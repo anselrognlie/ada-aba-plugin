@@ -64,6 +64,15 @@ function get_markdown_link()
   return Core::get_ada_build_url() . '?' . Keys\MARKDOWN;
 }
 
+function get_survey_link($user_slug, $page)
+{
+  $survey_value = '';
+  if ($page > 0) {
+    $survey_value = "=$page";
+  }
+  return Core::get_ada_build_url() . '?' . Keys\SURVEY . $survey_value . '&' . Keys\USER . "=$user_slug";
+}
+
 function redirect_to_confirm_page($action_slug, $halt = true)
 {
   $url = get_confirm_link($action_slug);
@@ -92,6 +101,12 @@ function redirect_to_error_page($error, $halt = true)
 function redirect_to_progress_page($user_slug, $halt = true)
 {
   $url = get_progress_link($user_slug);
+  redirect_to_page($url, $halt);
+}
+
+function redirect_to_survey_page($user_slug, $page = 0, $halt = true)
+{
+  $url = get_survey_link($user_slug, $page);
   redirect_to_page($url, $halt);
 }
 
