@@ -9,7 +9,7 @@
  * @since      1.0.0
  *
  * @package    Ada_Aba
- * @subpackage Ada_Aba/admin/partials
+ * @subpackage Ada_Aba/includes/partials
  */
 ?>
 
