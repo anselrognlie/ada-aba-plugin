@@ -39,7 +39,7 @@ class Surveyed_Learner
 
     $row = $wpdb->get_row(
       $wpdb->prepare(
-        "SELECT 1 FROM $table_name WHERE slug = %s",
+        "SELECT 1 FROM $table_name WHERE learner_slug = %s",
         $learner_slug
       ),
       'ARRAY_A'
