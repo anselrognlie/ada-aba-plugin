@@ -182,6 +182,9 @@ class Core
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/models/question.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/models/survey.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/models/survey-question.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/models/surveyed-learner.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/models/survey-response.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/models/survey-question-response.php';
 
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/relations/survey-question-relations.php';
 
