@@ -8,7 +8,7 @@
  * @link       https://www.adadevelopersacademy.org
  * @since      1.0.0
  *
- * @package    Ada_Abad.d
+ * @package    Ada_Aba
  * @subpackage Ada_Aba/public/partials
  */
 ?>
