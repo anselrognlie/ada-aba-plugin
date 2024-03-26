@@ -77,10 +77,10 @@ class Survey_Test_Workflow extends Workflow_Base
 
   private function render_survey($survey)
   {
-    $name = $survey->getName();
+    $survey_name = $survey->getName();
     $sqe_service = new Survey_Question_Edit_Service();
     $survey_question_relations = $sqe_service->get_survey_questions($survey->getSlug());
-    $html = array_map(function ($survey_question_relation) {
+    $questions_html = array_map(function ($survey_question_relation) {
       $model = $survey_question_relation->getQuestion();
       $builder_class = $model->getBuilder();
       $builder = new $builder_class;
@@ -88,6 +88,15 @@ class Survey_Test_Workflow extends Workflow_Base
       $optional = $survey_question_relation->isOptional();
       return $question->render(!$optional);
     }, $survey_question_relations);
-    return join('', $html);
+
+
+    return $this->get_survey_form($survey_name, $questions_html);
+  }
+
+  private function get_survey_form($survey_name, $questions_html)
+  {
+    ob_start();
+    include __DIR__ . '/../partials/survey-form.php';
+    return ob_get_clean();
   }
 }

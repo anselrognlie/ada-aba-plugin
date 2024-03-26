@@ -2,6 +2,8 @@
 
 namespace Ada_Aba\Includes\Questions;
 
+use Ada_Aba\Parsedown;
+
 class With_Options_Question extends Question_Base
 {
   private $options;
@@ -38,18 +40,46 @@ class With_Options_Question extends Question_Base
 
   protected function render_options($type)
   {
+    $parsedown = new Parsedown();
     $base_content = parent::render_content();
-    $inputs = array_map(function ($option) use ($type) {
-      return '<input type="' . $type . '" name="' . $this->getSlug() . '" value="' . $option . '">' . $option . '<br>';
+    $i = 0;
+    $inputs = array_map(function ($option) use ($type, $parsedown, &$i) {
+      $pos = $i;
+      $i += 1;
+      $question_slug = $this->getSlug();
+      $option_id = "ada-aba-survey-option-$question_slug-$pos";
+      $option_html = $parsedown->text($option);
+      return $this->get_question_option_fragment($type, $question_slug, $option, $option_id, $option_html);
     }, $this->options);
     
-    return join('', [
-      $base_content,
-      '<div>',
-      ...$inputs,
-      $this->show_other ? '<input type="' . $type . '" name="' . $this->getSlug() . '" value="other">' . 'Other'
-        . '<input type="text" name="' . $this->getSlug() . '">' : '',
-      '</div>',
-    ]);
+    $other = '';
+    if ($this->show_other) {
+      $question_slug = $this->getSlug();
+      $option_id = "ada-aba-survey-option-$question_slug-other";
+      $other = $this->get_question_other_fragment($type, $question_slug, $option_id);
+    }
+
+    return $this->get_question_fragment($base_content, $inputs, $other);
+  }
+
+  private function get_question_fragment($base_content, $options_html, $other_html)
+  {
+    ob_start();
+    include __DIR__ . '/../partials/survey-form-question-with-options-fragment.php';
+    return ob_get_clean();
+  }
+
+  private function get_question_option_fragment($type, $question_slug, $option, $option_id, $option_html)
+  {
+    ob_start();
+    include __DIR__ . '/../partials/survey-form-question-with-options-option-fragment.php';
+    return ob_get_clean();
+  }
+
+  private function get_question_other_fragment($type, $question_slug, $option_id)
+  {
+    ob_start();
+    include __DIR__ . '/../partials/survey-form-question-with-options-other-fragment.php';
+    return ob_get_clean();
   }
 }

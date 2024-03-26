@@ -70,22 +70,33 @@ abstract class Question_Base
   public function render($is_required)
   {
     $content = $this->render_content();
-    $required_class = $is_required ? ' ada-aba-survey-survey-question-required' : '';
-    return '<div class="ada-aba-survey-survey-question' . $required_class . '">' . $content . '</div>';
+    $builder_name = $this->get_builder();
+    $builder = new $builder_name();
+    $builder_slug = $builder->get_slug();
+    return $this->get_question_wrapper_fragment($is_required, $builder_slug, $content);
   }
 
   protected function render_content()
   {
     $parsedown = new Parsedown();
     $prompt_html = $parsedown->text($this->getPrompt());
+    $has_description = $this->getDescription();
+
     $description_html = $parsedown->text($this->getDescription());
-    return "
-        <div class='ada-aba-survey-survey-question-prompt'>
-          $prompt_html
-        </div>
-        <div class='ada-aba-survey-survey-question-description'>
-          $description_html
-        </div>
-    ";
+    return $this->get_question_base_fragment($has_description, $prompt_html, $description_html);
+  }
+
+  private function get_question_wrapper_fragment($required, $builder_slug, $content)
+  {
+    ob_start();
+    include __DIR__ . '/../partials/survey-form-question-wrapper-fragment.php';
+    return ob_get_clean();
+  }
+
+  private function get_question_base_fragment($has_description, $prompt_html, $description_html)
+  {
+    ob_start();
+    include __DIR__ . '/../partials/survey-form-question-base-fragment.php';
+    return ob_get_clean();
   }
 }

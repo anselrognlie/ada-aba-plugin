@@ -21,6 +21,13 @@ class Short_Answer_Question extends Question_Base
   protected function render_content()
   {
     $base_content = parent::render_content();
-    return $base_content . '<input type="text" name="' . $this->getSlug() . '">';
+    return $this->get_question_fragment($base_content, $this->getSlug());
+  }
+
+  private function get_question_fragment($base_content, $question_slug)
+  {
+    ob_start();
+    include __DIR__ . '/../partials/survey-form-question-short-answer-fragment.php';
+    return ob_get_clean();
   }
 }

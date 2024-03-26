@@ -123,16 +123,35 @@ class Aba_Public
      * class.
      */
 
-    wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/ada-aba-public.js', array('jquery'), $this->version, false);
+    $script_name = $this->plugin_name . '-public';
+    wp_enqueue_script($script_name, plugin_dir_url(__FILE__) . "js/$script_name.js", array('jquery'), $this->version, false);
 
     wp_localize_script(
-      $this->plugin_name,
+      $script_name,
       'ada_aba_vars',
       array(
         'root' => esc_url_raw(rest_url()),
         'nonce' => wp_create_nonce('wp_rest'),  // from https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/
       )
     );
+
+    $question_plugins = array(
+      'question-base-plugin',
+      'no-response-question-plugin',
+      'short-answer-question-plugin',
+      'paragraph-question-plugin',
+      'with-options-question-plugin',
+      'multiple-choice-question-plugin',
+      'checkboxes-question-plugin',
+      'question-palette'
+    );
+    foreach ($question_plugins as $plugin) {
+      $plugin_script = $this->plugin_name . '-' . $plugin;
+      wp_enqueue_script($plugin_script, plugin_dir_url(__FILE__) . "js/questions/$plugin_script.js", array('jquery'), $this->version, false);
+    }
+
+    $script_name = $this->plugin_name . '-survey';
+    wp_enqueue_script($script_name, plugin_dir_url(__FILE__) . "js/$script_name.js", array('jquery'), $this->version, false);
   }
 
   public function register_routes()

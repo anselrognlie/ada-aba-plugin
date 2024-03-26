@@ -3,9 +3,11 @@
  * included in this file.
  */
 
-.ada-aba-survey-survey-question
-{
+.ada-aba-survey-survey-question {
   margin-bottom: 1.5em;
+  border: solid 1px #ccc;
+  border-radius: 1em;
+  padding: 1em;
 }
 
 .ada-aba-survey-survey-question-required .ada-aba-survey-survey-question-prompt p::after {
@@ -14,9 +16,73 @@
 }
 
 .ada-aba-survey-survey-question-prompt p {
-  margin: 0.75em 0px;
+  margin: 0px 0px 0.75em 0px;
 }
 
-.ada-aba-survey-survey-question-prompt p:last-child {
+.ada-aba-survey-survey-question-no-description p:last-of-type,
+.ada-aba-survey-survey-question-description p:last-of-type {
   margin-bottom: 0px;
+}
+
+.ada-aba-survey-survey-question label p {
+  margin: 0px;
+}
+
+.ada-aba-survey-survey-question input[type=text],
+.ada-aba-survey-survey-question textarea.ada-aba-one-line {
+  border-width: 0px 0px 1px 0px;
+}
+
+.ada-aba-survey-survey-question textarea {
+  resize: vertical;
+}
+
+.ada-aba-survey-survey-question textarea.ada-aba-one-line {
+  padding: 1em;
+  height: 3em;
+  resize: none;
+  overflow: hidden;
+}
+
+.ada-aba-survey-survey-question input::placeholder,
+.ada-aba-survey-survey-question textarea::placeholder {
+  color: #ccc;
+  font-style: italic;
+}
+
+.ada-aba-survey-survey-question-options {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 1em;
+}
+
+.ada-aba-survey-survey-question-options input,
+.ada-aba-survey-survey-question-options label {
+  align-self: center;
+}
+
+
+.ada-aba-survey-survey-question-options input[type=radio],
+.ada-aba-survey-survey-question-options input[type=checkbox] {
+  transform: scale(1.5);
+  margin: 0px;
+  margin-left: 0.25em;
+  height: 2.5em;
+}
+
+.ada-aba-survey-survey-option-other {
+  display: flex;
+  align-self: center;
+}
+
+.ada-aba-survey-survey-option-other input,
+.ada-aba-survey-survey-option-other textarea {
+  margin-left: 0.5em;
+  line-height: 1em;
+  padding: 0.5em;
+}
+
+.ada-aba-survey-error {
+  color: red;
+  font-style: italic;
 }
