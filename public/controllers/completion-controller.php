@@ -37,6 +37,8 @@ class Completion_Controller {
 
   public function add($request)
   {
+    header( "Access-Control-Allow-Origin: *" );
+
     $lesson = Lesson::get_by_slug($request->get_param('lesson'));
     if (!$lesson) {
       return new WP_Error('lesson_not_found', 'Lesson not found', array('status' => 404));
