@@ -368,7 +368,17 @@ class Core
       return;
     }
 
-    error_log($msg);
+    $trace = debug_backtrace();
+    $call_site = $trace[0];
+    $prior = $trace[1];
+    $header = sprintf(
+      '%1$s:%2$s():%3$d - ',
+      $call_site['file'],
+      $prior['function'],
+      $call_site['line'],
+    );
+
+    error_log($header . $msg);
   }
 
 
