@@ -6,7 +6,7 @@
     }
 
     wireSurveyActions(el) {
-      console.log(`wiring survey actions for ${this.getSlug()}`);
+      // console.log(`wiring survey actions for ${this.getSlug()}`);
       this.wireSurveyActionsDerived(el);
     }
 

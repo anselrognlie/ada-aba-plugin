@@ -39,11 +39,11 @@
       $survey.on('submit', function (e) {
         e.preventDefault();
         if (! validateSurvey($survey.get())) {
-          console.log('survey is not valid');
+          // console.log('survey is not valid');
           return;
         }
 
-        console.log('submitting survey...');
+        // console.log('submitting survey...');
       });
     });
   }
