@@ -20,8 +20,8 @@ class Checkboxes_Question extends With_Options_Question
     return new Checkboxes_Question_Builder();
   }
 
-  protected function render_content()
+  protected function render_content($data = [])
   {
-    return parent::render_options('checkbox');
+    return parent::render_options('checkbox', $data);
   }
 }

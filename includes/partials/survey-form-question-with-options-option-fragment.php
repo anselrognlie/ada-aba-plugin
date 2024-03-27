@@ -13,5 +13,5 @@
  */
 ?>
 
-<input type="<?php echo $type ?>" name="<?php echo $question_slug ?>" value="<?php echo $option ?>" id="<?php echo $option_id ?>" class="ada-aba-survey-survey-option">
+<input type="<?php echo $type ?>" name="<?php echo $question_slug ?><?php echo ($type === 'checkbox') ? '[]' : '' ?>" value="<?php echo $option ?>" id="<?php echo $option_id ?>" class="ada-aba-survey-survey-option"<?php echo $checked ? ' checked' : '' ?>>
 <label for="<?php echo $option_id ?>"><?php echo $option_html ?></label>

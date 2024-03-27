@@ -59,6 +59,8 @@ class Surveyed_Learner
     );
 
     $result = $wpdb->insert($table_name, $data);
-    return ($result !== false);
+    if ($result === false) {
+      throw new Aba_Exception('Failed to insert Surveyed_Learner');
+    }
   }
 }

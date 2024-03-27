@@ -43,4 +43,8 @@ class No_Response_Question_Builder extends Question_Builder_Base
   {
     return [];
   }
+
+  public function gets_response() {
+    return false;
+  }
 }

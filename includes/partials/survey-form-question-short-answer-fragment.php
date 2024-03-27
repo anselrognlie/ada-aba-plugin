@@ -14,4 +14,4 @@
 ?>
 
 <?php echo $base_content ?>
-<textarea class="ada-aba-one-line" placeholder="Your answer" name="<?php echo $question_slug ?>"></textarea>
+<textarea class="ada-aba-one-line" placeholder="Your answer" name="<?php echo $question_slug ?>"><?php echo ($value !== null) ? $value : '' ?></textarea>

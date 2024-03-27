@@ -67,16 +67,16 @@ abstract class Question_Base
     return $question;
   }
 
-  public function render($is_required)
+  public function render($is_required, $data = [])
   {
-    $content = $this->render_content();
+    $content = $this->render_content($data);
     $builder_name = $this->get_builder();
     $builder = new $builder_name();
     $builder_slug = $builder->get_slug();
     return $this->get_question_wrapper_fragment($is_required, $builder_slug, $content);
   }
 
-  protected function render_content()
+  protected function render_content($data = [])
   {
     $parsedown = new Parsedown();
     $prompt_html = $parsedown->text($this->getPrompt());

@@ -37,13 +37,10 @@
       });
 
       $survey.on('submit', function (e) {
-        e.preventDefault();
         if (! validateSurvey($survey.get())) {
-          // console.log('survey is not valid');
+          e.preventDefault();
           return;
         }
-
-        // console.log('submitting survey...');
       });
     });
   }

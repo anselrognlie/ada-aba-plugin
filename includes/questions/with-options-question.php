@@ -2,6 +2,7 @@
 
 namespace Ada_Aba\Includes\Questions;
 
+use Ada_Aba\Includes\Core;
 use Ada_Aba\Parsedown;
 
 class With_Options_Question extends Question_Base
@@ -38,25 +39,51 @@ class With_Options_Question extends Question_Base
     return new With_Options_Question_Builder();
   }
 
-  protected function render_options($type)
+  protected function render_options($type, $data = [])
   {
     $parsedown = new Parsedown();
-    $base_content = parent::render_content();
+    $base_content = parent::render_content($data);
+    $key = $this->getSlug();
+    $value = Core::safe_key($data, $key, null);
+
     $i = 0;
-    $inputs = array_map(function ($option) use ($type, $parsedown, &$i) {
+    $inputs = array_map(function ($option) use ($type, $parsedown, &$i, $key, $value) {
       $pos = $i;
       $i += 1;
-      $question_slug = $this->getSlug();
-      $option_id = "ada-aba-survey-option-$question_slug-$pos";
+      $option_id = "ada-aba-survey-option-$key-$pos";
       $option_html = $parsedown->text($option);
-      return $this->get_question_option_fragment($type, $question_slug, $option, $option_id, $option_html);
+
+      $checked = false;
+      if ($value !== null) {
+        if ($type === 'checkbox') {
+          $picked_list = $value;
+          $checked = in_array($option, $picked_list);
+        } else {
+          $checked = $option === $value;
+        }
+      }
+      
+      return $this->get_question_option_fragment($type, $checked, $key, $option, $option_id, $option_html);
     }, $this->options);
     
     $other = '';
     if ($this->show_other) {
-      $question_slug = $this->getSlug();
-      $option_id = "ada-aba-survey-option-$question_slug-other";
-      $other = $this->get_question_other_fragment($type, $question_slug, $option_id);
+      $option_id = "ada-aba-survey-option-$key-other";
+      $other_key = "$key-other";
+      $other_value = Core::safe_key($data, $other_key, null);
+
+      $checked = false;
+      if ($value !== null) {
+        $option = 'other';
+        if ($type === 'checkbox') {
+          $picked_list = $value;
+          $checked = in_array($option, $picked_list);
+        } else {
+          $checked = $option === $value;
+        }
+      }
+
+      $other = $this->get_question_other_fragment($type, $key, $option_id, $checked, $other_value);
     }
 
     return $this->get_question_fragment($base_content, $inputs, $other);
@@ -69,14 +96,14 @@ class With_Options_Question extends Question_Base
     return ob_get_clean();
   }
 
-  private function get_question_option_fragment($type, $question_slug, $option, $option_id, $option_html)
+  private function get_question_option_fragment($type, $checked, $question_slug, $option, $option_id, $option_html)
   {
     ob_start();
     include __DIR__ . '/../partials/survey-form-question-with-options-option-fragment.php';
     return ob_get_clean();
   }
 
-  private function get_question_other_fragment($type, $question_slug, $option_id)
+  private function get_question_other_fragment($type, $question_slug, $option_id, $checked, $value)
   {
     ob_start();
     include __DIR__ . '/../partials/survey-form-question-with-options-other-fragment.php';

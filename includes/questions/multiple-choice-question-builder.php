@@ -30,4 +30,19 @@ class Multiple_Choice_Question_Builder extends With_Options_Question_Builder
   {
     return 'radio';
   }
+
+  public function get_response($slug, $data) {
+    if (array_key_exists($slug, $data)) {
+      $value = $data[$slug];
+      $other_key = $slug . '-other';
+
+      if ($value === 'other' && array_key_exists($other_key, $data)) {
+        $value = $data[$other_key];
+      }
+
+      return $value;
+    } else {
+      return '';
+    }
+  }
 }

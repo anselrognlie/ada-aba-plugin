@@ -2,15 +2,21 @@
 
 namespace Ada_Aba\Public\Workflows;
 
+use Ada_Aba\Includes\Aba_Exception;
 use Ada_Aba\Includes\Core;
 use Ada_Aba\Includes\Models\Learner;
 use Ada_Aba\Includes\Models\Survey;
+use Ada_Aba\Includes\Object_Session;
+use Ada_Aba\Includes\Options;
 use Ada_Aba\Includes\Services\Survey_Question_Edit_Service;
 use Ada_Aba\Includes\Services\Survey_Question_Service;
+use Ada_Aba\Includes\Services\Survey_Response_Service;
 use Ada_Aba\Public\Action\Keys;
+use Ada_Aba\Public\Data_Adapters\Survey_State_Adapter;
 
 use function Ada_Aba\Public\Action\Links\get_progress_link;
 use function Ada_Aba\Public\Action\Links\get_survey_link;
+use function Ada_Aba\Public\Action\Links\redirect_to_page;
 
 class Survey_Workflow extends Workflow_Base
 {
@@ -23,7 +29,7 @@ class Survey_Workflow extends Workflow_Base
   {
     parent::__construct($plugin_name);
     $this->load_handlers = [
-      Keys\SURVEY => function(){},  // nop to prevent progress redirect loop
+      Keys\SURVEY => array($this, 'handle_survey_load'),
     ];
     $this->page_handlers = [
       Keys\SURVEY => array($this, 'handle_survey'),
@@ -101,6 +107,13 @@ class Survey_Workflow extends Workflow_Base
     return $index;
   }
 
+  private function handle_survey_load()
+  {
+    if ($this->is_post()) {
+      $this->handle_survey_post();
+    }
+  }
+
   private function handle_survey()
   {
     $view_index = $this->get_view_index();
@@ -110,11 +123,25 @@ class Survey_Workflow extends Workflow_Base
 
   private function show_welcome()
   {
-    $next_link = get_survey_link($this->learner->getSlug(), 1);
+    $next_link = $this->get_next_view_link();
     return $this->get_welcome_content($next_link);
   }
 
+  private function is_post() {
+    return $_SERVER['REQUEST_METHOD'] === 'POST';
+  }
+
+  private function get_form_state()
+  {
+    return $_POST['form_state'];
+  }
+
   private function show_survey()
+  {
+    return $this->handle_survey_form();
+  }
+
+  private function handle_survey_form()
   {
     $survey = Survey::get_active_survey();
     if (!$survey) {
@@ -124,36 +151,55 @@ class Survey_Workflow extends Workflow_Base
     return $this->render_survey($survey);
   }
 
+  private function get_next_view_link()
+  {
+    $view_index = $this->get_view_index();
+    $next_index = $view_index + 1;
+    if ($next_index >= count($this->views)) {
+      return get_progress_link($this->learner->getSlug());
+    }
+
+    return get_survey_link($this->learner->getSlug(), $next_index);
+  }
+
+  private function handle_survey_post()
+  {
+    $form_state = $this->get_form_state();
+    $session = new Object_Session($this->options->get_private_key());
+    $session->load($form_state);
+    $adapter = new Survey_State_Adapter($session);
+    $survey_slug = $adapter->get_survey_slug();
+
+    $sr_service = new Survey_Response_Service();
+    try
+    {
+      $sr_service->process_survey_responses($survey_slug, $this->learner->getSlug(), $_POST);
+      $next_link = $this->get_next_view_link();
+      redirect_to_page($next_link);
+    } catch (Aba_Exception $e) {
+      Core::log($e->getMessage());
+      $_POST['error']  = 'An error occurred while submitting the survey. Please ensure that all required values are supplied and try again.';
+    }
+  }
+
   private function show_thanks()
   {
-    $next_link = get_progress_link($this->learner->getSlug());
+    $next_link = $this->get_next_view_link();
     return $this->get_thanks_content($next_link);
   }
 
-  // eventually refactor this to remove duplication with survey test workflow
   private function render_survey($survey)
   {
-    $survey_name = $survey->getName();
-    $sqe_service = new Survey_Question_Edit_Service();
-    $survey_question_relations = $sqe_service->get_survey_questions($survey->getSlug());
-    $questions_html = array_map(function ($survey_question_relation) {
-      $model = $survey_question_relation->getQuestion();
-      $builder_class = $model->getBuilder();
-      $builder = new $builder_class;
-      $question = $builder->build($model);
-      $optional = $survey_question_relation->isOptional();
-      return $question->render(!$optional);
-    }, $survey_question_relations);
+    $survey_slug = $survey->getSlug();
 
+    $private_key = $this->options->get_private_key();
+    $session = new Object_Session($private_key);
+    $adapter = new Survey_State_Adapter($session);
+    $adapter->set_survey_slug($survey_slug);
+    $state = $session->save();
 
-    return $this->get_survey_form($survey_name, $questions_html);
-  }
-
-  private function get_survey_form($survey_name, $questions_html)
-  {
-    ob_start();
-    include __DIR__ . '/../partials/survey-form.php';
-    return ob_get_clean();
+    $sr_service = new Survey_Response_Service();
+    return $sr_service->render_survey($survey_slug, $state, $_POST);
   }
 
   private function get_welcome_content($next_link)

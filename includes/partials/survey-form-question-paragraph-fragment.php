@@ -14,4 +14,4 @@
 ?>
 
 <?php echo $base_content ?>
-<textarea name="<?php echo $question_slug ?>"></textarea>
+<textarea name="<?php echo $question_slug ?>"><?php echo ($value !== null) ? $value : '' ?></textarea>

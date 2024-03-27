@@ -16,6 +16,7 @@ abstract class Question_Builder_Base
   abstract protected function editorDerived($question);
   abstract protected function previewDerived($request);
   abstract protected function getData($request);
+  // abstract protected function get_response($slug, $data);
 
   public function editor($question = null)
   {
@@ -80,5 +81,17 @@ abstract class Question_Builder_Base
     }
 
     return [$model->getId(), $model->getSlug()];
+  }
+
+  public function gets_response() {
+    return true;
+  }
+
+  public function get_response($slug, $data) {
+    if (array_key_exists($slug, $data)) {
+      return $data[$slug];
+    } else {
+      return '';
+    }
   }
 }

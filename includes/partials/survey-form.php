@@ -15,11 +15,12 @@
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 
-<form class="ada-aba-survey">
+<form class="ada-aba-survey" method="post">
   <h2><?php echo $survey_name ?></h2>
+  <input type="hidden" name="form_state" value="<?php echo $form_state ?>">
   <?php foreach ($questions_html as $question_html) {
     echo $question_html;
   } ?>
   <button>Submit</button>
-  <p class="ada-aba-survey-error"></p>
+  <p class="ada-aba-survey-error"><?php echo (!empty($error)) ? htmlentities($error) : '' ?></p>
 </form>

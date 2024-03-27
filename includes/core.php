@@ -211,6 +211,7 @@ class Core
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/services/survey-service.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/services/survey-question-service.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/services/survey-question-edit-service.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/services/survey-response-service.php';
 
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/shortcodes/ada-build-shortcode.php';
 
@@ -229,6 +230,8 @@ class Core
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/action/errors.php';
 
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/controllers/completion-controller.php';
+
+    require_once plugin_dir_path(dirname(__FILE__)) . 'public/data-adapters/survey-state-adapter.php';
 
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/workflows/workflow-base.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/workflows/registration-workflow.php';

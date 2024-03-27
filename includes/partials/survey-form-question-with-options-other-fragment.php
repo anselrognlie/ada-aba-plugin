@@ -13,7 +13,7 @@
  */
 ?>
 
-<input type="<?php echo $type ?>" name="<?php echo $question_slug ?>" value="Other" id="<?php echo $option_id ?>" class="ada-aba-survey-survey-option ada-aba-survey-survey-option-other-input">
+<input type="<?php echo $type ?>" name="<?php echo $question_slug ?><?php echo ($type === 'checkbox') ? '[]' : '' ?>" value="other" id="<?php echo $option_id ?>" class="ada-aba-survey-survey-option ada-aba-survey-survey-option-other-input"<?php echo $checked ? ' checked' : '' ?>>
 <span class="ada-aba-survey-survey-option-other"><label for="<?php echo $option_id ?>">Other:</label>
-  <textarea class="ada-aba-one-line" name="<?php echo $question_slug ?>-other"></textarea>
+  <textarea class="ada-aba-one-line" name="<?php echo $question_slug ?>-other"><?php echo ($value !== null) ? $value : '' ?></textarea>
 </span>
