@@ -50,7 +50,7 @@ class Survey_Question_Edit_Service {
   public function move_up($survey_question_slug)
   {
     $s_service = new Survey_Service();
-    $survey = $s_service::get_by_survey_question_slug($survey_question_slug);
+    $survey = $s_service->get_by_survey_question_slug($survey_question_slug);
     $survey_question_relations = $this->get_survey_questions($survey->getSlug());
     
     // locate the survey_question immediately above the specified survey_question
@@ -76,7 +76,7 @@ class Survey_Question_Edit_Service {
   public function move_down($survey_question_slug)
   {
     $s_service = new Survey_Service();
-    $survey = $s_service::get_by_survey_question_slug($survey_question_slug);
+    $survey = $s_service->get_by_survey_question_slug($survey_question_slug);
     $survey_question_relations = $this->get_survey_questions($survey->getSlug());
 
     // locate the survey_question immediately above the specified survey_question

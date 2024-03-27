@@ -7,7 +7,7 @@ use Ada_Aba\Includes\Models\Survey_Question;
 
 class Survey_Service
 {
-  public static function get_by_survey_question_slug($survey_question_slug)
+  public function get_by_survey_question_slug($survey_question_slug)
   {
     $survey_question = Survey_Question::get_by_slug($survey_question_slug);
     return Survey::get_by_id($survey_question->getSurveyId());
