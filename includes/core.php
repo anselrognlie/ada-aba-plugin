@@ -128,6 +128,7 @@ class Core
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/options.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/aba-exception.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/session.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/object-session.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/array-adapter.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/security/crypto.php';
 
