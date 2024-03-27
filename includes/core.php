@@ -63,7 +63,7 @@ class Core
    */
   protected $version;
 
-  // info = 0, warning = 1, errror = 2
+  // info = 0, warning = 1, error = 2
   const INFO = 0;
   const WARNING = 1;
   const ERROR = 2;
@@ -416,7 +416,7 @@ class Core
     self::$log_level = $level;
   }
 
-  // function to generatre a random string of a given length using the
+  // function to generate a random string of a given length using the
   // characters A-Z, a-z, 0-9, excluding characters that are treated as vowels
   // (AEIOUWYaeiouwy0134)
   public static function generate_nonce($length = 10)
