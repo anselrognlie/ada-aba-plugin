@@ -2,6 +2,7 @@
 
 namespace Ada_Aba\Public\Workflows;
 
+use Ada_Aba\Includes\Core;
 use Ada_Aba\Includes\Dto\Learner_Course\Learner_Course_Progress_Builder;
 use Ada_Aba\Includes\Models\Course;
 use Ada_Aba\Includes\Models\Learner;
@@ -23,7 +24,10 @@ class Progress_Workflow extends Workflow_Base
 
   public function can_handle_load_precise()
   {
-    return $this->is_in_get(Keys\USER);
+    // make sure we have a learner
+    $learner_slug = Core::safe_key($_GET, Keys\USER, '');
+    $this->learner = Learner::get_by_slug($learner_slug);
+    return ((bool)$this->learner);
   }
 
   public function handle_load()
