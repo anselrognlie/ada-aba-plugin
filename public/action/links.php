@@ -70,7 +70,10 @@ function get_survey_link($user_slug, $page)
   if ($page > 0) {
     $survey_value = "=$page";
   }
-  return Core::get_ada_build_url() . '?' . Keys\SURVEY . $survey_value . '&' . Keys\USER . "=$user_slug";
+
+  return Core::get_ada_build_url() . '?' 
+    . Keys\USER . "=$user_slug" . '&' 
+    . Keys\SURVEY . $survey_value;
 }
 
 function redirect_to_confirm_page($action_slug, $halt = true)
