@@ -3,16 +3,21 @@
 namespace Ada_Aba\Public\Workflows;
 
 use Ada_Aba\Includes\Core;
+use Ada_Aba\Includes\Models\Learner;
 use Ada_Aba\Includes\Models\Survey;
 use Ada_Aba\Includes\Services\Survey_Question_Edit_Service;
 use Ada_Aba\Includes\Services\Survey_Question_Service;
 use Ada_Aba\Public\Action\Keys;
 
+use function Ada_Aba\Public\Action\Links\get_progress_link;
+use function Ada_Aba\Public\Action\Links\get_survey_link;
+
 class Survey_Workflow extends Workflow_Base
 {
   private $load_handlers;
   private $page_handlers;
-  private $pages;
+  private $views;
+  private $learner;
 
   public function __construct($plugin_name)
   {
@@ -23,15 +28,27 @@ class Survey_Workflow extends Workflow_Base
     $this->page_handlers = [
       Keys\SURVEY => array($this, 'handle_survey'),
     ];
-    $this->pages = [
-      'welcome',
-      'survey',
-      'thank-you',
+    $this->views = [
+      array($this, 'show_welcome'),
+      array($this, 'show_survey'),
+      array($this, 'show_thanks'),
     ];
+  }
+
+  private function has_learner()
+  {
+    $learner_slug = Core::safe_key($_REQUEST, Keys\USER, '');
+    $this->learner = Learner::get_by_slug($learner_slug);
+    return ((bool)$this->learner);
   }
 
   public function can_handle_load_precise()
   {
+    // make sure we have a learner
+    if (!$this->has_learner()) {
+      return false;
+    }
+
     foreach ($this->load_handlers as $key => $_) {
       if ($this->is_in_get($key)) {
         return true;
@@ -52,6 +69,10 @@ class Survey_Workflow extends Workflow_Base
 
   public function can_handle_page()
   {
+    if (!$this->has_learner()) {
+      return false;
+    }
+
     foreach ($this->page_handlers as $key => $_) {
       if ($this->is_in_get($key)) {
         return true;
@@ -69,11 +90,11 @@ class Survey_Workflow extends Workflow_Base
     }
   }
 
-  private function get_page_index()
+  private function get_view_index()
   {
     $page = $_GET[Keys\SURVEY];
     $index = intval($page);
-    if ($index < 0 || $index >= count($this->pages)) {
+    if ($index < 0 || $index >= count($this->views)) {
       return 0;
     }
 
@@ -82,14 +103,31 @@ class Survey_Workflow extends Workflow_Base
 
   private function handle_survey()
   {
-    $page_index = $this->get_page_index();
-    Core::log("Survey page index: $page_index");
+    $view_index = $this->get_view_index();
+    $show_function = $this->views[$view_index];
+    return call_user_func($show_function);
+  }
+
+  private function show_welcome()
+  {
+    $next_link = get_survey_link($this->learner->getSlug(), 1);
+    return $this->get_welcome_content($next_link);
+  }
+
+  private function show_survey()
+  {
     $survey = Survey::get_active_survey();
     if (!$survey) {
       return;
     }
 
     return $this->render_survey($survey);
+  }
+
+  private function show_thanks()
+  {
+    $next_link = get_progress_link($this->learner->getSlug());
+    return $this->get_thanks_content($next_link);
   }
 
   // eventually refactor this to remove duplication with survey test workflow
@@ -115,6 +153,20 @@ class Survey_Workflow extends Workflow_Base
   {
     ob_start();
     include __DIR__ . '/../partials/survey-form.php';
+    return ob_get_clean();
+  }
+
+  private function get_welcome_content($next_link)
+  {
+    ob_start();
+    include __DIR__ . '/../partials/survey-welcome.php';
+    return ob_get_clean();
+  }
+
+  private function get_thanks_content($next_link)
+  {
+    ob_start();
+    include __DIR__ . '/../partials/survey-thanks.php';
     return ob_get_clean();
   }
 }
