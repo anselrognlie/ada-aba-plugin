@@ -17,16 +17,6 @@ use Ada_Aba\Includes\Array_Adapter;
 use Ada_Aba\Includes\Models\Course;
 use Ada_Aba\Includes\Models\Lesson;
 use Ada_Aba\Includes\Services\Syllabus_Edit_Service;
-use Ada_Aba\Admin\Controllers\Courses_Controller;
-use Ada_Aba\Admin\Controllers\Lessons_Controller;
-use Ada_Aba\Admin\Controllers\Course_Lessons_Controller;
-use Ada_Aba\Admin\Controllers\UI\Question_Builders_Controller;
-use Ada_Aba\Admin\Controllers\UI\Questions_Controller as Questions_UI_Controller;
-use Ada_Aba\Admin\Controllers\Questions_Controller;
-use Ada_Aba\Admin\Controllers\Surveys_Controller;
-use Ada_Aba\Admin\Controllers\Survey_Questions_Controller;
-use Ada_Aba\Admin\Controllers\UI\Survey_Questions_Controller as Survey_Questions_UI_Controller;
-use Ada_Aba\Admin\Controllers\UI\Syllabus_Controller;
 use Ada_Aba\Includes\Dto\Question\Question_List_Item;
 use Ada_Aba\Includes\Dto\Survey_Question\Survey_Question_List_Item;
 use Ada_Aba\Includes\Models\Question;
@@ -65,16 +55,8 @@ class Aba_Admin
    */
   private $version;
 
-  private $course_routes;
-  private $lesson_routes;
-  private $course_lesson_routes;
-  private $syllabus_routes;
-  private $question_builders_routes;
-  private $question_ui_routes;
-  private $question_routes;
-  private $survey_routes;
-  private $survey_question_routes;
-  private $survey_question_ui_routes;
+  private $routes_controller_classes;
+  private $routes_controllers;
 
   /**
    * Initialize the class and set its properties.
@@ -88,6 +70,19 @@ class Aba_Admin
 
     $this->plugin_name = $plugin_name;
     $this->version = $version;
+
+    $this->routes_controller_classes = array(
+      'Ada_Aba\Admin\Controllers\Courses_Controller',
+      'Ada_Aba\Admin\Controllers\Lessons_Controller',
+      'Ada_Aba\Admin\Controllers\Course_Lessons_Controller',
+      'Ada_Aba\Admin\Controllers\UI\Syllabus_Controller',
+      'Ada_Aba\Admin\Controllers\UI\Question_Builders_Controller',
+      'Ada_Aba\Admin\Controllers\UI\Questions_Controller',
+      'Ada_Aba\Admin\Controllers\Questions_Controller',
+      'Ada_Aba\Admin\Controllers\Surveys_Controller',
+      'Ada_Aba\Admin\Controllers\Survey_Questions_Controller',
+      'Ada_Aba\Admin\Controllers\UI\Survey_Questions_Controller',
+      );
   }
 
   /**
@@ -223,43 +218,11 @@ class Aba_Admin
 
   public function register_routes()
   {
-    // register course routes
-    $this->course_routes = new Courses_Controller($this->plugin_name);
-    $this->course_routes->register_routes();
-
-    // register lesson routes
-    $this->lesson_routes = new Lessons_Controller($this->plugin_name);
-    $this->lesson_routes->register_routes();
-
-    // register course-lesson routes
-    $this->course_lesson_routes = new Course_Lessons_Controller($this->plugin_name);
-    $this->course_lesson_routes->register_routes();
-
-    // register syllabus ui routes
-    $this->syllabus_routes = new Syllabus_Controller($this->plugin_name);
-    $this->syllabus_routes->register_routes();
-
-    // register question builders ui routes
-    $this->question_builders_routes = new Question_Builders_Controller($this->plugin_name);
-    $this->question_builders_routes->register_routes();
-
-    // register questions ui routes
-    $this->question_ui_routes = new Questions_UI_Controller($this->plugin_name);
-    $this->question_ui_routes->register_routes();
-
-    // register questions routes
-    $this->question_routes = new Questions_Controller($this->plugin_name);
-    $this->question_routes->register_routes();
-
-    // register survey routes
-    $this->survey_routes = new Surveys_Controller($this->plugin_name);
-    $this->survey_routes->register_routes();
-
-    // register survey-question data and ui routes
-    $this->survey_question_routes = new Survey_Questions_Controller($this->plugin_name);
-    $this->survey_question_routes->register_routes();
-    $this->survey_question_ui_routes = new Survey_Questions_UI_Controller($this->plugin_name);
-    $this->survey_question_ui_routes->register_routes();
+    foreach ($this->routes_controller_classes as $controller_class) {
+      $controller = new $controller_class($this->plugin_name);
+      $controller->register_routes();
+      $this->routes_controllers[] = $controller;
+    }
   }
 
   public function add_setup_menu()
