@@ -22,6 +22,11 @@ class Multiple_Choice_Question extends With_Options_Question
 
   protected function render_content($data = [])
   {
+    // repackage data for this question into an array for consistent handling
+    $slug = $this->getSlug();
+    if (array_key_exists($slug, $data)) {
+      $data[$slug] = [$data[$slug]];
+    }
     return parent::render_options('radio', $data);
   }
 }

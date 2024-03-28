@@ -44,6 +44,8 @@ class With_Options_Question extends Question_Base
     $parsedown = new Parsedown();
     $base_content = parent::render_content($data);
     $key = $this->getSlug();
+
+    // no matter whether a radio or checkbox, the value will be an array
     $value = Core::safe_key($data, $key, null);
 
     $i = 0;
@@ -55,12 +57,7 @@ class With_Options_Question extends Question_Base
 
       $checked = false;
       if ($value !== null) {
-        if ($type === 'checkbox') {
-          $picked_list = $value;
-          $checked = in_array($option, $picked_list);
-        } else {
-          $checked = $option === $value;
-        }
+        $checked = in_array($option, $value);
       }
       
       return $this->get_question_option_fragment($type, $checked, $key, $option, $option_id, $option_html);
@@ -73,14 +70,9 @@ class With_Options_Question extends Question_Base
       $other_value = Core::safe_key($data, $other_key, null);
 
       $checked = false;
+      $option = 'other';
       if ($value !== null) {
-        $option = 'other';
-        if ($type === 'checkbox') {
-          $picked_list = $value;
-          $checked = in_array($option, $picked_list);
-        } else {
-          $checked = $option === $value;
-        }
+        $checked = in_array($option, $value);
       }
 
       $other = $this->get_question_other_fragment($type, $key, $option_id, $checked, $other_value);
