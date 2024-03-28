@@ -112,6 +112,7 @@ class Core
    */
   private function load_dependencies()
   {
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/models/wpdb-extended.php';
 
     /**
      * The class responsible for orchestrating the actions and filters of the
@@ -149,6 +150,7 @@ class Core
     require_once plugin_dir_path(dirname(__FILE__)) . 'admin/fragments/survey-questions-fragments.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'admin/controllers/ui/survey-questions-controller.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'admin/controllers/survey-questions-controller.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'admin/controllers/queries-controller.php';
 
     /**
      * The class responsible for defining all actions that occur in the admin area.

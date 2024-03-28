@@ -82,6 +82,7 @@ class Aba_Admin
       'Ada_Aba\Admin\Controllers\Surveys_Controller',
       'Ada_Aba\Admin\Controllers\Survey_Questions_Controller',
       'Ada_Aba\Admin\Controllers\UI\Survey_Questions_Controller',
+      'Ada_Aba\Admin\Controllers\Queries_Controller',
       );
   }
 
@@ -213,6 +214,14 @@ class Aba_Admin
       $this->enqueue_api_script($api_survey_questions_script, plugin_dir_url(__FILE__) . "js/api/$api_survey_questions_script.js", array('jquery'), $this->version, false);
       $api_survey_questions_script = $this->plugin_name . '-api-survey-questions-ui';
       $this->enqueue_api_script($api_survey_questions_script, plugin_dir_url(__FILE__) . "js/api/$api_survey_questions_script.js", array('jquery'), $this->version, false);
+    }
+
+    if ($hook === 'ada-build-analytics_page_ada-aba-utilities') {
+      $page_script = $this->plugin_name . '-utilities';
+      wp_enqueue_script($page_script, plugin_dir_url(__FILE__) . "js/$page_script.js", array('jquery'), $this->version, false);
+
+      $api_script = $this->plugin_name . '-api-execute-query';
+      $this->enqueue_api_script($api_script, plugin_dir_url(__FILE__) . "js/api/$api_script.js", array('jquery'), $this->version, false);
     }
   }
 
