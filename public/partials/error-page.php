@@ -15,7 +15,7 @@
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 
-<h2>An error occured.</h2>
+<h2>An error occurred.</h2>
 
 <p>
   An error occurred (<?php echo $error ?>) while trying to carry out your request.
