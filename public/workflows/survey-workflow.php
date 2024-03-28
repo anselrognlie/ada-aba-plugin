@@ -6,6 +6,7 @@ use Ada_Aba\Includes\Aba_Exception;
 use Ada_Aba\Includes\Core;
 use Ada_Aba\Includes\Models\Learner;
 use Ada_Aba\Includes\Models\Survey;
+use Ada_Aba\Includes\Models\Surveyed_Learner;
 use Ada_Aba\Includes\Object_Session;
 use Ada_Aba\Includes\Options;
 use Ada_Aba\Includes\Services\Survey_Question_Edit_Service;
@@ -17,6 +18,7 @@ use Ada_Aba\Public\Data_Adapters\Survey_State_Adapter;
 use function Ada_Aba\Public\Action\Links\get_progress_link;
 use function Ada_Aba\Public\Action\Links\get_survey_link;
 use function Ada_Aba\Public\Action\Links\redirect_to_page;
+use function Ada_Aba\Public\Action\Links\redirect_to_progress_page;
 
 class Survey_Workflow extends Workflow_Base
 {
@@ -109,6 +111,11 @@ class Survey_Workflow extends Workflow_Base
 
   private function handle_survey_load()
   {
+    $learner_slug = $this->learner->getSlug();
+    if (Surveyed_Learner::contains($learner_slug)) {
+      redirect_to_progress_page($learner_slug);
+    }
+
     if ($this->is_post()) {
       $this->handle_survey_post();
     }
