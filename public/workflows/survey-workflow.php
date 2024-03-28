@@ -111,8 +111,10 @@ class Survey_Workflow extends Workflow_Base
 
   private function handle_survey_load()
   {
+    $survey = Survey::get_active_survey();
     $learner_slug = $this->learner->getSlug();
-    if (Surveyed_Learner::contains($learner_slug)) {
+
+    if ((!$survey) || Surveyed_Learner::contains($learner_slug)) {
       redirect_to_progress_page($learner_slug);
     }
 

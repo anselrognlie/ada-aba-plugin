@@ -6,6 +6,7 @@ use Ada_Aba\Includes\Core;
 use Ada_Aba\Includes\Dto\Learner_Course\Learner_Course_Progress_Builder;
 use Ada_Aba\Includes\Models\Course;
 use Ada_Aba\Includes\Models\Learner;
+use Ada_Aba\Includes\Models\Survey;
 use Ada_Aba\Includes\Models\Surveyed_Learner;
 use Ada_Aba\Public\Action\Keys;
 use Ada_Aba\Public\Action\Links;
@@ -57,8 +58,10 @@ class Progress_Workflow extends Workflow_Base
   }
 
   private function handle_survey() {
+    $survey = Survey::get_active_survey();
     $learner_slug = $this->get_learner_slug();
-    if (!Surveyed_Learner::contains($learner_slug)) {
+
+    if ($survey && !Surveyed_Learner::contains($learner_slug)) {
       redirect_to_survey_page($learner_slug);
     }
   }
