@@ -14,6 +14,6 @@
 ?>
 
 <p class="ada-aba-lesson" data-ada-aba-lesson-slug="<?php echo $lesson->getSlug() ?>">
-	<span><?php echo $lesson->getName() ?></span>
-	<span><a href="#" class="ada-aba-available-lessons-add">Add</a></span>
+  <span><?php echo $lesson->getName() ?></span>
+  <span><a href="#" class="ada-aba-available-lessons-add">Add</a></span>
 </p>

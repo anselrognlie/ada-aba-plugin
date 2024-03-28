@@ -14,12 +14,12 @@
 ?>
 
 <p class="ada-aba-survey-question" data-ada-aba-survey-question-slug="<?php echo $survey_question_relation->getSlug() ?>">
-	<span>
-		<?php echo htmlentities($survey_question_relation->getDisplay()) ?>
-		<?php echo $survey_question_relation->isOptional() ? '(Optional)' : '' ?>
-	</span>
-	<span><a href="#" class="ada-aba-survey-questions-remove">Remove</a></span>
-	<span><a href="#" class="ada-aba-survey-questions-up">Up</a></span>
-	<span><a href="#" class="ada-aba-survey-questions-down">Down</a></span>
-	<span><a href="#" class="ada-aba-survey-questions-toggle-option">Toggle</a></span>
+  <span>
+    <?php echo htmlentities($survey_question_relation->getDisplay()) ?>
+    <?php echo $survey_question_relation->isOptional() ? '(Optional)' : '' ?>
+  </span>
+  <span><a href="#" class="ada-aba-survey-questions-remove">Remove</a></span>
+  <span><a href="#" class="ada-aba-survey-questions-up">Up</a></span>
+  <span><a href="#" class="ada-aba-survey-questions-down">Down</a></span>
+  <span><a href="#" class="ada-aba-survey-questions-toggle-option">Toggle</a></span>
 </p>

@@ -14,13 +14,13 @@
 ?>
 
 <p class="ada-aba-course" data-ada-aba-course-slug="<?php echo $course->getSlug() ?>">
-	<span><?php echo $course->getName() ?></span>
-	<?php if ($course->isActive()) : ?>
-		<span>(Active)</span>
-	<?php else : ?>
-		<span><a href="#" class="ada-aba-courses-activate">Activate</a></span>
-	<?php endif ?>
-	<span><a href="#" class="ada-aba-courses-edit">Edit</a></span>
-	<span><a href="<?php echo $course->getUrl() ?>" target="_blank" class="ada-aba-courses-url">Url</a></span>
-	<span><a href="#" class="ada-aba-courses-delete">Delete</a></span>
+  <span><?php echo $course->getName() ?></span>
+  <?php if ($course->isActive()) : ?>
+    <span>(Active)</span>
+  <?php else : ?>
+    <span><a href="#" class="ada-aba-courses-activate">Activate</a></span>
+  <?php endif ?>
+  <span><a href="#" class="ada-aba-courses-edit">Edit</a></span>
+  <span><a href="<?php echo $course->getUrl() ?>" target="_blank" class="ada-aba-courses-url">Url</a></span>
+  <span><a href="#" class="ada-aba-courses-delete">Delete</a></span>
 </p>

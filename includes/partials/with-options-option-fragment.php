@@ -14,8 +14,8 @@
 ?>
 
 <div class="ada-aba-question-editor-panel-wo-option">
-	<textarea type="text" rows="4" cols="50"><?php echo htmlentities($option) ?></textarea>
-	<button class="ada-aba-question-editor-panel-wo-option-up">Up</button>
-	<button class="ada-aba-question-editor-panel-wo-option-down">Down</button>
-	<button class="ada-aba-question-editor-panel-wo-option-remove">Remove</button>
+  <textarea type="text" rows="4" cols="50"><?php echo htmlentities($option) ?></textarea>
+  <button class="ada-aba-question-editor-panel-wo-option-up">Up</button>
+  <button class="ada-aba-question-editor-panel-wo-option-down">Down</button>
+  <button class="ada-aba-question-editor-panel-wo-option-remove">Remove</button>
 </div>

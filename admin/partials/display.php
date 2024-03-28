@@ -16,25 +16,25 @@
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 
 <div id="wrap">
-	<form method="post" action="options.php">
-		<?php
-		settings_errors();
-		settings_fields('ada-aba-settings');
-		do_settings_sections('ada-aba-settings');
-		submit_button();
-		?>
-	</form>
+  <form method="post" action="options.php">
+    <?php
+    settings_errors();
+    settings_fields('ada-aba-settings');
+    do_settings_sections('ada-aba-settings');
+    submit_button();
+    ?>
+  </form>
 </div>
 
 <div>
-	<label>One-time slug:</label> <span><?php echo $slug ?></span>
+  <label>One-time slug:</label> <span><?php echo $slug ?></span>
 </div>
 <div>
-	<p>A useful snippet to generate a good private key is
-	<p>
-		<code>
-			python -c 'import secrets; print(secrets.token_hex())'
-		</code>
-	</p>
-	</p>
+  <p>A useful snippet to generate a good private key is
+  <p>
+    <code>
+      python -c 'import secrets; print(secrets.token_hex())'
+    </code>
+  </p>
+  </p>
 </div>

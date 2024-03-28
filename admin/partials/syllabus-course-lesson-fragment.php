@@ -14,12 +14,12 @@
 ?>
 
 <p class="ada-aba-course-lesson" data-ada-aba-course-lesson-slug="<?php echo $course_lesson->getSlug() ?>">
-	<span>
-		<?php echo $course_lesson->getLesson()->getName() ?>
-		<?php echo $course_lesson->isOptional() ? '(Optional)' : '' ?>
-		</span>
-	<span><a href="#" class="ada-aba-course-lessons-remove">Remove</a></span>
-	<span><a href="#" class="ada-aba-course-lessons-up">Up</a></span>
-	<span><a href="#" class="ada-aba-course-lessons-down">Down</a></span>
-	<span><a href="#" class="ada-aba-course-lessons-toggle-option">Toggle</a></span>
+  <span>
+    <?php echo $course_lesson->getLesson()->getName() ?>
+    <?php echo $course_lesson->isOptional() ? '(Optional)' : '' ?>
+    </span>
+  <span><a href="#" class="ada-aba-course-lessons-remove">Remove</a></span>
+  <span><a href="#" class="ada-aba-course-lessons-up">Up</a></span>
+  <span><a href="#" class="ada-aba-course-lessons-down">Down</a></span>
+  <span><a href="#" class="ada-aba-course-lessons-toggle-option">Toggle</a></span>
 </p>

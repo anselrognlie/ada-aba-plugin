@@ -260,7 +260,6 @@ class Aba_Admin
     $this->survey_question_routes->register_routes();
     $this->survey_question_ui_routes = new Survey_Questions_UI_Controller($this->plugin_name);
     $this->survey_question_ui_routes->register_routes();
-
   }
 
   public function add_setup_menu()
@@ -272,6 +271,8 @@ class Aba_Admin
     add_submenu_page('ada-aba-setup', 'Surveys', 'Surveys', 'manage_options', 'ada-aba-survey', array($this, 'survey_page'));
     add_submenu_page('ada-aba-setup', 'Questions', 'Questions', 'manage_options', 'ada-aba-question', array($this, 'question_page'));
     add_submenu_page('ada-aba-setup', 'Survey Questions', 'Survey Questions', 'manage_options', 'ada-aba-survey-question', array($this, 'survey_question_page'));
+    add_submenu_page('ada-aba-setup', 'Reports', 'Reports', 'manage_options', 'ada-aba-reports', array($this, 'reports_page'));
+    add_submenu_page('ada-aba-setup', 'Utilities', 'Utilities', 'manage_options', 'ada-aba-utilities', array($this, 'utilities_page'));
   }
 
   private function get_setup_page_content()
@@ -333,6 +334,20 @@ class Aba_Admin
   ) {
     ob_start();
     include 'partials/survey-questions.php';
+    return ob_get_clean();
+  }
+
+  private function get_reports_page_content()
+  {
+    ob_start();
+    include 'partials/reports.php';
+    return ob_get_clean();
+  }
+
+  private function get_utilities_page_content()
+  {
+    ob_start();
+    include 'partials/utilities.php';
     return ob_get_clean();
   }
 
@@ -644,5 +659,15 @@ class Aba_Admin
     }, $survey_question_edit_service->get_available_questions($selected_slug));
 
     echo $this->get_survey_questions_page_content($surveys, $selected_survey, $survey_questions, $available_questions);
+  }
+
+  public function reports_page()
+  {
+    echo $this->get_reports_page_content();
+  }
+
+  public function utilities_page()
+  {
+    echo $this->get_utilities_page_content();
   }
 }

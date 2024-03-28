@@ -17,17 +17,17 @@
 
 <div id="wrap">
 
-	<div>
-		<h2>Lessons</h2>
-		<div id="ada-aba-lessons">
-			<?php foreach ($lessons as $lesson) {
-				include 'lessons-lesson-fragment.php';
-			} ?>
-		</div>
-	</div>
+  <div>
+    <h2>Lessons</h2>
+    <div id="ada-aba-lessons">
+      <?php foreach ($lessons as $lesson) {
+        include 'lessons-lesson-fragment.php';
+      } ?>
+    </div>
+  </div>
 
-	<?php include 'lessons-add-form-fragment.php' ?>
+  <?php include 'lessons-add-form-fragment.php' ?>
 
-	<?php include 'lessons-edit-form-fragment.php' ?>
+  <?php include 'lessons-edit-form-fragment.php' ?>
 
 </div>

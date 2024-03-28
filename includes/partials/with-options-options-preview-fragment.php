@@ -14,6 +14,6 @@
 ?>
 
 <div id="ada-aba-question-preview-panel-wo-options">
-	<?php echo $options_html ?>
-	<?php echo $other_html ?>
+  <?php echo $options_html ?>
+  <?php echo $other_html ?>
 </div>

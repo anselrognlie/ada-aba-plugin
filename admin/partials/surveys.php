@@ -17,17 +17,17 @@
 
 <div id="wrap">
 
-	<div>
-		<h2>Surveys</h2>
-		<div id="ada-aba-surveys">
-			<?php foreach ($surveys as $survey) {
-				include 'surveys-survey-fragment.php';
-			} ?>
-		</div>
-	</div>
+  <div>
+    <h2>Surveys</h2>
+    <div id="ada-aba-surveys">
+      <?php foreach ($surveys as $survey) {
+        include 'surveys-survey-fragment.php';
+      } ?>
+    </div>
+  </div>
 
-	<?php include 'surveys-add-form-fragment.php' ?>
+  <?php include 'surveys-add-form-fragment.php' ?>
 
-	<?php include 'surveys-edit-form-fragment.php' ?>
+  <?php include 'surveys-edit-form-fragment.php' ?>
 
 </div>

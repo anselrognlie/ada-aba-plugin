@@ -14,6 +14,6 @@
 ?>
 
 <p class="ada-aba-question" data-ada-aba-question-slug="<?php echo $question->getSlug() ?>">
-	<span><?php echo htmlentities($question->getDisplay()) ?></span>
-	<span><a href="#" class="ada-aba-available-questions-add">Add</a></span>
+  <span><?php echo htmlentities($question->getDisplay()) ?></span>
+  <span><a href="#" class="ada-aba-available-questions-add">Add</a></span>
 </p>

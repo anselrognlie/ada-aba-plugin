@@ -14,7 +14,7 @@
 ?>
 
 <div class="ada-aba-question-preview">
-	<?php echo $prompt ?>
-	<?php echo $description ?>
-	<?php echo $question_html ?>
+  <?php echo $prompt ?>
+  <?php echo $description ?>
+  <?php echo $question_html ?>
 </div>
