@@ -26,27 +26,55 @@
           return;
         }
 
-        const html_arr = [];
-        html_arr.push('<table class="table">');
-        html_arr.push('<thead>');
-        html_arr.push('<tr>');
+        const htmlArr = [];
+        htmlArr.push('<table class="ada-aba-execute-query-result">');
+        htmlArr.push('<thead>');
+        htmlArr.push('<tr>');
+        let lastTableName = '--';
+        let span = 0;
         for (const col of result['columns']) {
-          html_arr.push(`<th scope="col">${htmlEncode(col)}</th>`);
-        }
-        html_arr.push('</tr>');
-        html_arr.push('</thead>');
-        html_arr.push('<tbody>');
-        for (const row of result['rows']) {
-          html_arr.push('<tr>');
-          for (const val of row) {
-            html_arr.push(`<td>${htmlEncode(val)}</td>`);
+          let tableName = col.split('.')[0];
+          if (tableName === col) {
+            tableName = '';
           }
-          html_arr.push('</tr>');
-        }
-        html_arr.push('</tbody>');
-        html_arr.push('</table>');
 
-        $('#ada-aba-execute-query-result').html(html_arr.join(''));
+          if (lastTableName !== tableName) {
+            // emit prior heading
+            if (span > 0) {
+              htmlArr.push(`<th scope="colgroup" colspan="${span}">${htmlEncode(lastTableName)}</th>`);
+            }
+            lastTableName = tableName;
+            span = 1;
+          } else {
+            span += 1;
+          }
+        }
+
+        htmlArr.push(`<th scope="colgroup" colspan="${span}">${htmlEncode(lastTableName)}</th>`);
+        htmlArr.push('</tr>');
+        htmlArr.push('<tr>');
+
+        for (const col of result['columns']) {
+          let colName = col.split('.')[1];
+          if (! colName) {
+            colName = col;
+          }
+          htmlArr.push(`<th scope="col">${htmlEncode(colName)}</th>`);
+        }
+        htmlArr.push('</tr>');
+        htmlArr.push('</thead>');
+        htmlArr.push('<tbody>');
+        for (const row of result['rows']) {
+          htmlArr.push('<tr>');
+          for (const val of row) {
+            htmlArr.push(`<td>${htmlEncode(val)}</td>`);
+          }
+          htmlArr.push('</tr>');
+        }
+        htmlArr.push('</tbody>');
+        htmlArr.push('</table>');
+
+        $('#ada-aba-execute-query-result').html(htmlArr.join(''));
       } catch (e) {
         $('#ada-aba-execute-query-result').html('query failed');
       }

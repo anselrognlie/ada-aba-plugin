@@ -3,20 +3,36 @@
  * included in this file.
  */
 
- #ada-aba-question-editor.active {
+#ada-aba-question-editor.active {
   display: block;
- }
+}
 
- #ada-aba-question-editor {
+#ada-aba-question-editor {
   display: none;
- }
+}
 
- #ada-aba-question-preview-panel-wo-options {
+#ada-aba-question-preview-panel-wo-options {
   display: grid;
   grid-template-columns: auto 1fr;
- }
+}
 
- #ada-aba-execute-query-form textarea {
+#ada-aba-execute-query-form textarea {
   font-family: monospace;
   resize: both;
- }
+}
+
+table.ada-aba-execute-query-result {
+  table-layout: fixed;
+  border-collapse: collapse;
+  border: 2px solid black;
+}
+
+table.ada-aba-execute-query-result tr th,
+table.ada-aba-execute-query-result tr td {
+  border: 1px solid gray;
+}
+
+#ada-aba-execute-query-result {
+  width: 100%;
+  overflow-x: auto;
+}
