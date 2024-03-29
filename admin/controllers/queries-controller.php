@@ -3,6 +3,7 @@
 namespace Ada_Aba\Admin\Controllers;
 
 use Ada_Aba\Includes\Core;
+use Ada_Aba\Includes\Models\Wpdb_Extended;
 use \WP_REST_Server;
 use \WP_Error;
 
@@ -48,10 +49,8 @@ class Queries_Controller
   {
     $query = $request->get_param('query');
 
-    global $wpdbx;
-    // $result = $wpdb->get_results($query, ARRAY_N);
-    $result = $wpdbx->get_raw_results($query);
-    Core::log(print_r($result, true));
+    $db = new Wpdb_Extended();
+    $result = $db->get_raw_results($query);
 
     if ($result === false) {
       return new WP_Error('rest_invalid_query', esc_html('Invalid query'), array('status' => 400));
