@@ -187,7 +187,9 @@ class Survey_Workflow extends Workflow_Base
       redirect_to_page($next_link);
     } catch (Aba_Exception $e) {
       Core::log($e->getMessage());
-      $_POST['error']  = 'An error occurred while submitting the survey. Please ensure that all required values are supplied and try again.';
+      $_POST['error']  = 'An error occurred while submitting the survey.'
+        . ' Please answer all required (*) questions and ensure that'
+        . ' any selected options with space for additional detail have values provided.';
     }
   }
 

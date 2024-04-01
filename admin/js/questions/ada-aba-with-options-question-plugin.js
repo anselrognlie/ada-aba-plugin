@@ -46,8 +46,9 @@
         }).get();
 
       const show_other = $('#ada-aba-question-editor-panel-wo-show-other').is(':checked');
+      const other_label = $('#ada-aba-question-editor-panel-wo-other-label').val();
 
-      return {...data, options, show_other};
+      return {...data, options, show_other, other_label};
     }
   }
 

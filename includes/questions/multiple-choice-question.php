@@ -11,8 +11,9 @@ class Multiple_Choice_Question extends With_Options_Question
     $description,
     $options,
     $show_other,
+    $other_label,
   ) {
-    parent::__construct($id, $slug, $prompt, $description, $options, $show_other);
+    parent::__construct($id, $slug, $prompt, $description, $options, $show_other, $other_label);
   }
 
   public function get_builder()

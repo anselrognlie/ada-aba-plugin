@@ -87,6 +87,10 @@ abstract class Question_Builder_Base
     return true;
   }
 
+  public function is_response_valid($slug, $data) {
+    return true;
+  }
+
   public function get_response($slug, $data) {
     if (array_key_exists($slug, $data)) {
       return $data[$slug];

@@ -82,6 +82,10 @@
   padding: 0.5em;
 }
 
+.ada-aba-survey-survey-option-other label {
+  white-space: nowrap;
+}
+
 .ada-aba-survey-error {
   color: red;
   font-style: italic;

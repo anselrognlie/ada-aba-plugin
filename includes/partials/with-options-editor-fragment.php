@@ -24,6 +24,10 @@
   <button class="ada-aba-question-editor-panel-wo-options-add">Add Option</button>
 </div>
 <div class="form-group">
-  <label for="ada-aba-question-editor-panel-wo-show-other">Show "Other" option</label>
   <input type="checkbox" id="ada-aba-question-editor-panel-wo-show-other" name="show_other" <?php echo $show_other ? ' checked' : '' ?>>
+  <label for="ada-aba-question-editor-panel-wo-show-other">Show "Other" option</label>
+</div>
+<div class="form-group">
+  <label for="ada-aba-question-editor-panel-wo-other-label">Other label</label>
+  <input type="text" id="ada-aba-question-editor-panel-wo-other-label" name="other_label" value="<?php echo $other_label ?>">
 </div>

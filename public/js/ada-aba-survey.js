@@ -16,7 +16,8 @@
 
     if (! valid) {
       const $error = $survey.find('.ada-aba-survey-error');
-      $error.html('Please answer all required (*) questions.');
+      $error.html('Please answer all required (*) questions and ensure that'
+        + ' any selected options with space for additional detail have values provided.');
     } else {
       const $error = $survey.find('.ada-aba-survey-error');
       $error.html('');

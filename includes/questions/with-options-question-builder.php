@@ -8,7 +8,7 @@ use Ada_Aba\Parsedown;
 
 abstract class With_Options_Question_Builder extends Question_Builder_Base
 {
-  protected abstract function buildDerived($id, $slug, $prompt, $description, $options, $show_other);
+  protected abstract function buildDerived($id, $slug, $prompt, $description, $options, $show_other, $other_label);
   protected abstract function get_control_type();
 
   public function build($model)
@@ -20,6 +20,7 @@ abstract class With_Options_Question_Builder extends Question_Builder_Base
     $data = json_decode($model->getData(), associative: true);
     $options = Core::safe_key($data, 'options', []);
     $show_other = Core::safe_key($data, 'show_other', false);
+    $other_label = Core::safe_key($data, 'other_label', '');
 
     return $this->buildDerived(
       $id,
@@ -28,6 +29,7 @@ abstract class With_Options_Question_Builder extends Question_Builder_Base
       $description,
       $options,
       $show_other,
+      $other_label,
     );
   }
 
@@ -36,8 +38,9 @@ abstract class With_Options_Question_Builder extends Question_Builder_Base
     $template_content = $this->get_option_fragment('');
     $option_content = (!empty($question)) ? $this->optionsEditor($question) : '';
     $show_other = (!empty($question)) ? $question->getShowOther() : false;
+    $other_label = (!empty($question)) ? $question->getOtherLabel() : '';
 
-    return $this->get_editor_fragment($template_content, $option_content, $show_other);
+    return $this->get_editor_fragment($template_content, $option_content, $show_other, $other_label);
   }
 
   private function get_option_fragment($option)
@@ -57,7 +60,7 @@ abstract class With_Options_Question_Builder extends Question_Builder_Base
     return join('', $lines);
   }
 
-  private function get_editor_fragment($template_content, $option_content, $show_other)
+  private function get_editor_fragment($template_content, $option_content, $show_other, $other_label)
   {
     ob_start();
     include __DIR__ . '/../partials/with-options-editor-fragment.php';
@@ -69,9 +72,10 @@ abstract class With_Options_Question_Builder extends Question_Builder_Base
     $control_type = $this->get_control_type();
     $options = $request['options'];
     $show_other = Core::safe_key($request, 'show_other', false);
+    $other_label = Core::safe_key($request, 'other_label', '');
 
     $options_html = $this->optionsPreview($control_type, $options);
-    $other_html = $this->otherPreview($control_type, $show_other);
+    $other_html = $this->otherPreview($control_type, $show_other, $other_label);
 
     return $this->get_options_preview($options_html, $other_html);
   }
@@ -101,16 +105,19 @@ abstract class With_Options_Question_Builder extends Question_Builder_Base
     return ob_get_clean();
   }
 
-  private function otherPreview($control_type, $show_other)
+  private function otherPreview($control_type, $show_other, $other_label)
   {
     if ($show_other) {
-      return $this->get_other_preview($control_type);
+      return $this->get_other_preview($control_type, $other_label);
     }
     return '';
   }
 
-  private function get_other_preview($control_type)
+  private function get_other_preview($control_type, $other_label)
   {
+    $parsedown = new Parsedown();
+    $other_html = $parsedown->line($other_label);
+
     ob_start();
     include __DIR__ . '/../partials/with-options-other-preview-fragment.php';
     return ob_get_clean();
@@ -120,10 +127,12 @@ abstract class With_Options_Question_Builder extends Question_Builder_Base
   {
     $options = $request['options'];
     $show_other = Core::safe_key($request, 'show_other', false);
+    $other_label = Core::safe_key($request, 'other_label', '');
 
     return json_encode([
       'options' => $options,
       'show_other' => $show_other,
+      'other_label' => $other_label,
     ]);
   }
 }

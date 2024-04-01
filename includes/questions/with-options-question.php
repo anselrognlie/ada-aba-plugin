@@ -9,6 +9,7 @@ class With_Options_Question extends Question_Base
 {
   private $options;
   private $show_other;
+  private $other_label;
 
   public function __construct(
     $id,
@@ -17,11 +18,13 @@ class With_Options_Question extends Question_Base
     $description,
     $options,
     $show_other,
+    $other_label
   )
   {
     parent::__construct($id, $slug, $prompt, $description);
     $this->options = $options;
     $this->show_other = $show_other;
+    $this->other_label = $other_label;
   }
 
   public function getOptions()
@@ -32,6 +35,11 @@ class With_Options_Question extends Question_Base
   public function getShowOther()
   {
     return $this->show_other;
+  }
+
+  public function getOtherLabel()
+  {
+    return $this->other_label;
   }
 
   public function get_builder()
@@ -67,6 +75,7 @@ class With_Options_Question extends Question_Base
     if ($this->show_other) {
       $option_id = "ada-aba-survey-option-$key-other";
       $other_key = "$key-other";
+      $other_label = $this->other_label;
       $other_value = Core::safe_key($data, $other_key, null);
 
       $checked = false;
@@ -75,7 +84,7 @@ class With_Options_Question extends Question_Base
         $checked = in_array($option, $value);
       }
 
-      $other = $this->get_question_other_fragment($type, $key, $option_id, $checked, $other_value);
+      $other = $this->get_question_other_fragment($type, $key, $option_id, $checked, $other_label, $other_value);
     }
 
     return $this->get_question_fragment($base_content, $inputs, $other);
@@ -95,8 +104,11 @@ class With_Options_Question extends Question_Base
     return ob_get_clean();
   }
 
-  private function get_question_other_fragment($type, $question_slug, $option_id, $checked, $value)
+  private function get_question_other_fragment($type, $question_slug, $option_id, $checked, $label, $value)
   {
+    $parsedown = new Parsedown();
+    $other_html = $parsedown->line($label);
+
     ob_start();
     include __DIR__ . '/../partials/survey-form-question-with-options-other-fragment.php';
     return ob_get_clean();

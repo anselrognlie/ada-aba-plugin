@@ -26,11 +26,27 @@
       });
     }
 
+    validate(el) {
+      const $question = $(el);
+      if ($question.hasClass('ada-aba-survey-survey-question-required')
+        && !this.validateRequired(el)) {
+        return false;
+      }
+
+      // regardless of whether this is required, if the 'other' option is 
+      // selected, the textarea must have a value
+      const $other = $question.find('.ada-aba-survey-survey-option-other-input');
+      const $textarea = $question.find('.ada-aba-survey-survey-option-other textarea');
+      if ($other.is(':checked') && $textarea.val().length === 0) {
+        return false;
+      }
+
+      return true;
+    }
+
     validateRequired(el) {
       const $el = $(el);
       const $options = $el.find('.ada-aba-survey-survey-option');
-      const $other = $el.find('.ada-aba-survey-survey-option-other-input');
-      const $textarea = $el.find('.ada-aba-survey-survey-option-other textarea');
 
       let valid = false;
       $options.each(function () {
@@ -40,10 +56,6 @@
         }
       });
 
-      if ($other.is(':checked') && $textarea.val().length === 0) {
-        valid = false;
-      }
-      
       return valid;
     }
   }

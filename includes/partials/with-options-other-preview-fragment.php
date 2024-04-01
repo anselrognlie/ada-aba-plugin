@@ -13,4 +13,4 @@
  */
 ?>
 
-<p><input type="<?php echo $control_type ?>" name="ada-aba-question-preview-panel-wo-option-input"></p><p><label>Other:</label> <input type="text"></p>
+<p><input type="<?php echo $control_type ?>" name="ada-aba-question-preview-panel-wo-option-input"></p><div><label><?php echo (!empty($other_html) ? $other_html : 'Other')?>:</label> <input type="text"></div>
