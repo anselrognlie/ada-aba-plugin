@@ -15,6 +15,7 @@ use Ada_Aba\Public\Workflows\Complete_Lesson_Workflow;
 use Ada_Aba\Public\Workflows\Confirmation_Workflow;
 use Ada_Aba\Public\Workflows\Enroll_Workflow;
 use Ada_Aba\Public\Workflows\Progress_Workflow;
+use Ada_Aba\Public\Workflows\Report_Workflow;
 use Ada_Aba\Public\Workflows\Request_Certificate_Workflow;
 use Ada_Aba\Public\Workflows\Survey_Workflow;
 use Exception;
@@ -172,6 +173,7 @@ class Aba_Public
       new Request_Certificate_Workflow($this->plugin_name),
       new Certificate_Workflow($this->plugin_name),
       new Confirmation_Workflow($this->plugin_name),
+      new Report_Workflow($this->plugin_name),
       new Survey_Workflow($this->plugin_name),
       new Progress_Workflow($this->plugin_name),
       new Registration_Workflow($this->plugin_name),

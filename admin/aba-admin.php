@@ -223,6 +223,14 @@ class Aba_Admin
       $api_script = $this->plugin_name . '-api-execute-query';
       $this->enqueue_api_script($api_script, plugin_dir_url(__FILE__) . "js/api/$api_script.js", array('jquery'), $this->version, false);
     }
+
+    if ($hook === 'ada-build-analytics_page_ada-aba-reports') {
+      $page_script = $this->plugin_name . '-reports';
+      wp_enqueue_script($page_script, plugin_dir_url(__FILE__) . "js/$page_script.js", array('jquery'), $this->version, false);
+
+      $api_script = $this->plugin_name . '-links';
+      $this->enqueue_api_script($api_script, plugin_dir_url(__FILE__) . "js/links/$api_script.js", array('jquery'), $this->version, false);
+    }
   }
 
   public function register_routes()
@@ -309,7 +317,7 @@ class Aba_Admin
     return ob_get_clean();
   }
 
-  private function get_reports_page_content()
+  private function get_reports_page_content($surveys, $selected_survey)
   {
     ob_start();
     include 'partials/reports.php';
@@ -635,7 +643,9 @@ class Aba_Admin
 
   public function reports_page()
   {
-    echo $this->get_reports_page_content();
+    $surveys = Survey::all();
+    $selected_survey = self::get_selected_activatable_record($surveys);
+    echo $this->get_reports_page_content($surveys, $selected_survey);
   }
 
   public function utilities_page()

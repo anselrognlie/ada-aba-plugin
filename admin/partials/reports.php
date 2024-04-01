@@ -21,4 +21,17 @@
     <h2>Reports</h2>
   </div>
 
+  <div>
+    <h3>Survey Responses</h3>
+    <div id="ada-aba-survey-responses">
+    <select id="ada-aba-survey-responses-select">
+        <?php foreach ($surveys as $survey) : ?>
+          <option value="<?php echo $survey->getSlug(); ?>" <?php echo $survey->getSlug() === $selected_survey->getSlug() ? 'selected' : '' ?>>
+            <?php echo $survey->getName(); ?> (<?php echo $survey->getCreatedAt(); ?>)</option>
+        <?php endforeach; ?>
+      </select>
+      <button id="ada-aba-survey-responses-button">Export</button>
+    </div>
+  </div>
+
 </div>

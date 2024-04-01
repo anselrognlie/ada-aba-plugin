@@ -113,6 +113,12 @@ function redirect_to_survey_page($user_slug, $page = 0, $halt = true)
   redirect_to_page($url, $halt);
 }
 
+function redirect_to_registration_page($halt = true)
+{
+  $url = Core::get_ada_build_url();
+  redirect_to_page($url, $halt);
+}
+
 function redirect_to_page($url, $halt = true)
 {
   wp_redirect($url);

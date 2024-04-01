@@ -214,6 +214,8 @@ class Core
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/services/survey-question-service.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/services/survey-question-edit-service.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/services/survey-response-service.php';
+    
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/reports/survey-report-builder.php';
 
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/shortcodes/ada-build-shortcode.php';
 
@@ -249,6 +251,7 @@ class Core
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/workflows/markdown-test-workflow.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/workflows/survey-test-workflow.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/workflows/survey-workflow.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'public/workflows/report-workflow.php';
 
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/questions/question-builder-base.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/questions/question-base.php';

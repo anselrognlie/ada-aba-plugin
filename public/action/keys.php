@@ -19,3 +19,5 @@ const SENT = 'sent';
 const MARKDOWN = 'md';
 const SURVEY_TEST = 'st';
 const SURVEY = 'survey';
+const REPORT = 'report';
+const SURVEY_REPORT = 'survey';

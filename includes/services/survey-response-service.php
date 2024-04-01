@@ -6,6 +6,7 @@ use Ada_Aba\Includes\Aba_Exception;
 use Ada_Aba\Includes\Core;
 use Ada_Aba\Includes\Models\Db_Helpers\Transaction;
 use Ada_Aba\Includes\Models\Learner;
+use Ada_Aba\Includes\Models\Question;
 use Ada_Aba\Includes\Models\Survey;
 use Ada_Aba\Includes\Models\Survey_Question;
 use Ada_Aba\Includes\Models\Survey_Question_Response;
@@ -99,6 +100,53 @@ class Survey_Response_Service
     }, $survey_question_relations);
 
     return $this->get_survey_form($survey_name, $questions_html, $error, $form_state);
+  }
+
+  public function get_responses($survey_slug)
+  {
+    $survey = Survey::get_by_slug($survey_slug);
+    $survey_id = $survey->getId();
+
+    global $wpdb;
+    $survey_table_name = $wpdb->prefix . Survey::$table_name;
+    $survey_response_table_name = $wpdb->prefix . Survey_Response::$table_name;
+    $question_table_name = $wpdb->prefix . Question::$table_name;
+    $survey_question_response_table_name = $wpdb->prefix . Survey_Question_Response::$table_name;
+
+    $query = $wpdb->prepare(
+      "SELECT s.slug as survey_slug,"
+        . " sr.slug as survey_response_slug,"
+        . " sr.created_at as `date`,"
+        . " q.slug as question_slug,"
+        . " sqr.response"
+        . " FROM $survey_table_name s"
+        . " JOIN $survey_response_table_name sr ON s.id = sr.survey_id"
+        . " JOIN $survey_question_response_table_name sqr ON sqr.survey_response_id = sr.id"
+        . " JOIN $question_table_name q ON sqr.question_id = q.id"
+        . " WHERE s.slug = %s"
+        . " ORDER BY sr.created_at, s.slug",
+      $survey_slug
+    );
+
+    $result = $wpdb->get_results($query, 'OBJECT');
+
+    if (!$result) {
+      return [];
+    }
+    
+    $responses = [];
+    foreach ($result as $row) {
+      $response_slug = $row->survey_response_slug;
+      if (!array_key_exists($response_slug, $responses)) {
+        $date = $row->date;
+        $responses[$response_slug] = ['date' => $date];
+      }
+      $response = &$responses[$response_slug];
+      $question_slug = $row->question_slug;
+      $response[$question_slug] = $row->response;
+    }
+
+    return $responses;
   }
 
   private function get_survey_form($survey_name, $questions_html, $error, $form_state = '')
