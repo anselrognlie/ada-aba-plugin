@@ -50,7 +50,6 @@ class Survey_Response_Service
         if (!$builder->is_response_valid($question_slug, $data)) {
           throw new Aba_Exception("Error processing survey: invalid response for question [$question_slug]");
         }
-        Core::log($question_slug . ' was valid');
 
         $response = $builder->get_response($question_slug, $data);
         if ($response === '') {
