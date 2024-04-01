@@ -80,7 +80,8 @@ class Survey_Response_Service
     }
   }
 
-  public function render_survey($survey_slug, $form_state, $data) {
+  public function render_survey($survey_slug, $form_state, $data)
+  {
     $survey = Survey::get_by_slug($survey_slug);
     $survey_name = $survey->getName();
 
