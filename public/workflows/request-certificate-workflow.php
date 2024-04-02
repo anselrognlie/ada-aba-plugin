@@ -5,7 +5,7 @@ namespace Ada_Aba\Public\Workflows;
 use Ada_Aba\Includes\Models\Enrollment;
 use Ada_Aba\Includes\Services\Learner_Enrollment_Service;
 use Ada_Aba\Public\Action\Emails;
-use Ada_Aba\Public\Action\Keys;
+use Ada_Aba\Includes\Action\Keys;
 
 use Ada_Aba\Public\Action\Links;
 
