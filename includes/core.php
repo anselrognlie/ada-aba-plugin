@@ -172,6 +172,8 @@ class Core
 
   private function require_models()
   {
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/action/keys.php';
+
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/models/db-helpers.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/models/learner.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/models/course.php';
@@ -228,7 +230,6 @@ class Core
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/challenge-actions/complete-lesson-action.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/challenge-actions/complete-lesson-action-builder.php';
 
-    require_once plugin_dir_path(dirname(__FILE__)) . 'public/action/keys.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/action/links.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/action/emails.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/action/errors.php';
