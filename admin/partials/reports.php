@@ -34,4 +34,17 @@
     </div>
   </div>
 
+  <div>
+    <h3>Course Progress</h3>
+    <div id="ada-aba-course-progress">
+    <select id="ada-aba-course-progress-select">
+        <?php foreach ($courses as $course) : ?>
+          <option value="<?php echo $course->getSlug(); ?>" <?php echo $course->getSlug() === $selected_course->getSlug() ? 'selected' : '' ?>>
+            <?php echo $course->getName(); ?> (<?php echo $course->getCreatedAt(); ?>)</option>
+        <?php endforeach; ?>
+      </select>
+      <button id="ada-aba-course-progress-button">Export</button>
+    </div>
+  </div>
+
 </div>

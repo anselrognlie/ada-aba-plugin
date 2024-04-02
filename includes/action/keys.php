@@ -21,3 +21,5 @@ const SURVEY_TEST = 'st';
 const SURVEY = 'survey';
 const REPORT = 'report';
 const SURVEY_REPORT = 'survey';
+const PROGRESS_REPORT = 'progress';
+const COURSE = 'course';

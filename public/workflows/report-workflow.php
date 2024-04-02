@@ -6,6 +6,7 @@ use Ada_Aba\Includes\Aba_Exception;
 use Ada_Aba\Includes\Core;
 use Ada_Aba\Includes\Reports\Survey_Report_Builder;
 use Ada_Aba\Includes\Action\Keys;
+use Ada_Aba\Includes\Reports\Report_Builder_Factory;
 
 use function Ada_Aba\Public\Action\Links\redirect_to_registration_page;
 
@@ -58,22 +59,17 @@ class Report_Workflow extends Workflow_Base
       exit;
     }
 
-    // If additional reports are added, we can tell which one to run by the report type.
     $report_type = $_GET[Keys\REPORT];
+    $factory = new Report_Builder_Factory();
+    $report_builder = $factory->create($report_type);
+    $report = $report_builder->build($this->plugin_name, $_GET);
 
-    // For now, the only report is the survey report
-    $survey_id = Core::safe_key($_GET, Keys\SURVEY);
-    if (!$survey_id) {
-      throw new Aba_Exception('Survey ID is required to generate a report');
-    }
-    $report_builder = new Survey_Report_Builder($this->plugin_name, $survey_id);
-
-    $content = $report_builder->get_content();
+    $content = $report->get_content();
 
     header('Cache-Control: private');
-    header('Content-Type: ' . $report_builder->get_content_type());
+    header('Content-Type: ' . $report->get_content_type());
     header('Content-Length: ' . strlen($content));
-    header('Content-Disposition: attachment; filename=' . $report_builder->get_filename());
+    header('Content-Disposition: attachment; filename=' . $report->get_filename());
 
     // Output file.
     echo $content;

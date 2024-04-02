@@ -317,7 +317,7 @@ class Aba_Admin
     return ob_get_clean();
   }
 
-  private function get_reports_page_content($surveys, $selected_survey)
+  private function get_reports_page_content($surveys, $selected_survey, $courses, $selected_course)
   {
     ob_start();
     include 'partials/reports.php';
@@ -645,7 +645,10 @@ class Aba_Admin
   {
     $surveys = Survey::all();
     $selected_survey = self::get_selected_activatable_record($surveys);
-    echo $this->get_reports_page_content($surveys, $selected_survey);
+    $courses = Course::all();
+    Core::log(print_r($courses, true));
+    $selected_course = Course::get_active_course();
+    echo $this->get_reports_page_content($surveys, $selected_survey, $courses, $selected_course);
   }
 
   public function utilities_page()

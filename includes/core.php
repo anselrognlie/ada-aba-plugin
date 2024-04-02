@@ -217,7 +217,13 @@ class Core
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/services/survey-question-edit-service.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/services/survey-response-service.php';
     
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/reports/report-builder-base.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/reports/report-base.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/reports/survey-report-builder.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/reports/survey-report.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/reports/progress-report-builder.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/reports/progress-report.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/reports/report-builder-factory.php';
 
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/shortcodes/ada-build-shortcode.php';
 
@@ -453,6 +459,17 @@ class Core
   public static function get_ada_build_url()
   {
     return home_url(self::get_ada_build_page());
+  }
+
+  public static function csv_str($fields)
+  {
+    $f = fopen('php://memory', 'r+');
+    if (fputcsv($f, $fields) === false) {
+      return false;
+    }
+    rewind($f);
+    $csv_line = stream_get_contents($f);
+    return trim($csv_line);
   }
 
   /**
