@@ -4,7 +4,7 @@ namespace Ada_Aba\Public\Workflows;
 
 use Ada_Aba\Includes\Aba_Exception;
 use Ada_Aba\Includes\Services\Learner_Enrollment_Service;
-use Ada_Aba\Public\Action\Keys;
+use Ada_Aba\Includes\Action\Keys;
 
 class Certificate_Workflow extends Workflow_Base
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Ada_Aba\Public\Action\Keys;
+namespace Ada_Aba\Includes\Action\Keys;
 
 const ACTION = 'action';
 const REGISTRATION = 'registration';

@@ -6,7 +6,7 @@ use Ada_Aba\Includes\Core;
 use Ada_Aba\Includes\Models\Learner;
 use Ada_Aba\Parsedown;
 use Ada_Aba\Public\Challenge_Actions\Register_Action;
-use Ada_Aba\Public\Action\Keys;
+use Ada_Aba\Includes\Action\Keys;
 use Ada_Aba\Public\Action\Links;
 
 class Markdown_Test_Workflow extends Workflow_Base

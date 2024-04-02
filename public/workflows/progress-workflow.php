@@ -8,7 +8,7 @@ use Ada_Aba\Includes\Models\Course;
 use Ada_Aba\Includes\Models\Learner;
 use Ada_Aba\Includes\Models\Survey;
 use Ada_Aba\Includes\Models\Surveyed_Learner;
-use Ada_Aba\Public\Action\Keys;
+use Ada_Aba\Includes\Action\Keys;
 use Ada_Aba\Public\Action\Links;
 
 use function Ada_Aba\Public\Action\Links\redirect_to_survey_page;

@@ -5,7 +5,7 @@ namespace Ada_Aba\Public\Workflows;
 use Ada_Aba\Includes\Core;
 use Ada_Aba\Includes\Models\Learner;
 use Ada_Aba\Includes\Models\Lesson;
-use Ada_Aba\Public\Action\Keys;
+use Ada_Aba\Includes\Action\Keys;
 use Ada_Aba\Public\Action\Links;
 use Ada_Aba\Public\Action\Errors;
 use Ada_Aba\Public\Challenge_Actions\Complete_Lesson_Action;
