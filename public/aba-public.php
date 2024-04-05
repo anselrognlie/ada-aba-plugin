@@ -84,6 +84,7 @@ class Aba_Public
     $this->routes_controller_classes = array(
       'Ada_Aba\Public\Controllers\Completion_Controller',
       'Ada_Aba\Public\Controllers\Progress_Report_Controller',
+      'Ada_Aba\Public\Controllers\Survey_Report_Controller',
     );
 
     $this->register_load_handlers();
