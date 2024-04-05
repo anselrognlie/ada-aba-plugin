@@ -2,17 +2,10 @@
 
 namespace Ada_Aba\Public\Controllers;
 
-use Ada_Aba\Includes\Aba_Exception;
 use Ada_Aba\Includes\Core;
-use Ada_Aba\Includes\Dto\Lesson\Lesson_Scalar;
 use Ada_Aba\Includes\Models\Course;
-use Ada_Aba\Includes\Models\Learner;
-use Ada_Aba\Includes\Models\Lesson;
 use Ada_Aba\Includes\Options;
 use Ada_Aba\Includes\Reports\Progress_Table_Builder;
-use Ada_Aba\Includes\Services\Syllabus_Edit_Service;
-use Ada_Aba\Public\Challenge_Actions\Action_Context;
-use Ada_Aba\Public\Challenge_Actions\Complete_Lesson_Action;
 use \WP_REST_Server;
 use \WP_Error;
 
