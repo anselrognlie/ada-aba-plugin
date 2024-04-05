@@ -511,7 +511,6 @@ class Aba_Admin
     if (!empty($options[$field_id])) {
       $option = (int) $options[$field_id];
     }
-    Core::log(sprintf('%1$s: %2$s', $field_id, $option));
 
     $pages = call_user_func($args['options']);
 
