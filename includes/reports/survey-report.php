@@ -53,7 +53,7 @@ class Survey_Report extends Report_Base
       $lines[] = Core::csv_str($line);
     }
 
-    return join("\n", $lines);
+    return join(PHP_EOL, $lines);
   }
 
   private function generate_header($survey_question_relations)
