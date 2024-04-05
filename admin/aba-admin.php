@@ -356,7 +356,7 @@ class Aba_Admin
       array(
         'label_for' => 'ada-build-page',
         'description' => 'Page where the [ada-aba-ada-build] shortcode is used. All actions pass through this page. It is automatically updated when the host page is loaded.',
-        'options' => array($this, 'generate_pages')
+        'options' => $this->generate_pages(...),
       )
     );
 
@@ -575,7 +575,9 @@ class Aba_Admin
       'ID' => -1,
       'post_title' => 'Not Set'
     ))];
-    $pages = array_merge($pages, get_pages());
+    $pages = array_merge($pages, get_pages(array(
+      'post_status' => ['publish', 'private'],
+    )));
     // Core::log(print_r($pages, true));
     return $pages;
   }
