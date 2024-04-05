@@ -3,7 +3,9 @@
 namespace Ada_Aba\Includes\Reports;
 
 use Ada_Aba\Includes\Aba_Exception;
+use Ada_Aba\Includes\Core;
 use Ada_Aba\Includes\Models\Course;
+
 
 class Progress_Report extends Report_Base
 {
@@ -34,7 +36,9 @@ class Progress_Report extends Report_Base
 
   function get_content()
   {
-    return "";
+    $progress_table_builder = new Progress_Table_Builder($this->plugin_name);
+    $lines = $progress_table_builder->build($this->course);
+    return join(PHP_EOL, array_map('Ada_Aba\Includes\Core::csv_str', $lines));
   }
 
   private function scrub_course($name)

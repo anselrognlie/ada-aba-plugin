@@ -216,6 +216,7 @@ class Core
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/services/survey-question-service.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/services/survey-question-edit-service.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/services/survey-response-service.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/services/lesson-progress-service.php';
     
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/reports/report-builder-base.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/reports/report-base.php';
@@ -224,6 +225,7 @@ class Core
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/reports/progress-report-builder.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/reports/progress-report.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/reports/report-builder-factory.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/reports/progress-table-builder.php';
 
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/shortcodes/ada-build-shortcode.php';
 
@@ -241,6 +243,7 @@ class Core
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/action/errors.php';
 
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/controllers/completion-controller.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'public/controllers/progress-report-controller.php';
 
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/data-adapters/survey-state-adapter.php';
 

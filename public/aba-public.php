@@ -2,7 +2,6 @@
 
 namespace Ada_Aba\Public;
 
-use Ada_Aba\Admin\Controllers\Completion_Controller;
 use Ada_Aba\Includes\Aba_Exception;
 use Ada_Aba\Includes\Core;
 use Ada_Aba\Includes\Options;
@@ -45,6 +44,9 @@ use function Ada_Aba\Public\Action\Links\redirect_to_error_page;
 class Aba_Public
 {
 
+  private $routes_controller_classes;
+  private $routes_controllers;
+
   /**
    * The ID of this plugin.
    *
@@ -76,9 +78,14 @@ class Aba_Public
    */
   public function __construct($plugin_name, $version)
   {
-
     $this->plugin_name = $plugin_name;
     $this->version = $version;
+
+    $this->routes_controller_classes = array(
+      'Ada_Aba\Public\Controllers\Completion_Controller',
+      'Ada_Aba\Public\Controllers\Progress_Report_Controller',
+    );
+
     $this->register_load_handlers();
     Options::get_options($plugin_name);  // prime the instance for the rest of the plugin
   }
@@ -159,9 +166,11 @@ class Aba_Public
 
   public function register_routes()
   {
-    // register course routes
-    $this->completion_routes = new Completion_Controller($this->plugin_name);
-    $this->completion_routes->register_routes();
+    foreach ($this->routes_controller_classes as $controller_class) {
+      $controller = new $controller_class($this->plugin_name);
+      $controller->register_routes();
+      $this->routes_controllers[] = $controller;
+    }
   }
 
   private function register_load_handlers()
