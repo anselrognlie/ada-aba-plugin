@@ -387,6 +387,18 @@ class Aba_Admin
     );
 
     add_settings_field(
+      'drop-schema',
+      'Delete plugin tables on deactivate',
+      array($this, 'sandbox_add_settings_field_single_checkbox'),
+      $this->plugin_name . '-settings',
+      $this->plugin_name . '-settings-section',
+      array(
+        'label_for' => 'drop-schema',
+        'description' => 'Check to remove the tables associated with this plugin when it is deactivated.'
+      )
+    );
+
+    add_settings_field(
       'send-email',
       'Send registration email',
       array($this, 'sandbox_add_settings_field_single_checkbox'),
@@ -409,6 +421,7 @@ class Aba_Admin
       'registered-page' => null,
       'private-key' => null,
       'api-key' => null,
+      'drop-schema' => null,
       // 'private-key' => array(
       //   'sanitizer' => array($this, 'sanitize_hex'),
       //   'label' => 'Private Key',

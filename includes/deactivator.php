@@ -34,11 +34,11 @@ class Deactivator
    */
   public static function deactivate($plugin_name)
   {
-    self::drop_database_tables();
+    self::drop_database_tables($plugin_name);
     self::clear_options($plugin_name);
   }
 
-  private static function drop_database_tables()
+  private static function drop_database_tables($plugin_name)
   {
     global $wpdb;
 
@@ -56,19 +56,24 @@ class Deactivator
     $survey_response_table_name = $wpdb->prefix . Models\Survey_Response::$table_name;
     $survey_question_response_table_name = $wpdb->prefix . Models\Survey_Question_Response::$table_name;
 
-    // $wpdb->query("DROP TABLE IF EXISTS $survey_question_response_table_name");
-    // $wpdb->query("DROP TABLE IF EXISTS $survey_response_table_name");
-    // $wpdb->query("DROP TABLE IF EXISTS $surveyed_learner_table_name");
-    // $wpdb->query("DROP TABLE IF EXISTS $survey_question_table_name");
-    // $wpdb->query("DROP TABLE IF EXISTS $survey_table_name");
-    // $wpdb->query("DROP TABLE IF EXISTS $question_table_name");
-    // $wpdb->query("DROP TABLE IF EXISTS $completed_lesson_table_name");
-    // $wpdb->query("DROP TABLE IF EXISTS $enrollment_table_name");
-    // $wpdb->query("DROP TABLE IF EXISTS $challenge_action_table_name");
-    // $wpdb->query("DROP TABLE IF EXISTS $syllabus_table_name");
-    // $wpdb->query("DROP TABLE IF EXISTS $lesson_table_name");
-    // $wpdb->query("DROP TABLE IF EXISTS $course_table_name");
-    // $wpdb->query("DROP TABLE IF EXISTS $learner_table_name");
+    $options = Options::get_options();
+    if (!$options->get_drop_schema()) {
+      return;
+    }
+
+    $wpdb->query("DROP TABLE IF EXISTS $survey_question_response_table_name");
+    $wpdb->query("DROP TABLE IF EXISTS $survey_response_table_name");
+    $wpdb->query("DROP TABLE IF EXISTS $surveyed_learner_table_name");
+    $wpdb->query("DROP TABLE IF EXISTS $survey_question_table_name");
+    $wpdb->query("DROP TABLE IF EXISTS $survey_table_name");
+    $wpdb->query("DROP TABLE IF EXISTS $question_table_name");
+    $wpdb->query("DROP TABLE IF EXISTS $completed_lesson_table_name");
+    $wpdb->query("DROP TABLE IF EXISTS $enrollment_table_name");
+    $wpdb->query("DROP TABLE IF EXISTS $challenge_action_table_name");
+    $wpdb->query("DROP TABLE IF EXISTS $syllabus_table_name");
+    $wpdb->query("DROP TABLE IF EXISTS $lesson_table_name");
+    $wpdb->query("DROP TABLE IF EXISTS $course_table_name");
+    $wpdb->query("DROP TABLE IF EXISTS $learner_table_name");
   }
 
   private static function clear_options($plugin_name)

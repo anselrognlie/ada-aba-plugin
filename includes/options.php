@@ -46,9 +46,10 @@ class Options
 
   private const DEFAULT_OPTIONS = [
     'ada-build-page' => -1,
-    'send-email' => 1,
+    'send-email' => true,
     'private-key' => 'replace with a good private key',
     'api-key' => 'replace with a good api key',
+    'drop-schema' => false,
   ];
 
   /**
@@ -117,6 +118,11 @@ class Options
   public function get_api_key()
   {
     return $this->get_with_fallback('api-key');
+  }
+
+  public function get_drop_schema()
+  {
+    return $this->get_with_fallback('drop-schema');
   }
 
   public function save()
