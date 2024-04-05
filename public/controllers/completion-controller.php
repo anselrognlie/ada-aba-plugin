@@ -1,6 +1,6 @@
 <?php
 
-namespace Ada_Aba\Admin\Controllers;
+namespace Ada_Aba\Public\Controllers;
 
 use Ada_Aba\Includes\Aba_Exception;
 use Ada_Aba\Includes\Core;
