@@ -48,6 +48,7 @@ class Options
     'ada-build-page' => -1,
     'send-email' => 1,
     'private-key' => 'replace with a good private key',
+    'api-key' => 'replace with a good api key',
   ];
 
   /**
@@ -111,6 +112,11 @@ class Options
   public function get_private_key()
   {
     return $this->get_with_fallback('private-key');
+  }
+
+  public function get_api_key()
+  {
+    return $this->get_with_fallback('api-key');
   }
 
   public function save()

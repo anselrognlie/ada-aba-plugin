@@ -374,6 +374,19 @@ class Aba_Admin
     );
 
     add_settings_field(
+      'api-key',
+      'API Key',
+      array($this, 'sandbox_add_settings_field_input_text'),
+      $this->plugin_name . '-settings',
+      $this->plugin_name . '-settings-section',
+      array(
+        'label_for' => 'api-key',
+        'default' => '',
+        'description' => 'Key used for secure API access to public routes'
+      )
+    );
+
+    add_settings_field(
       'send-email',
       'Send registration email',
       array($this, 'sandbox_add_settings_field_single_checkbox'),
@@ -395,6 +408,7 @@ class Aba_Admin
       'confirm-page' => null,
       'registered-page' => null,
       'private-key' => null,
+      'api-key' => null,
       // 'private-key' => array(
       //   'sanitizer' => array($this, 'sanitize_hex'),
       //   'label' => 'Private Key',
