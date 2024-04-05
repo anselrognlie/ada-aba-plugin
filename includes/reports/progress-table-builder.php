@@ -40,7 +40,13 @@ class Progress_Table_Builder
     $header = ['Last Name', 'First Name', 'Email', 'Learner ID', 'Date Enrolled', '% Complete'];
     foreach ($course_lessons as $course_lesson) {
       $lesson = $course_lesson->getLesson();
-      $header[] = $lesson->getName();
+
+      $name_parts = [$lesson->getName()];
+      if ($course_lesson->isOptional()) {
+        $name_parts[] = '(Optional)';
+      }
+
+      $header[] = join(' ', $name_parts);
     }
 
     return $header;
