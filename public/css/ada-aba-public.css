@@ -35,6 +35,7 @@
 
 .ada-aba-survey-survey-question textarea {
   resize: vertical;
+  font-family: "Source Sans Pro", "Open Sans", "Helvetica", sans-serif;
 }
 
 .ada-aba-survey-survey-question textarea.ada-aba-one-line {
@@ -54,6 +55,11 @@
   display: grid;
   grid-template-columns: auto 1fr;
   column-gap: 1em;
+}
+
+.ada-aba-survey-survey-option-other label {
+  display: grid;
+  grid-template-columns: auto 1fr;
 }
 
 .ada-aba-survey-survey-question-options input,

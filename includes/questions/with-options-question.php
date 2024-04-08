@@ -107,7 +107,8 @@ class With_Options_Question extends Question_Base
   private function get_question_other_fragment($type, $question_slug, $option_id, $checked, $label, $value)
   {
     $parsedown = new Parsedown();
-    $other_html = $parsedown->line($label);
+    // $other_html = $parsedown->line($label);
+    $other_html = $parsedown->text($label);
 
     ob_start();
     include __DIR__ . '/../partials/survey-form-question-with-options-other-fragment.php';
