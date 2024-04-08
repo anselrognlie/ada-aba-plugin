@@ -27,6 +27,8 @@ class Survey_Workflow extends Workflow_Base
   private $views;
   private $learner;
 
+  const SURVEY_INDEX = 1;
+
   public function __construct($plugin_name)
   {
     parent::__construct($plugin_name);
@@ -113,8 +115,9 @@ class Survey_Workflow extends Workflow_Base
   {
     $survey = Survey::get_active_survey();
     $learner_slug = $this->learner->getSlug();
+    $index = $this->get_view_index();
 
-    if ((!$survey) || Surveyed_Learner::contains($learner_slug)) {
+    if ((!$survey) || (Surveyed_Learner::contains($learner_slug) && $index <= self::SURVEY_INDEX)) {
       redirect_to_progress_page($learner_slug);
     }
 
