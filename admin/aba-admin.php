@@ -686,7 +686,6 @@ class Aba_Admin
     $surveys = Survey::all();
     $selected_survey = self::get_selected_activatable_record($surveys);
     $courses = Course::all();
-    Core::log(print_r($courses, true));
     $selected_course = Course::get_active_course();
     echo $this->get_reports_page_content($surveys, $selected_survey, $courses, $selected_course);
   }
