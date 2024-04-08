@@ -23,13 +23,11 @@ class Lesson_Progress_Service
     $completed_lesson_table_name = $wpdb->prefix . Completed_Lesson::$table_name;
     $learner_table_name = $wpdb->prefix . Learner::$table_name;
 
+    // prepare query for all learners enrolled in this course
     $query = $wpdb->prepare(
-      "SELECT lr.*, e.started_at as date_enrolled, l.slug as lesson_slug, cl.completed_at as date_completed"
+      "SELECT lr.*, e.started_at as date_enrolled"
         . " FROM $course_table_name c"
-        . " JOIN $syllabus_table_name s ON s.course_id = c.id"
-        . " JOIN $lesson_table_name l ON s.lesson_id = l.id"
         . " JOIN $enrollment_table_name e ON e.course_id = c.id"
-        . " JOIN $completed_lesson_table_name cl ON e.learner_id = cl.learner_id AND cl.lesson_id = s.lesson_id"
         . " JOIN $learner_table_name lr ON e.learner_id = lr.id"
         . " WHERE c.slug = %s"
         . " ORDER BY lr.last_name;",
@@ -37,7 +35,6 @@ class Lesson_Progress_Service
     );
 
     $result = $wpdb->get_results($query, 'OBJECT');
-
     if (!$result) {
       return [];
     }
@@ -56,6 +53,36 @@ class Lesson_Progress_Service
           'date_enrolled' => $row->date_enrolled,
           'completed_lessons' => [],
         );
+      }
+    }
+
+    // prepare query for all progress in this course
+    $query = $wpdb->prepare(
+      "SELECT lr.slug, l.slug as lesson_slug, cl.completed_at as date_completed"
+        . " FROM $course_table_name c"
+        . " JOIN $syllabus_table_name s ON s.course_id = c.id"
+        . " JOIN $lesson_table_name l ON s.lesson_id = l.id"
+        . " JOIN $enrollment_table_name e ON e.course_id = c.id"
+        . " JOIN $completed_lesson_table_name cl ON e.learner_id = cl.learner_id AND cl.lesson_id = s.lesson_id"
+        . " JOIN $learner_table_name lr ON e.learner_id = lr.id"
+        . " WHERE c.slug = %s"
+        . " ORDER BY lr.last_name;",
+      $course_slug
+    );
+
+    $result = $wpdb->get_results($query, 'OBJECT');
+    if (!$result) {
+      return [];
+    }
+
+    // php associative arrays are ordered by insertion, so this will maintain
+    // the order of the results returned by the query
+    foreach ($result as $row) {
+      $learner_slug = $row->slug;
+      if (!array_key_exists($learner_slug, $learner_data)) {
+        // this shouldn't have been possible,
+        // but don't allow a strange result to interrupt the report
+        continue;
       }
       $lessons = &$learner_data[$learner_slug]['completed_lessons'];
       $lesson_slug = $row->lesson_slug;
