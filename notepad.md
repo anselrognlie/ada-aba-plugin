@@ -54,7 +54,7 @@ Intelephense stubs are required
 
 `composer require --dev php-stubs/wordpress-tests-stubs`
 
-### Articles on mocking WP globals
+## Articles on mocking WP globals
 
 [THE PRACTICE OF WORDPRESS UNIT TESTING](https://wp-punk.com/the-practice-of-wordpress-unit-testing/)
 
