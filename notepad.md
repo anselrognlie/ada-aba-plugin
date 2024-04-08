@@ -68,3 +68,11 @@ We would like to generate a PDF certificate for course completion.
 
 There are also libraries that can generate a pdf from HTML and CSS.
 [dompdf](https://github.com/dompdf/dompdf)
+
+## Zipping plugin
+
+The plugin must be zipped for deployment to the live site. The macos Compress command will not work because it includes the enclosing folder in the zip file. Instead, use the zip command from the terminal.
+
+`zip -vr ada-aba.zip ada-aba`
+
+This will zip the contents `ada-aba` folder into a file called `ada-aba.zip`, with verbose output and recursion.
