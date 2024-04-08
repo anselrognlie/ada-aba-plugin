@@ -35,7 +35,7 @@ class Activator
   public static function activate($plugin_name)
   {
     self::create_database_tables();
-    self::set_default_options($plugin_name);
+    self::ensure_options($plugin_name);
   }
 
   private static function does_table_have_column($table_name, $column_name)
@@ -251,9 +251,9 @@ class Activator
     }
   }
 
-  private static function set_default_options($plugin_name)
+  private static function ensure_options($plugin_name)
   {
-    $options = Options::get_default($plugin_name);
+    $options = Options::get_options($plugin_name);
     $options->save();
   }
 }

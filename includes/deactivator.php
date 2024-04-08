@@ -80,6 +80,11 @@ class Deactivator
   {
     global $wpdb;
 
+    $options = Options::get_options();
+    if (!$options->get_clear_options()) {
+      return;
+    }
+
     $table_name = $wpdb->prefix . 'options';
 
     $setting_name = $plugin_name . '-settings';

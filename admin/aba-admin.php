@@ -83,7 +83,7 @@ class Aba_Admin
       'Ada_Aba\Admin\Controllers\Survey_Questions_Controller',
       'Ada_Aba\Admin\Controllers\UI\Survey_Questions_Controller',
       'Ada_Aba\Admin\Controllers\Queries_Controller',
-      );
+    );
   }
 
   /**
@@ -399,6 +399,18 @@ class Aba_Admin
     );
 
     add_settings_field(
+      'clear-options',
+      'Delete plugin options on deactivate',
+      array($this, 'sandbox_add_settings_field_single_checkbox'),
+      $this->plugin_name . '-settings',
+      $this->plugin_name . '-settings-section',
+      array(
+        'label_for' => 'clear-options',
+        'description' => 'Check to remove the options associated with this plugin when it is deactivated.'
+      )
+    );
+
+    add_settings_field(
       'send-email',
       'Send registration email',
       array($this, 'sandbox_add_settings_field_single_checkbox'),
@@ -413,7 +425,6 @@ class Aba_Admin
 
   public function sandbox_register_setting($input)
   {
-
     $new_input = array();
     $valid_options = array(
       'learner-confirmation-page' => null,
@@ -422,6 +433,7 @@ class Aba_Admin
       'private-key' => null,
       'api-key' => null,
       'drop-schema' => null,
+      'clear-options' => null,
       // 'private-key' => array(
       //   'sanitizer' => array($this, 'sanitize_hex'),
       //   'label' => 'Private Key',

@@ -50,6 +50,7 @@ class Options
     'private-key' => 'replace with a good private key',
     'api-key' => 'replace with a good api key',
     'drop-schema' => false,
+    'clear-options' => false,
   ];
 
   /**
@@ -123,6 +124,11 @@ class Options
   public function get_drop_schema()
   {
     return $this->get_with_fallback('drop-schema');
+  }
+
+  public function get_clear_options()
+  {
+    return $this->get_with_fallback('clear-options');
   }
 
   public function save()
