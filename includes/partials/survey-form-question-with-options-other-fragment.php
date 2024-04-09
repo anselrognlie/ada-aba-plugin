@@ -14,6 +14,6 @@
 ?>
 
 <input type="<?php echo $type ?>" name="<?php echo $question_slug ?><?php echo ($type === 'checkbox') ? '[]' : '' ?>" value="other" id="<?php echo $option_id ?>" class="ada-aba-survey-survey-option ada-aba-survey-survey-option-other-input"<?php echo $checked ? ' checked' : '' ?>>
-<span class="ada-aba-survey-survey-option-other"><label for="<?php echo $option_id ?>"><?php echo (!empty($other_html) ? $other_html : 'Other') ?>:</label>
+<span class="ada-aba-survey-survey-option-other"><label for="<?php echo $option_id ?>"><?php echo (!empty($other_html) ? $other_html : '<p>Other</p>') ?><p>:</p></label>
   <textarea class="ada-aba-one-line" name="<?php echo $question_slug ?>-other"><?php echo ($value !== null) ? $value : '' ?></textarea>
 </span>

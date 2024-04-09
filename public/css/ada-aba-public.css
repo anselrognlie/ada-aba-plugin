@@ -79,6 +79,7 @@
 .ada-aba-survey-survey-option-other {
   display: flex;
   align-self: center;
+  align-items: center;
 }
 
 .ada-aba-survey-survey-option-other input,
