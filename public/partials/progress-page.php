@@ -17,7 +17,32 @@
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 
 <h2>Course Progress</h2>
-<p><span>Learner ID: </span><span><?php echo $learner_slug ?></span></p>
+
+<p>
+  This view shows your progress in the courses you are enrolled in.
+  To complete a lesson, use the links below to navigate to each lesson.
+  Each lesson has a location near the end where you can input your Learner ID (shown below)
+  when you are ready to mark it as complete. You will receive an email to confirm
+  your readiness to mark the lesson complete. After confirming that you are done with
+  the lesson, it will become checked off in this view.
+</p>
+<p>
+  Once all required lessons in the course have been completed, a link will be
+  provided with which you can request a certificate for the course.
+</p>
+
+<table class="ada-aba-learner-id-table">
+  <tbody>
+    <tr>
+      <td>
+        Learner ID:
+      </td>
+      <td>
+        <?php echo $learner_slug ?>
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 <?php if (empty($learner_courses)) : ?>
   <p> You are not enrolled in any courses. </p>
@@ -31,42 +56,50 @@
   <!-- enrollments information -->
   <?php foreach ($learner_courses as $learner_course) : ?>
     <h3><?php echo $learner_course->getCourseName(); ?>
-      <a href="<?php echo $learner_course->getCourseUrl() ?>"><img src="<?php echo plugins_url("$plugin_name/public/assets/img/link-external.png") ?>"></a></h3>
+      <a href="<?php echo $learner_course->getCourseUrl() ?>"><img class="ada-aba-external-link" src="<?php echo plugins_url("$plugin_name/public/assets/img/link-external.png") ?>"></a>
+    </h3>
     <p>
       <?php if ($learner_course->isComplete()) : ?>
-        <a href="<?php echo esc_url($learner_course->getRequestCertificateLink()); ?>">(Request Certificate)</a>
+        All required lessons have been completed: <a href="<?php echo esc_url($learner_course->getRequestCertificateLink()); ?>">Request Certificate</a>
       <?php endif; ?>
     </p>
-    <ul>
-      <?php foreach ($learner_course->getLessons() as $lesson) : ?>
-        <li>
-          <a href="<?php echo $lesson->getUrl() ?>"><?php echo htmlentities($lesson->getName()); ?></a>
+    <table>
+      <thead>
+        <tr>
+          <th>Lesson</th>
+          <th>Completed</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php foreach ($learner_course->getLessons() as $lesson) : ?>
+          <tr>
+            <td>
+              <a href="<?php echo $lesson->getUrl() ?>"><?php echo htmlentities($lesson->getName()); ?></a>
 
-          <?php if ($lesson->isOptional()) : ?>
-            <span>(Optional)</span>
-          <?php endif; ?>
+              <?php if ($lesson->isOptional()) : ?>
+                <span>(Optional)</span>
+              <?php endif; ?>
+            </td>
+            <td>
+              <?php if ($lesson->isComplete()) : ?>
+                <span class="ada-aba-checkbox">☑</span>
+              <?php else : ?>
+                <?php if ($lesson->canCompleteOnProgress()) : ?>
+                  <a href="<?php echo $lesson->getCompleteLink(); ?>">Finish</a>
+                <?php else : ?>
+                  <span class="ada-aba-checkbox">☐</span>
+                <?php endif; ?>
+              <?php endif; ?>
+            </td>
+          </tr>
+        <?php endforeach; ?>
+      </tbody>
+    </table>
+  <?php endforeach; ?>
+<?php endif; ?>
 
-          <?php if ($lesson->isComplete()) : ?>
-            <span>✅</span>
-          <?php else : ?>
-            <?php if ($lesson->canCompleteOnProgress()) : ?>
-              <a href="<?php echo $lesson->getCompleteLink(); ?>">Finish</a>
-            <?php endif; ?>
-          <?php endif; ?>
-        </li>
-      <?php endforeach; ?>
-    <?php endforeach; ?>
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <?php endif; ?>
+<p class="ada-aba-progress-fit-for-purpose">
+  This progress display and the associated certificate are provided for motivational purposes only.
+  The primary goal of the course is to experience the material.
+  Your completion will not be verified by Ada Developers Academy.
+</p>

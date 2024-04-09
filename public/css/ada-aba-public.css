@@ -110,3 +110,24 @@
   display: block;
   margin-bottom: 0.25em;
 }
+
+/* progress workflow */
+
+.ada-aba-external-link {
+  vertical-align: baseline;
+}
+
+.ada-aba-checkbox {
+  line-height: 1em;;
+  font-size: 1.5em;
+}
+
+.ada-aba-learner-id-table td:first-child {
+  width: 1px;
+  white-space: nowrap;
+}
+
+p.ada-aba-progress-fit-for-purpose {
+  font-style: italic;
+  font-size: 10pt;
+}
