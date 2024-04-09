@@ -3,6 +3,8 @@
  * included in this file.
  */
 
+ /* survey */
+
 .ada-aba-survey-survey-question {
   margin-bottom: 1.5em;
   border: solid 1px #ccc;
@@ -96,4 +98,15 @@
 .ada-aba-survey-error {
   color: red;
   font-style: italic;
+}
+
+/* registration form */
+
+.ada-aba-registration-form .input-group{
+  margin: 1em 0px;
+}
+
+.ada-aba-registration-form label {
+  display: block;
+  margin-bottom: 0.25em;
 }
