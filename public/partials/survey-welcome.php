@@ -24,5 +24,5 @@
   No identifying information will be stored with your responses.
 </p>
 <p>
-  <a href="<?php echo esc_url($next_link) ?>">View survey</a>
+  <a href="<?php echo esc_url($next_link) ?>">Proceed to survey &raquo;</a>
 </p>
