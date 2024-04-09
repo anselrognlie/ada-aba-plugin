@@ -60,8 +60,16 @@ class Ada_Build_Shortcode
   {
     foreach ($this->workflows as $workflow) {
       if ($workflow->can_handle_page()) {
-        return $workflow->handle_page();
+        $content = $workflow->handle_page();
+        return $this->get_shortcode_content($content);
       }
     }
+  }
+
+  private function get_shortcode_content($content)
+  {
+    ob_start();
+    include plugin_dir_path(__FILE__) . '../partials/shortcode.php';
+    return ob_get_clean();
   }
 }
