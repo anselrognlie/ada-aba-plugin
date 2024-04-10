@@ -27,11 +27,29 @@ class Public_Restricted_Controller
   {
     $this->enable_cors();
 
-    $api_key = $request->get_param('api_key');
+    $unauthorized_error = new WP_Error('unauthorized', 'Unauthorized', array('status' => 401));
+
+    // look for bearer token in the Authorization header
+    $auth_header = $request->get_header('Authorization');
+    if (!$auth_header) {
+      return $unauthorized_error;
+    }
+
+    $auth_header_parts = explode(' ', $auth_header, 2);
+    if (count($auth_header_parts) !== 2) {
+      return $unauthorized_error;
+    }
+
+    if ($auth_header_parts[0] !== 'Bearer') {
+      return $unauthorized_error;
+    }
+
+    $api_key = $auth_header_parts[1];
+
     $options = Options::get_options();
     $set_api_key = $options->get_api_key();
     if ($api_key !== $set_api_key) {
-      return new WP_Error('unauthorized', 'Unauthorized', array('status' => 401));
+      return $unauthorized_error;
     }
 
     return true;
