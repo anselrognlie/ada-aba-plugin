@@ -72,7 +72,7 @@ class Lesson_Progress_Service
 
     $result = $wpdb->get_results($query, 'OBJECT');
     if (!$result) {
-      return [];
+      return $learner_data;
     }
 
     // php associative arrays are ordered by insertion, so this will maintain
