@@ -15,6 +15,7 @@
 
 <p class="ada-aba-course" data-ada-aba-course-slug="<?php echo $course->getSlug() ?>">
   <span><?php echo $course->getName() ?></span>
+  <span>[<?php echo $course->getSlug() ?>]</span>
   <?php if ($course->isActive()) : ?>
     <span>(Active)</span>
   <?php else : ?>
