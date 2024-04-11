@@ -67,3 +67,11 @@ char(round(rand()*25)+97)
 -- clear the surveyed flag for a user
 delete from wp_ada_aba_surveyed_learner
 where learner_slug = 'BQp2krhb5x'  -- change this slug
+
+-- clear a completed lesson flag for a users
+select * from wp_ada_aba_completed_lesson cl
+--delete cl from wp_ada_aba_completed_lesson cl
+join wp_ada_aba_lesson l on l.id = cl.lesson_id
+join wp_ada_aba_learner lr on lr.id = cl.learner_id
+where l.slug = 'ZqNCTkGVrn'  -- change this lesson slug
+and lr.slug = 'ZQhk5pJDNp';  -- change this learner slug
