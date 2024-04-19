@@ -15,9 +15,11 @@
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 
-<h2>An error occurred.</h2>
+<h2>An unexpected error has occurred.</h2>
 
 <p>
-  An error occurred (<?php echo $error ?>) while trying to carry out your request.
-  Please try again later.
+  We're sorry, but an unexpected error occurred while trying to carry out your request.
+</p>
+<p>
+  Please confirm any inputs you provided and try again. If the problem persists, please try again later.
 </p>

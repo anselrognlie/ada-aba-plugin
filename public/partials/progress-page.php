@@ -30,6 +30,11 @@
   Once all required lessons in the course have been completed, a link will be
   provided with which you can request a certificate for the course.
 </p>
+<p>
+  This page may be visited as often as needed as you progress through the lessons.
+  We suggest bookmarking it so that you can easily come back to copy your
+  Learner ID, which you'll need to mark lessons complete.
+</p>
 
 <table class="ada-aba-learner-id-table">
   <tbody>

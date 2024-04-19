@@ -15,15 +15,20 @@
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 
+<p>Your email address has been confirmed!</p>
+
 <p>
-  You can start tracking your progress by
+  You can start tracking your curriculum progress by
   clicking <a href="<?php echo esc_url($progress_link) ?>">here</a>.
-</p>
-
-<p>
-  You may wish to bookmark that link for future reference.
-</p>
-
-<p>
   We hope you enjoy the course!
+</p>
+
+<p>
+  The first time you visit your progress page, you will be prompted to take a brief survey.
+</p>
+
+<p>
+  Please either retain this email or bookmark the link above for future reference.
+  If you lose the link, you can register again with the same email address to receive
+  another copy of this email. Your progress will be saved.
 </p>

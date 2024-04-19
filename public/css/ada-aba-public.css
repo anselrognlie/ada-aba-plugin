@@ -3,7 +3,13 @@
  * included in this file.
  */
 
- /* survey */
+/* forms */
+.ada-aba-form-inputs {
+  max-width: 800px;
+  margin: 0px auto;
+}
+
+/* survey */
 
 .ada-aba-survey-survey-question {
   margin-bottom: 1.5em;
