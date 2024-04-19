@@ -25,7 +25,7 @@
     <h3>Execute Query</h3>
     <p><em>This is very dangerous. The database could very easily be corrupted by running arbitrary queries. Use with extreme caution.</em></p>
     <form id="ada-aba-execute-query-form">
-      <textarea cols="80" rows="10" name="query"></textarea>
+      <textarea id="ada-aba-execute-query-query" cols="80" rows="10" name="query"></textarea>
       <div>
         <input type="submit" value="Execute">
       </div>
