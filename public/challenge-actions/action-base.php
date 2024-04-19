@@ -26,6 +26,7 @@ abstract class Action_Base
   private $nonce;
   private $expires_at;
 
+  const SUBJECT_TEMPLATE = 'Action Required: %1$s';
 
   protected function __construct(
     $slug,
@@ -194,6 +195,8 @@ abstract class Action_Base
     [$subject, $body] = $this->get_email_content();
     // $subject = $this->subject;
     // $body = $this->body;
+
+    $subject = sprintf(self::SUBJECT_TEMPLATE, $subject);
 
     $verify_link = Links\get_verify_link($this->nonce);
     $footer = $this->get_email_footer($verify_link);
