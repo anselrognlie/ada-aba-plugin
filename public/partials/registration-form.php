@@ -19,13 +19,15 @@
   <p>
     Ada Build is a free, self-guided curriculum that introduces beginners to 
     Python and coding fundamentals through tutorials and video lessons. 
-    Completing this curriculum is a great way to start your coding journey, 
-    especially for individuals seeking to strengthen their skills for the Ada 
-    application process.
-  </p>
-  <p>
     The content covers foundational concepts such as the basics of coding 
     languages and getting comfortable with tools.
+  </p>
+  <p>
+    Completing this curriculum is a great way to start your coding journey, 
+    especially for individuals seeking to strengthen their skills for the Ada 
+    application process. You will also be able to receive a certificate of
+    completion to commemorate your accomplishment, so be sure to register
+    your name as you would like it to appear on the certificate!
   </p>
   <div class="input-group">
     <label for="first_name">First Name</label>
