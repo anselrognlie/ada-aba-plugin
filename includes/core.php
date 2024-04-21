@@ -4,6 +4,7 @@ namespace Ada_Aba\Includes;
 
 use Ada_Aba\Admin\Aba_Admin;
 use Ada_Aba\Public\Aba_Public;
+use Ada_Aba\Public\Action\Emails;
 
 /**
  * The file that defines the core plugin class
@@ -402,9 +403,22 @@ class Core
       $call_site['line'],
     );
 
-    error_log($header . $msg);
+    $entry = $header . $msg;
+    error_log($entry);
+
+    return $entry;
   }
 
+  public static function mail_error($msg)
+  {
+    $email = Options::get_options()->get_error_email();
+    if (!$email) {
+      return;
+    }
+
+    $msg = "<pre>$msg</pre>";
+    Emails::mail($email, 'Ada Build Error', $msg);
+  }
 
   public static function log_ex($e, $context = [], $severity = self::ERROR)
   {
@@ -425,7 +439,7 @@ class Core
 
     $msg = !$context ? $trace : "$context_str\n$trace";
 
-    self::log($msg, $severity);
+    return self::log($msg, $severity);
   }
 
   public static function privy($msg)

@@ -200,10 +200,12 @@ class Aba_Public
         }
       }
     } catch (Aba_Exception $e) {
-      Core::log($e);
+      $entry = Core::log($e);
+      Core::mail_error($entry);
       redirect_to_error_page(Errors\UNKNOWN);
     } catch (Exception $e) {
-      Core::log_ex($e);
+      $entry = Core::log_ex($e);
+      Core::mail_error($entry);
       redirect_to_error_page(Errors\UNKNOWN);
     }
   }
@@ -214,10 +216,10 @@ class Aba_Public
       $code = new Ada_Build_Shortcode($this->plugin_name);
       return $code->run();
     } catch (Aba_Exception $e) {
-      Core::log($e);
+      $entry = Core::log($e);
       return $this->get_unknown_error_content();
     } catch (Exception $e) {
-      Core::log_ex($e);
+      $entry = Core::log_ex($e);
       return $this->get_unknown_error_content();
     }
   }

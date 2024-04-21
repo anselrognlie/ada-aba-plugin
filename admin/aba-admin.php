@@ -387,6 +387,19 @@ class Aba_Admin
     );
 
     add_settings_field(
+      'error-email',
+      'Email for errors',
+      array($this, 'sandbox_add_settings_field_input_text'),
+      $this->plugin_name . '-settings',
+      $this->plugin_name . '-settings-section',
+      array(
+        'label_for' => 'error-email',
+        'default' => '',
+        'description' => 'Email to notify when a learner-facing unexpected error occurs'
+      )
+    );
+
+    add_settings_field(
       'drop-schema',
       'Delete plugin tables on deactivate',
       array($this, 'sandbox_add_settings_field_single_checkbox'),
@@ -434,6 +447,7 @@ class Aba_Admin
       'api-key' => null,
       'drop-schema' => null,
       'clear-options' => null,
+      'error-email' => null,
       // 'private-key' => array(
       //   'sanitizer' => array($this, 'sanitize_hex'),
       //   'label' => 'Private Key',

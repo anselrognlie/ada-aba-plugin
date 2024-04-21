@@ -46,6 +46,7 @@ class Options
 
   private const DEFAULT_OPTIONS = [
     'ada-build-page' => -1,
+    'error-email' => '',
     'send-email' => true,
     'private-key' => 'replace with a good private key',
     'api-key' => 'replace with a good api key',
@@ -129,6 +130,11 @@ class Options
   public function get_clear_options()
   {
     return $this->get_with_fallback('clear-options');
+  }
+
+  public function get_error_email()
+  {
+    return $this->get_with_fallback('error-email');
   }
 
   public function save()

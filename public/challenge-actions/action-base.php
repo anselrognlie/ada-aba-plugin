@@ -84,7 +84,8 @@ abstract class Action_Base
         $this->cleanup();
       } catch (Aba_Exception $e) {
         Transaction::rollback();
-        Core::log($e);
+        $entry = Core::log($e);
+        Core::mail_error($entry);
         redirect_to_error_page(Errors\COMPLETE_ACTION);
       }
       Transaction::complete();
@@ -151,7 +152,8 @@ abstract class Action_Base
     } catch (Aba_Exception $e) {
       if ($context === Action_Context::BROWSER) {
         // When called in a browser, apply our standard error handling
-        Core::log($e);
+        $entry = Core::log($e);
+        Core::mail_error($entry);
         redirect_to_error_page(Errors\LOG_ACTION);
         return;
       }
