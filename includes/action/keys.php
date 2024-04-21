@@ -22,4 +22,6 @@ const SURVEY = 'survey';
 const REPORT = 'report';
 const SURVEY_REPORT = 'survey';
 const PROGRESS_REPORT = 'progress';
+const ERROR_LOG_REPORT = 'error-log';
 const COURSE = 'course';
+const PATH = 'path';

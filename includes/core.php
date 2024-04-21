@@ -226,6 +226,8 @@ class Core
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/reports/progress-report-builder.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/reports/progress-table-builder.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/reports/progress-report.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/reports/error-log-report-builder.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/reports/error-log-report.php';
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/reports/report-builder-factory.php';
 
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/shortcodes/ada-build-shortcode.php';

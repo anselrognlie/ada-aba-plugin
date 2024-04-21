@@ -47,4 +47,15 @@
     </div>
   </div>
 
+  <div>
+    <h3>Error Log</h3>
+    <div id="ada-aba-error-log">
+      <input type="text" id="ada-aba-error-log-path">
+      <button id="ada-aba-error-log-button">Export</button>
+    </div>
+    <p>
+      Apache errors: /opt/bitnami/apache/logs/error_log
+    </p>
+  </div>
+
 </div>

@@ -21,6 +21,16 @@
       window.location.href = link;
       // console.log($select.val());
     });
+
+    $('#ada-aba-error-log-button').on('click', async function (e) {
+      e.preventDefault();
+
+      const $text = $('#ada-aba-error-log-path')
+      const path = $text.val();
+      const link = AdaAba.Links.getErrorLogReportLink(path);
+      window.location.href = link;
+      // console.log($select.val());
+    });
   };
 
   $(function () {

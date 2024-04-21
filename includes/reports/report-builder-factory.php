@@ -14,6 +14,7 @@ class Report_Builder_Factory
     $this->builders = array(
       Keys\SURVEY_REPORT => 'Ada_Aba\Includes\Reports\Survey_Report_Builder',
       Keys\PROGRESS_REPORT => 'Ada_Aba\Includes\Reports\Progress_Report_Builder',
+      Keys\ERROR_LOG_REPORT => 'Ada_Aba\Includes\Reports\Error_Log_Report_Builder',
     );
   }
 
