@@ -58,6 +58,12 @@
   <?php endif; ?>
 <?php else : ?>
 
+  <p class="ada-aba-progress-midway">
+    If you registered for this course after having completed some of the notebook-based
+    lessons, you will need to download a new copy of the notebook, which includes the
+    section used to mark the lesson complete.
+  </p>
+
   <!-- enrollments information -->
   <?php foreach ($learner_courses as $learner_course) : ?>
     <h3><?php echo $learner_course->getCourseName(); ?>
