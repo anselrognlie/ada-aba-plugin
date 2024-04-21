@@ -74,7 +74,7 @@ select * from wp_ada_aba_completed_lesson cl
 join wp_ada_aba_lesson l on l.id = cl.lesson_id
 join wp_ada_aba_learner lr on lr.id = cl.learner_id
 where l.slug = 'ZqNCTkGVrn'  -- change this lesson slug
-and lr.slug = 'ZQhk5pJDNp';  -- change this learner slug
+and lr.slug = 'ZQhk5pJDNp'  -- change this learner slug
 
 -- view learner info
 select * from wp_ada_aba_learner
@@ -84,3 +84,9 @@ where slug = 'ZQhk5pJDNp'  -- change the learner id
 update wp_ada_aba_learner
 set email = 'ansel.rognlie@gmail.com'  -- change the mail
 where slug = 'ZQhk5pJDNp'  -- change the learner slug
+
+-- show tables (mysql specific)
+show tables
+
+-- show table layout (mysql specific)
+describe table_name  -- change the table_name
