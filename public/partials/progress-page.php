@@ -59,53 +59,55 @@
 <?php else : ?>
 
   <p class="ada-aba-progress-midway">
-    If you registered for this course after having completed some of the notebook-based
-    lessons, you will need to download a new copy of the notebook, which includes the
-    section used to mark the lesson complete.
+    If you previously saved lesson notebooks that have no section for completing the lesson,
+    you will need to get a new copy of those notebooks using the lesson links.
+    The updated notebooks provide a section for marking the lesson complete.
   </p>
 
   <!-- enrollments information -->
   <?php foreach ($learner_courses as $learner_course) : ?>
-    <h3><?php echo $learner_course->getCourseName(); ?>
-      <a href="<?php echo $learner_course->getCourseUrl() ?>"><img class="ada-aba-external-link" src="<?php echo plugins_url("$plugin_name/public/assets/img/link-external.png") ?>"></a>
-    </h3>
-    <p>
-      <?php if ($learner_course->isComplete()) : ?>
-        All required lessons have been completed: <a href="<?php echo esc_url($learner_course->getRequestCertificateLink()); ?>">Request Certificate</a>
-      <?php endif; ?>
-    </p>
-    <table>
-      <thead>
-        <tr>
-          <th>Lesson</th>
-          <th>Completed</th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php foreach ($learner_course->getLessons() as $lesson) : ?>
+    <div class="ada-aba-progress-table">
+      <h3><?php echo $learner_course->getCourseName(); ?>
+        <a href="<?php echo $learner_course->getCourseUrl() ?>"><img class="ada-aba-external-link" src="<?php echo plugins_url("$plugin_name/public/assets/img/link-external.png") ?>"></a>
+      </h3>
+      <p>
+        <?php if ($learner_course->isComplete()) : ?>
+          All required lessons have been completed: <a href="<?php echo esc_url($learner_course->getRequestCertificateLink()); ?>">Request Certificate</a>
+        <?php endif; ?>
+      </p>
+      <table>
+        <thead>
           <tr>
-            <td>
-              <a href="<?php echo $lesson->getUrl() ?>"><?php echo htmlentities($lesson->getName()); ?></a>
-
-              <?php if ($lesson->isOptional()) : ?>
-                <span>(Optional)</span>
-              <?php endif; ?>
-            </td>
-            <td>
-              <?php if ($lesson->isComplete()) : ?>
-                <span class="ada-aba-checkbox">☑</span>
-              <?php else : ?>
-                <?php if ($lesson->canCompleteOnProgress()) : ?>
-                  <a href="<?php echo $lesson->getCompleteLink(); ?>">Finish</a>
-                <?php else : ?>
-                  <span class="ada-aba-checkbox">☐</span>
-                <?php endif; ?>
-              <?php endif; ?>
-            </td>
+            <th>Lesson</th>
+            <th>Completed</th>
           </tr>
-        <?php endforeach; ?>
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          <?php foreach ($learner_course->getLessons() as $lesson) : ?>
+            <tr>
+              <td>
+                <a href="<?php echo $lesson->getUrl() ?>"><?php echo htmlentities($lesson->getName()); ?></a>
+
+                <?php if ($lesson->isOptional()) : ?>
+                  <span>(Optional)</span>
+                <?php endif; ?>
+              </td>
+              <td>
+                <?php if ($lesson->isComplete()) : ?>
+                  <span class="ada-aba-checkbox">☑</span>
+                <?php else : ?>
+                  <?php if ($lesson->canCompleteOnProgress()) : ?>
+                    <a href="<?php echo $lesson->getCompleteLink(); ?>">Finish</a>
+                  <?php else : ?>
+                    <span class="ada-aba-checkbox">☐</span>
+                  <?php endif; ?>
+                <?php endif; ?>
+              </td>
+            </tr>
+          <?php endforeach; ?>
+        </tbody>
+      </table>
+    </div>
   <?php endforeach; ?>
 <?php endif; ?>
 
