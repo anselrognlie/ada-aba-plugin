@@ -76,3 +76,18 @@ The plugin must be zipped for deployment to the live site. The macos Compress co
 `zip -vr ada-aba.zip ada-aba`
 
 This will zip the contents `ada-aba` folder into a file called `ada-aba.zip`, with verbose output and recursion.
+
+## Deploying to live site
+
+The plugin can be deployed to the live site by uploading the zip file to the plugins page and activating it.
+
+Create a page called "Ada Build" and set its content to the shortcode `[ada-aba-ada-build]`. The page can be private until it is ready to be published.
+
+In the settings
+- generate an api and session key.
+  - the api key will need to be used in the report sheets to retrieve the report data
+- set an email to receive error notifications
+
+Set up the courses and surveys.
+- make sure that the course completion snippets have the proper course ids
+
