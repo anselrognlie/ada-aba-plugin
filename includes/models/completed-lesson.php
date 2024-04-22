@@ -251,6 +251,28 @@ class Completed_Lesson
     }, $result);
   }
 
+  public static function get_by_learner_and_lesson_id($learner_id, $lesson_id)
+  {
+    global $wpdb;
+
+    $table_name = $wpdb->prefix . self::$table_name;
+
+    $row = $wpdb->get_row(
+        $wpdb->prepare(
+        "SELECT * FROM $table_name WHERE learner_id = %d and lesson_id = %d",
+        $learner_id,
+        $lesson_id,
+      ),
+      'ARRAY_A'
+    );
+
+    if ($row) {
+      return self::fromRow($row);
+    } else {
+      return null;
+    }
+  }
+
   public function delete()
   {
     global $wpdb;

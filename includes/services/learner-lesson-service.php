@@ -38,6 +38,12 @@ class Learner_Lesson_Service
       throw new Aba_Exception('Could not get learner or lesson');
     }
 
+    // is lesson already completed? just return it
+    $completed_lesson = Completed_Lesson::get_by_learner_and_lesson_id($learner->getId(), $lesson->getId());
+    if ($completed_lesson) {
+      return $completed_lesson;
+    }
+
     $completed_lesson = Completed_Lesson::create(
       $learner->getId(),
       $lesson->getId(),
