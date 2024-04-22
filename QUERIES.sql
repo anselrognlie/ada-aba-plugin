@@ -1,3 +1,151 @@
+-- plugin tables
+describe wp_ada_aba_challenge_action
+COLUMNS
+Field	Type	Null	Key	Default	Extra
+id	mediumint(9)	NO	PRI		auto_increment
+created_at	datetime	NO			
+updated_at	datetime	NO			
+deleted_at	datetime	YES			
+slug	varchar(255)	NO	UNI		
+email	varchar(255)	NO			
+nonce	varchar(255)	NO	UNI		
+expires_at	datetime	NO			
+action_builder	text	NO			
+action_payload	text	NO			
+
+describe wp_ada_aba_completed_lesson
+COLUMNS
+Field	Type	Null	Key	Default	Extra
+id	mediumint(9)	NO	PRI		auto_increment
+created_at	datetime	NO			
+updated_at	datetime	NO			
+deleted_at	datetime	YES			
+learner_id	mediumint(9)	NO	MUL		
+lesson_id	mediumint(9)	NO	MUL		
+slug	varchar(255)	NO	UNI		
+completed_at	datetime	NO			
+
+describe wp_ada_aba_course
+COLUMNS
+Field	Type	Null	Key	Default	Extra
+id	mediumint(9)	NO	PRI		auto_increment
+created_at	datetime	NO			
+updated_at	datetime	NO			
+deleted_at	datetime	YES			
+name	text	NO			
+slug	varchar(255)	NO	UNI		
+active	tinyint(1)	NO		0	
+url	varchar(255)	NO			
+
+describe wp_ada_aba_enrollment
+COLUMNS
+Field	Type	Null	Key	Default	Extra
+id	mediumint(9)	NO	PRI		auto_increment
+created_at	datetime	NO			
+updated_at	datetime	NO			
+deleted_at	datetime	YES			
+learner_id	mediumint(9)	NO	MUL		
+course_id	mediumint(9)	NO	MUL		
+slug	varchar(255)	NO	UNI		
+started_at	datetime	NO			
+completed_at	datetime	YES			
+completion	varchar(255)	YES	UNI		
+
+describe wp_ada_aba_learner
+COLUMNS
+Field	Type	Null	Key	Default	Extra
+id	mediumint(9)	NO	PRI		auto_increment
+created_at	datetime	NO			
+updated_at	datetime	NO			
+deleted_at	datetime	YES			
+first_name	text	NO			
+last_name	text	NO			
+email	varchar(255)	NO	UNI		
+slug	varchar(255)	NO	UNI		
+
+describe wp_ada_aba_lesson
+COLUMNS
+Field	Type	Null	Key	Default	Extra
+id	mediumint(9)	NO	PRI		auto_increment
+created_at	datetime	NO			
+updated_at	datetime	NO			
+deleted_at	datetime	YES			
+name	text	NO			
+slug	varchar(255)	NO	UNI		
+url	varchar(255)	NO			
+complete_on_progress	tinyint(1)	NO			
+
+describe wp_ada_aba_question
+COLUMNS
+Field	Type	Null	Key	Default	Extra
+id	mediumint(9)	NO	PRI		auto_increment
+created_at	datetime	NO			
+updated_at	datetime	NO			
+deleted_at	datetime	YES			
+slug	varchar(255)	NO	UNI		
+builder	text	NO			
+prompt	text	NO			
+description	text	NO			
+data	text	NO			
+
+describe wp_ada_aba_survey
+COLUMNS
+Field	Type	Null	Key	Default	Extra
+id	mediumint(9)	NO	PRI		auto_increment
+created_at	datetime	NO			
+updated_at	datetime	NO			
+deleted_at	datetime	YES			
+name	text	NO			
+slug	varchar(255)	NO	UNI		
+active	tinyint(1)	NO		0	
+
+describe wp_ada_aba_survey_question
+COLUMNS
+Field	Type	Null	Key	Default	Extra
+id	mediumint(9)	NO	PRI		auto_increment
+created_at	datetime	NO			
+updated_at	datetime	NO			
+deleted_at	datetime	YES			
+survey_id	mediumint(9)	NO	MUL		
+question_id	mediumint(9)	NO	MUL		
+order	mediumint(9)	NO			
+slug	varchar(255)	NO	UNI		
+optional	tinyint(1)	NO		0	
+
+describe wp_ada_aba_survey_question_response
+COLUMNS
+Field	Type	Null	Key	Default	Extra
+id	mediumint(9)	NO	PRI		auto_increment
+survey_response_id	mediumint(9)	NO	MUL		
+question_id	mediumint(9)	NO	MUL		
+response	text	NO			
+
+describe wp_ada_aba_survey_response
+COLUMNS
+Field	Type	Null	Key	Default	Extra
+id	mediumint(9)	NO	PRI		auto_increment
+created_at	datetime	NO			
+slug	varchar(255)	NO	UNI		
+survey_id	mediumint(9)	NO	MUL		
+
+describe wp_ada_aba_surveyed_learner
+COLUMNS
+Field	Type	Null	Key	Default	Extra
+learner_slug	varchar(255)	NO	PRI	
+
+describe wp_ada_aba_syllabus
+COLUMNS
+Field	Type	Null	Key	Default	Extra
+id	mediumint(9)	NO	PRI		auto_increment
+created_at	datetime	NO			
+updated_at	datetime	NO			
+deleted_at	datetime	YES			
+course_id	mediumint(9)	NO	MUL		
+lesson_id	mediumint(9)	NO	MUL		
+order	mediumint(9)	NO			
+slug	varchar(255)	NO	UNI		
+optional	tinyint(1)	NO		0	
+
 -- complete all lessons for a learner
 insert into wp_ada_aba_completed_lesson (
   created_at, updated_at, learner_id, lesson_id, slug, completed_at
@@ -90,3 +238,16 @@ show tables
 
 -- show table layout (mysql specific)
 describe table_name  -- change the table_name
+
+-- clear all learner-related data. run the following queries in order
+-- tables with FK dependencies cannot be truncated, but delete with resetting
+-- the auto increment accomplishes the same thing
+truncate table wp_ada_aba_surveyed_learner;
+truncate table wp_ada_aba_survey_question_response;
+delete from wp_ada_aba_survey_response;
+ALTER TABLE wp_ada_aba_survey_response AUTO_INCREMENT = 1;
+truncate table wp_ada_aba_completed_lesson;
+truncate table wp_ada_aba_enrollment;
+delete from wp_ada_aba_learner;
+ALTER TABLE wp_ada_aba_learner AUTO_INCREMENT = 1;
+truncate table wp_ada_aba_challenge_action;
